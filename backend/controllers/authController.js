@@ -1,6 +1,9 @@
+import crypto from "crypto";
+import { StatusCodes } from "http-status-codes";
+
 import User from "../models/UserModel.js";
 import { BadRequestError } from "../errors/index.js";
-import crypto from "crypto";
+import sendVerificationToken from "../utils/nodeMailer/sendVerificationToken.js";
 
 export async function register(req, res) {
   const { name, email, password } = req.body;
@@ -23,6 +26,19 @@ export async function register(req, res) {
     password,
     role,
     verificationToken,
+  });
+
+  const origin = `http://localhost:5000`;
+
+  await sendVerificationToken({
+    user: user.name,
+    email: user.email,
+    verificationToken: user.verificationToken,
+    origin,
+  });
+
+  res.status(StatusCodes.CREATED).json({
+    msg: "Success! Please check your email to verify account",
   });
 }
 
@@ -49,7 +65,3 @@ export async function resetPassword(req, res) {
 export async function changePassword(req, res) {
   res.send("Password changed successfully");
 }
-
-// Name:	Triston Corkery
-// Username:	triston1@ethereal.email
-// Password:	7w6ZJuYkEVPe285Tx5
