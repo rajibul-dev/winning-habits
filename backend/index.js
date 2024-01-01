@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 config();
+import "express-async-errors";
 
 import express from "express";
 const app = express();
@@ -9,6 +10,8 @@ import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 
 import authRouter from "./routes/authRoutes.js";
+
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send(`<h1>Winning Habits API</h1>`);

@@ -6,5 +6,5 @@ export default function errorHandlerMiddleware(err, req, res, next) {
     message: err.message || `Something went wrong, try again later`,
   };
 
-  return res.status(customError.statusCode).json({ msg: customError.msg });
+  return res.status(customError.statusCode).json({ msg: customError.message });
 }
