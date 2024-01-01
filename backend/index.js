@@ -8,9 +8,13 @@ import connectDB from "./db/connect.js";
 import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 
+import authRouter from "./routes/authRoutes.js";
+
 app.get("/", (req, res) => {
   res.send(`<h1>Winning Habits API</h1>`);
 });
+
+app.use("/api/v1/auth", authRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
