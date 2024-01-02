@@ -8,12 +8,14 @@ export default async function sendVerificationToken({
 }) {
   const verifyEmailLink = `${origin}/user/verify-email?token=${verificationToken}&email=${email}`;
 
-  const message = `<p>Hello ${name}, please confirm your email by clicking on the following link: <a href="${verifyEmailLink}">Verify Email</a></p>`;
+  console.log(name);
+
+  const message = `<p>Hello ${name}, please confirm your email by clicking on the following link: <a href="${verifyEmailLink}">${verifyEmailLink}</a></p>`;
 
   sendEmail({
     to: email,
     subject: `Email Verification`,
-    html: `<h1>Winning Habit account confirmation</h1>
+    html: `<h1>Account Confirmation</h1>
     ${message}`,
   });
 }

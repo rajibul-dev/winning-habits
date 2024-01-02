@@ -1,13 +1,9 @@
 export default {
-  host: "smtp.ethereal.email",
+  host: "smtp.gmail.com",
   port: 587,
   secure: false, // `true` for port 465, `false` for all other ports
   auth: {
-    user: "triston1@ethereal.email",
-    pass: "7w6ZJuYkEVPe285Tx5",
+    user: "winninghabitapp@gmail.com",
+    pass: "kfey apoz xubr izas",
   },
 };
-
-// Name:	Triston Corkery
-// Username:	triston1@ethereal.email
-// Password:	7w6ZJuYkEVPe285Tx5

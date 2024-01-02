@@ -5,7 +5,7 @@ export default async function sendEmail({ to, subject, html }) {
   const transporter = nodemailer.createTransport(nodemailerConfig);
 
   return transporter.sendMail({
-    from: `Rajibul Islam`,
+    from: `"Winning Habit" <winninghabitapp@gmail.com>`,
     to,
     subject,
     html,
