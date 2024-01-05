@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new Schema(
   {
     name: {
       type: String,
@@ -59,4 +59,4 @@ UserSchema.method.comparePassword = async function (canditatePassword) {
   return isMatch;
 };
 
-export default mongoose.model("User", UserSchema);
+export default model("User", UserSchema);
