@@ -9,11 +9,11 @@ export function isTokenValid(token) {
 }
 
 export function attachCookiesToResponse({ res, user, refreshToken }) {
-  const accessTokenJWT = createJWT({ payload: { user } });
-  const refreshTokenJWT = createJWT({ payload: { user, refreshToken } });
+  const accessTokenJWT = createJWT({ user });
+  const refreshTokenJWT = createJWT({ user, refreshToken });
 
   const oneDay = 1000 * 60 * 60 * 24;
-  const thirtyDays = 1000 * 60 * 60 * 24 * 30;
+  const oneEightyDays = 1000 * 60 * 60 * 24 * 180;
 
   res.cookie("accessToken", accessTokenJWT, {
     httpOnly: true,
@@ -26,6 +26,6 @@ export function attachCookiesToResponse({ res, user, refreshToken }) {
     httpOnly: true,
     signed: true,
     secure: process.env.NODE_ENV === "production",
-    expires: new Date(Date.now() + thirtyDays),
+    expires: new Date(Date.now() + oneEightyDays),
   });
 }
