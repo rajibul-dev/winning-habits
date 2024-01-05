@@ -1,9 +1,13 @@
 import crypto from "crypto";
 import { StatusCodes } from "http-status-codes";
 
-import User from "../models/UserModel.js";
 import { BadRequestError, UnauthenticatedError } from "../errors/index.js";
 import sendVerificationToken from "../utils/nodeMailer/sendVerificationToken.js";
+import createTokenUser from "../utils/jwt/createTokenUser.js";
+
+import User from "../models/UserModel.js";
+import Token from "../models/TokenModel.js";
+import { attachCookiesToResponse } from "../utils/jwt/jwt.js";
 
 export async function register(req, res) {
   const { name, email, password } = req.body;
@@ -118,7 +122,52 @@ export async function requestNewVerificationEmail(req, res) {
 }
 
 export async function login(req, res) {
-  res.send("Logged in successfully");
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throw new BadRequestError("Please provide email and password");
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new BadRequestError("Your email or password is wrong");
+  }
+
+  const isPasswordCorrect = await user.comparePassword(password);
+  if (!isPasswordCorrect) {
+    throw new BadRequestError("Your email or password is wrong");
+  }
+
+  if (!user.isVerified) {
+    throw new UnauthenticatedError("Please verify your email");
+  }
+
+  const tokenUser = createTokenUser(user);
+
+  let refreshToken = "";
+
+  const existingToken = await Token.findOne({ user: user._id });
+  if (existingToken) {
+    const { isValid } = existingToken;
+    if (!isValid) {
+      throw new UnauthenticatedError(
+        "You have been restricted to use this web app",
+      );
+    }
+    refreshToken = existingToken.refreshToken;
+    attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+    res.status(StatusCodes.OK).json({ user: tokenUser });
+    return;
+  }
+
+  refreshToken = crypto.randomBytes(40).toString("hex");
+  const userAgent = req.get("user-agent");
+  const ip = req.ip;
+
+  const cookFirstTokenForUser = { refreshToken, ip, userAgent, user: user._id };
+  await Token.create(cookFirstTokenForUser);
+  attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+  res.status(StatusCodes.OK).json({ user: tokenUser });
 }
 
 export async function logout(req, res) {
