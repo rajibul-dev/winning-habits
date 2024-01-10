@@ -15,18 +15,18 @@ export async function register(req, res) {
   // check if there is already an account with provided email
   const existingUser = await User.findOne({ email });
 
+  // existing user in the database?
   if (existingUser) {
     if (existingUser.isVerified) {
       throw new BadRequestError("An account already exists with this Email");
     }
 
+    // just set a new verification token for them
     const verificationToken = crypto.randomBytes(40).toString("hex");
-
     existingUser.verificationToken = verificationToken;
     await existingUser.save();
 
     const origin = `http://localhost:5000`;
-
     await sendVerificationToken({
       name: existingUser.name,
       email: existingUser.email,
@@ -39,13 +39,12 @@ export async function register(req, res) {
     });
   }
 
+  // Creating new user
   // 1st registration is admin by default
   const isFirstAccount = (await User.countDocuments({})) === 0;
   const role = isFirstAccount ? "admin" : "user";
 
   const verificationToken = crypto.randomBytes(40).toString("hex");
-
-  console.log(name);
 
   const user = await User.create({
     name,
@@ -108,7 +107,6 @@ export async function requestNewVerificationEmail(req, res) {
 
   // Send the new verification email
   const origin = `http://localhost:5000`;
-
   await sendVerificationToken({
     user: user.name,
     email: user.email,
@@ -142,6 +140,7 @@ export async function login(req, res) {
     throw new UnauthenticatedError("Please verify your email");
   }
 
+  // reusable object with name, id, and role
   const tokenUser = createTokenUser(user);
 
   let refreshToken = "";
@@ -154,6 +153,8 @@ export async function login(req, res) {
         "You have been restricted to use this web app",
       );
     }
+
+    // To attach in the res.cookie
     refreshToken = existingToken.refreshToken;
     attachCookiesToResponse({ res, user: tokenUser, refreshToken });
     res.status(StatusCodes.OK).json({ user: tokenUser });
