@@ -2,7 +2,7 @@ import { UnauthenticatedError, UnauthorizedError } from "../errors/index.js";
 import Token from "../models/TokenModel.js";
 import { attachCookiesToResponse, isTokenValid } from "../utils/jwt/jwt.js";
 
-export function authenticateUser(req, res, next) {
+export async function authenticateUser(req, res, next) {
   // the refresh token is not exactly the refretoken, it's an object that contains user and token jwt that needs decoding
   const { accessToken, refreshToken } = req.signedCookies;
 
@@ -16,7 +16,7 @@ export function authenticateUser(req, res, next) {
     // decoding and getting the actual refresh token and user
     const payload = isTokenValid(refreshToken);
 
-    const existingToken = Token.findOne({
+    const existingToken = await Token.findOne({
       refreshToken: payload.refreshToken,
       user: payload.user.userID,
     });
