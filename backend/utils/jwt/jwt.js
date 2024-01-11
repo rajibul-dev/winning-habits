@@ -9,6 +9,8 @@ export function isTokenValid(token) {
 }
 
 export function attachCookiesToResponse({ res, user, refreshToken }) {
+  // generate two types of tokens: access and refresh token
+  // access is for short term, refresh is for long term, why? how they co-relate? we will get to that in the auth middleware
   const accessTokenJWT = createJWT({ user });
   const refreshTokenJWT = createJWT({ user, refreshToken });
 

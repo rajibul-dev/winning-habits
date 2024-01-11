@@ -3,19 +3,21 @@ import Token from "../models/TokenModel.js";
 import { attachCookiesToResponse, isTokenValid } from "../utils/jwt/jwt.js";
 
 export async function authenticateUser(req, res, next) {
-  // the refresh token is not exactly the refretoken, it's an object that contains user and token jwt that needs decoding
+  // the refresh token is not exactly the refretoken, it's an object that contains user and a jwt token that needs decoding
   const { accessToken, refreshToken } = req.signedCookies;
 
   try {
     if (accessToken) {
+      // decode access token and attatch user to the req.user, we can then do things with it in the midlewares that lies next
       const payload = isTokenValid(accessToken);
       req.user = payload;
       return next();
     }
 
-    // decoding and getting the actual refresh token and user
+    // decoding and getting the actual refresh token and userID (role and name too)
     const payload = isTokenValid(refreshToken);
 
+    // for validating and attatching refresh and access tokens in the cookies
     const existingToken = await Token.findOne({
       refreshToken: payload.refreshToken,
       user: payload.user.userID,
@@ -25,12 +27,14 @@ export async function authenticateUser(req, res, next) {
       throw new UnauthenticatedError("Authentication Invalid");
     }
 
+    // we end up setting cookies from cookies, a new access token cookie, and the same refresh token cookie
     attachCookiesToResponse({
       res,
       refreshToken: existingToken.refreshToken,
       user: payload.user,
     });
 
+    // yup, we like to see it, the user is in the req object, we can do things with it in the midlewares that lies next
     req.user = payload.user;
     next();
   } catch (error) {
