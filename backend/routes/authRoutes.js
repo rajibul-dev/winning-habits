@@ -9,6 +9,7 @@ import {
   resetPassword,
   verifyEmail,
 } from "../controllers/authController.js";
+import { authenticateUser } from "../middlewares/authentiation.js";
 
 const router = Router();
 
@@ -16,9 +17,9 @@ router.post("/register", register);
 router.post("/verify-email", verifyEmail);
 router.post("/request-new-verification-email", requestNewVerificationEmail);
 router.post("/login", login);
-router.get("/logout", logout);
+router.get("/logout", authenticateUser, logout);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
-router.post("/change-password", changePassword);
+router.post("/change-password", authenticateUser, changePassword);
 
 export default router;

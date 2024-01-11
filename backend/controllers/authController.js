@@ -8,6 +8,8 @@ import createTokenUser from "../utils/jwt/createTokenUser.js";
 import User from "../models/UserModel.js";
 import Token from "../models/TokenModel.js";
 import { attachCookiesToResponse } from "../utils/jwt/jwt.js";
+import sendPasswordResetLink from "../utils/nodeMailer/sendPasswordResetLink.js";
+import createHash from "../utils/createHash.js";
 
 export async function register(req, res) {
   const { name, email, password } = req.body;
@@ -197,17 +199,99 @@ export async function login(req, res) {
 }
 
 export async function logout(req, res) {
-  res.send("Logged out successfully");
+  await Token.findOneAndDelete({ user: req.user.userID });
+
+  res.cookie("accessToken", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.cookie("refreshToken", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+
+  res.status(StatusCodes.OK).json({ msg: "User logged out" });
 }
 
 export async function forgotPassword(req, res) {
-  res.send("Forgot password");
+  const { email } = req.body;
+
+  if (!email) {
+    throw new BadRequestError("Please provide a valid email");
+  }
+
+  const user = await User.findOne({ email });
+
+  // We will be sneaky and not even let know the potential hecker (not hacker 😅) that there was no such account with the provided email
+
+  if (user) {
+    const passwordToken = crypto.randomBytes(70).toString("hex");
+
+    // send password reset link on email
+    const origin = "http://localhost:5000";
+    await sendPasswordResetLink({
+      name: user.name,
+      email: user.email,
+      token: passwordToken,
+      origin,
+    });
+
+    // add to the database the resetToken and expiry date
+    const tenMinutes = 1000 * 60 * 10;
+    const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);
+
+    // reset token should be hashed
+    user.passwordToken = createHash(passwordToken);
+    user.passwordTokenExpirationDate = passwordTokenExpirationDate;
+    await user.save();
+  }
+
+  res
+    .status(StatusCodes.OK)
+    .send(`Please check your email for reseting the password`);
 }
 
 export async function resetPassword(req, res) {
-  res.send("Password reset successfull");
+  const { email, token, password } = req.body;
+
+  if (!token || !email || !password) {
+    throw new BadRequestError("Please provide all the values");
+  }
+
+  const user = await User.findOne({ email });
+
+  if (user) {
+    // we will need this to validate the password toekn validity
+    const currentDate = new Date(Date.now());
+
+    if (
+      user.passwordToken === createHash(token) &&
+      user.passwordTokenExpirationDate > currentDate
+    ) {
+      user.password = password;
+      user.passwordToken = null;
+      user.passwordTokenExpirationDate = null;
+      await user.save();
+    }
+  }
+
+  // again, we are being sneaky here
+  res.send("Password reset successfully");
 }
 
 export async function changePassword(req, res) {
-  res.send("Password changed successfully");
+  const { currentPassword, newPassword } = req.body;
+
+  const user = await User.findOne({ user: req.user.userID });
+
+  // compare currentPassword
+  const currentPasswordCurrect = await user.comparePassword(currentPassword);
+
+  if (!currentPasswordCurrect) {
+    throw new BadRequestError("The provided current password does not match");
+  }
+
+  user.password = newPassword;
+  await user.save();
+  res.status(StatusCodes.OK).json({ msg: "Changed password successfully" });
 }
