@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { StatusCodes } from "http-status-codes";
+import passport from "passport";
 
 import { BadRequestError, UnauthenticatedError } from "../errors/index.js";
 import sendVerificationToken from "../utils/nodeMailer/sendVerificationToken.js";
@@ -169,6 +170,14 @@ export async function login(req, res) {
   await Token.create(cookFirstTokenForUser);
   attachCookiesToResponse({ res, user: tokenUser, refreshToken });
   res.status(StatusCodes.OK).json({ user: tokenUser });
+}
+
+export function googleOAuth() {
+  return passport.authenticate("google", { scope: ["profile", "email"] });
+}
+
+export function googleOAuthCallback() {
+  return passport.authenticate("google", { failureRedirect: "/" });
 }
 
 export async function logout(req, res) {

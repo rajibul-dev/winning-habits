@@ -23,7 +23,12 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, "Please provide password"],
+      required: [
+        function () {
+          return this.authMethod === "password";
+        },
+        "Please provide password",
+      ],
       minlength: 6,
       maxlength: 1024,
     },
@@ -43,6 +48,14 @@ const UserSchema = new Schema(
     },
     passwordTokenExpirationDate: {
       type: Date,
+    },
+    googleID: {
+      type: String,
+    },
+    authMethod: {
+      type: String,
+      enum: ["password", "google"],
+      default: "password",
     },
   },
   { timestamps: true },
