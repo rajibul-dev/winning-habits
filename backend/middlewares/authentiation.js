@@ -45,7 +45,7 @@ export async function authenticateUser(req, res, next) {
 export function authorizePermissions(...roles) {
   return function (req, res, next) {
     // restriction check first
-    if (!roles.includes(req.user.role)) {
+    if (!roles.includes(req.user.user.role)) {
       throw new UnauthorizedError(
         "You don't have the permission to access this route",
       );
