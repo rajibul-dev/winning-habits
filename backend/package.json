@@ -5,7 +5,8 @@
   "description": "WinningHabits is a habit-tracking app that motivates you to build consistent habits by turning your daily progress into a fun points game. Every time you complete a habit, you earn points based on your current streak. The longer your streak, the more points you earn. Track your progress, build streaks, and turn habit-building into a fun and rewarding game!",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "test": "jest"
   },
   "author": "Sk Rajibul Islam",
   "license": "ISC",
@@ -19,6 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.3",
+    "node-schedule": "^2.1.1",
     "nodemailer": "^6.9.8",
     "validator": "^13.11.0"
   },
