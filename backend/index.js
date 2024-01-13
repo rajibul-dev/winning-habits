@@ -12,6 +12,7 @@ import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
 import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 
 import authRouter from "./routes/authRoutes.js";
+import habitRouter from "./routes/habitRoutes.js";
 
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/habits", habitRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
