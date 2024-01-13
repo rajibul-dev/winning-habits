@@ -8,7 +8,10 @@ const HabitSchema = new Schema(
     },
     dailyRecords: [
       {
-        didIt: Boolean,
+        didIt: {
+          type: String,
+          enum: ["yes", "no", "answered"],
+        },
         points: Number,
         date: { type: Date, default: Date.now },
       },
@@ -24,15 +27,20 @@ const HabitSchema = new Schema(
   { timestamps: true },
 );
 
+// Handle relational value updates based on changes to the dailyRecords field
 HabitSchema.pre("save", function (next) {
   if (this.isModified("dailyRecords")) {
     const latestRecord = this.dailyRecords[this.dailyRecords.length - 1];
 
-    if (latestRecord && latestRecord.didIt) {
+    // if we choose 'yes' in the habit
+    if (latestRecord && latestRecord.didIt === "yes") {
       this.streak = (this.streak || 0) + 1;
+      latestRecord.points = this.streak;
       this.totalPoints = (this.totalPoints || 0) + latestRecord.points;
     } else {
+      // if the answer was 'no', or 'unanswered' in the habit
       this.streak = 0;
+      latestRecord.points = this.streak;
     }
   }
 
