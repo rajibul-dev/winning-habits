@@ -10,7 +10,7 @@ const HabitSchema = new Schema(
       {
         didIt: {
           type: String,
-          enum: ["yes", "no", "answered"],
+          enum: ["yes", "no", "unanswered"],
         },
         points: { type: Number, default: 0 },
         date: { type: Date, default: Date.now },
