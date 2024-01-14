@@ -1,10 +1,12 @@
 import { config } from "dotenv";
 config();
 import "express-async-errors";
+import "./scheduleJobs/dailyHabitSchemaManager.js";
 
 import express from "express";
 const app = express();
 
+import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
 import connectDB from "./db/connect.js";
@@ -15,6 +17,7 @@ import authRouter from "./routes/authRoutes.js";
 import habitRouter from "./routes/habitRoutes.js";
 
 app.use(express.json());
+app.use(morgan("dev"));
 app.use(cookieParser(process.env.JWT_SECRET));
 
 app.get("/", (req, res) => {
