@@ -10,7 +10,7 @@ export async function authenticateUser(req, res, next) {
     if (accessToken) {
       // decode access token and attatch user to the req.user, we can then do things with it in the midlewares that lies next
       const payload = isTokenValid(accessToken);
-      req.user = payload;
+      req.user = payload.user;
       return next();
     }
 
@@ -45,7 +45,7 @@ export async function authenticateUser(req, res, next) {
 export function authorizePermissions(...roles) {
   return function (req, res, next) {
     // restriction check first
-    if (!roles.includes(req.user.user.role)) {
+    if (!roles.includes(req.user.role)) {
       throw new UnauthorizedError(
         "You don't have the permission to access this route",
       );
