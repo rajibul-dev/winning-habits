@@ -37,7 +37,7 @@ router
 router
   .route("/:id/action")
   .post(authenticateUser, addDailyAction)
-  .patch(updateDailyAction);
+  .patch(authenticateUser, updateDailyAction);
 
 router.route("/:id/reset").put(authenticateUser, resetHabitProgress);
 
