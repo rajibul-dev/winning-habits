@@ -1,5 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
-import Achievement from "./AchievementModel";
+import Achievement from "./AchievementModel.js";
 
 const HabitSchema = new Schema(
   {
