@@ -15,6 +15,7 @@ import errorHandlerMiddleware from "./middlewares/errorHandlerMiddleware.js";
 
 import authRouter from "./routes/authRoutes.js";
 import habitRouter from "./routes/habitRoutes.js";
+import achievementRouter from "./routes/achievementRoutes.js";
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/habits", habitRouter);
+app.use("/api/v1/achievements", achievementRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
