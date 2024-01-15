@@ -29,26 +29,31 @@ const HabitSchema = new Schema(
 
 // Handle relational value updates based on changes to the dailyRecords field
 HabitSchema.pre("save", function (next) {
-  if (this.isModified("dailyRecords")) {
-    const latestRecord = this.dailyRecords[this.dailyRecords.length - 1];
+  if (!this.isModified("dailyRecords")) {
+    return next();
+  }
 
-    if (latestRecord) {
-      // if we choose 'yes' in the habit
-      if (latestRecord.didIt === "yes") {
-        this.streak = (this.streak || 0) + 1;
-        latestRecord.points = this.streak;
-        this.totalPoints = (this.totalPoints || 0) + latestRecord.points;
-      }
-      // if it was 'unanswered' in the habit
-      else if (latestRecord.didIt === "unanswered") {
-        next();
-      }
-      // if the answer was 'no' in the habit
-      else {
-        this.streak = 0;
-        latestRecord.points = 0;
-      }
-    }
+  const latestRecord = this.dailyRecords[this.dailyRecords.length - 1];
+
+  if (!latestRecord) {
+    return next();
+  }
+
+  switch (latestRecord.didIt) {
+    case "yes":
+      this.streak = (this.streak || 0) + 1;
+      latestRecord.points = this.streak;
+      this.totalPoints = (this.totalPoints || 0) + latestRecord.points;
+      break;
+
+    case "no":
+      this.streak = 0;
+      latestRecord.points = 0;
+      break;
+
+    case "unanswered":
+      // Do nothing for "unanswered" case, just proceed to the next middleware
+      break;
   }
 
   next();
