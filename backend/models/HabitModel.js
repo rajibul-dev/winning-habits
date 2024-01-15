@@ -1,4 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
+import Achievement from "./AchievementModel";
 
 const HabitSchema = new Schema(
   {
@@ -28,16 +29,11 @@ const HabitSchema = new Schema(
 );
 
 // Handle relational value updates based on changes to the dailyRecords field
-HabitSchema.pre("save", function (next) {
-  if (!this.isModified("dailyRecords")) {
-    return next();
-  }
+HabitSchema.pre("save", async function (next) {
+  if (!this.isModified("dailyRecords")) return next();
 
   const latestRecord = this.dailyRecords[this.dailyRecords.length - 1];
-
-  if (!latestRecord) {
-    return next();
-  }
+  if (!latestRecord) return next();
 
   switch (latestRecord.didIt) {
     case "yes":
@@ -56,7 +52,27 @@ HabitSchema.pre("save", function (next) {
       break;
   }
 
+  // Check if totalPoints reached 1000
+  if (this.totalPoints >= 1000) {
+    await handleAchievementLogic(this);
+  }
+
   next();
 });
+
+async function handleAchievementLogic(habit) {
+  if (!habit.user && !habit._id) {
+    return console.error("User or habit information missing for achievement");
+  }
+
+  try {
+    await Achievement.create({
+      user: habit.user,
+      habit: habit._id,
+    });
+  } catch (error) {
+    return console.error("Error creating achievement:", error.message);
+  }
+}
 
 export default model("Habit", HabitSchema);
