@@ -46,7 +46,7 @@ HabitSchema.pre("save", function (next) {
       // if the answer was 'no' in the habit
       else {
         this.streak = 0;
-        latestRecord.points = this.streak;
+        latestRecord.points = 0;
       }
     }
   }
