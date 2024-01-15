@@ -7,7 +7,7 @@ const AchievementSchema = new Schema(
       ref: "User",
       required: [true, "Please provide 'user'"],
     },
-    achievedHabit: {
+    habit: {
       type: mongoose.Types.ObjectId,
       ref: "Habit",
       required: [true, "Please provide the achieved habit"],
