@@ -104,7 +104,7 @@ export async function addDailyAction(req, res) {
 
   res.status(StatusCodes.OK).json({
     name: habit.name,
-    id: habit._id,
+    habitID: habit._id,
     latestRecord,
     totalPoints: habit.totalPoints,
     streak: habit.streak,
@@ -144,7 +144,7 @@ export async function updateDailyAction(req, res) {
 
   res.status(StatusCodes.OK).json({
     name: habit.name,
-    id: habit._id,
+    habitID: habit._id,
     targetRecord,
     totalPoints: habit.totalPoints,
     streak: habit.streak,
