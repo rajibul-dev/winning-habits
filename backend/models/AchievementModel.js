@@ -8,6 +8,7 @@ const AchievementSchema = new Schema(
       required: [true, "Please provide 'user'"],
     },
     habit: {
+      unique: true,
       type: mongoose.Types.ObjectId,
       ref: "Habit",
       required: [true, "Please provide the achieved habit"],
