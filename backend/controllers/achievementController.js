@@ -8,7 +8,7 @@ export async function getMyAchievements(req, res) {
     path: "habit",
     select: "name totalPoints",
   });
-  res.status(StatusCodes.OK).json({ achievements });
+  res.status(StatusCodes.OK).json({ achievements, count: achievements.length });
 }
 
 export async function getUserAchievements(req, res) {
@@ -29,5 +29,5 @@ export async function getUserAchievements(req, res) {
     throw new BadRequestError(`No user with id: ${userID}`);
   }
 
-  res.status(StatusCodes.OK).json({ achievements });
+  res.status(StatusCodes.OK).json({ achievements, count: achievements.length });
 }
