@@ -48,30 +48,58 @@ HabitSchema.pre("save", async function (next) {
       break;
 
     case "unanswered":
-      // Do nothing for "unanswered" case, just proceed to the next middleware
       break;
   }
 
-  // Check if totalPoints reached 1000
+  next();
+});
+
+HabitSchema.pre("save", async function (next) {
+  if (!this.isModified("totalPoints")) return next();
+
   if (this.totalPoints >= 1000) {
     await handleAchievementLogic(this);
+  }
+  if (this.totalPoints < 1000) {
+    await checkAndRemoveFromAchievements(this);
   }
 
   next();
 });
 
 async function handleAchievementLogic(habit) {
-  if (!habit.user && !habit._id) {
+  if (!habit.user || !habit._id) {
     return console.error("User or habit information missing for achievement");
   }
 
   try {
-    await Achievement.create({
+    await Achievement.findOneAndUpdate(
+      { user: habit.user, habit: habit._id },
+      { $setOnInsert: { user: habit.user, habit: habit._id } },
+      { upsert: true },
+    );
+  } catch (error) {
+    return console.error("Error creating achievement:", error.message);
+  }
+}
+
+async function checkAndRemoveFromAchievements(habit) {
+  if (!habit.user || !habit._id) {
+    return console.error(
+      "User or habit information missing for achievement check",
+    );
+  }
+
+  try {
+    await Achievement.findOneAndDelete({
       user: habit.user,
       habit: habit._id,
     });
   } catch (error) {
-    return console.error("Error creating achievement:", error.message);
+    return console.error(
+      "Error checking and removing from achievements:",
+      error.message,
+    );
   }
 }
 
