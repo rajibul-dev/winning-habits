@@ -25,12 +25,7 @@ export async function getUserHabits(req, res) {
 export async function getSingleHabit(req, res) {
   const { id: habitID } = req.params;
 
-  let habit;
-  try {
-    habit = await Habit.findOne({ _id: habitID });
-  } catch (error) {
-    throw new BadRequestError(`No habit with id: ${habitID}`);
-  }
+  const habit = await getHabitById(habitID);
 
   checkPermissions(req.user, habit.user);
   res.status(StatusCodes.OK).json({ habit });
@@ -40,12 +35,7 @@ export async function updateSingleHabit(req, res) {
   const { id: habitID } = req.params;
   const { name } = req.body;
 
-  let habit;
-  try {
-    habit = await Habit.findOne({ _id: habitID });
-  } catch (error) {
-    throw new BadRequestError(`No habit with id: ${habitID}`);
-  }
+  const habit = await getHabitById(habitID);
 
   checkPermissions(req.user, habit.user);
 
@@ -58,12 +48,7 @@ export async function updateSingleHabit(req, res) {
 export async function deleteHabit(req, res) {
   const { id: habitID } = req.params;
 
-  let habit;
-  try {
-    habit = await Habit.findOne({ _id: habitID });
-  } catch (error) {
-    throw new BadRequestError(`No habit with id: ${habitID}`);
-  }
+  const habit = await getHabitById(habitID);
 
   checkPermissions(req.user, habit.user);
 
@@ -75,12 +60,7 @@ export async function addDailyAction(req, res) {
   const { id: habitID } = req.params;
   const { answer } = req.body;
 
-  let habit;
-  try {
-    habit = await Habit.findOne({ _id: habitID });
-  } catch (error) {
-    throw new BadRequestError(`No habit with id: ${habitID}`);
-  }
+  const habit = await getHabitById(habitID);
 
   checkPermissions(req.user, habit.user);
 
@@ -98,6 +78,11 @@ export async function addDailyAction(req, res) {
     latestRecord = habit.dailyRecords[0];
   } else {
     latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
+    if (latestRecord.didIt !== "unanswered") {
+      throw new BadRequestError(
+        `You already answered ${latestRecord.didIt}, please try with updating`,
+      );
+    }
     latestRecord.didIt = answer;
     await habit.save();
   }
@@ -111,36 +96,35 @@ export async function addDailyAction(req, res) {
   });
 }
 
-export async function updateDailyAction(req, res) {
+export async function updateCustomDateAction(req, res) {
   const { id: habitID } = req.params;
   const { targetRecordID, updatedAnswer } = req.body;
 
-  let habit;
-  try {
-    habit = await Habit.findOne({ _id: habitID });
-  } catch (error) {
-    throw new BadRequestError(`No habit with id: ${habitID}`);
-  }
+  const habit = await getHabitById(habitID);
 
   checkPermissions(req.user, habit.user);
 
   let targetRecord;
+  let targetRecordIndex;
   try {
     targetRecord = habit.dailyRecords.find(
+      (record) => record._id.toString() === targetRecordID,
+    );
+    targetRecordIndex = habit.dailyRecords.findIndex(
       (record) => record._id.toString() === targetRecordID,
     );
   } catch (error) {
     throw new BadRequestError(`No record with id: ${targetRecordID}`);
   }
+  const prequelToTargetRecord = habit.dailyRecords[targetRecordIndex - 1];
 
-  const targetRecordPrevPoint = targetRecord.points;
+  habit.isCustomRecordUpdate = true;
   targetRecord.didIt = updatedAnswer;
+  targetRecord.points = prequelToTargetRecord.points + 1;
+  const { streak, totalPoints } = await habit.calculateStreakAndPoints(habit);
+  habit.streak = streak;
+  habit.totalPoints = totalPoints;
   await habit.save();
-
-  if (updatedAnswer === "no") {
-    habit.totalPoints -= targetRecordPrevPoint;
-    await habit.save();
-  }
 
   res.status(StatusCodes.OK).json({
     name: habit.name,
@@ -154,12 +138,7 @@ export async function updateDailyAction(req, res) {
 export async function resetHabitProgress(req, res) {
   const { id: habitID } = req.params;
 
-  let habit;
-  try {
-    habit = await Habit.findOne({ _id: habitID });
-  } catch (error) {
-    throw new BadRequestError(`No habit with id: ${habitID}`);
-  }
+  const habit = await getHabitById(habitID);
 
   checkPermissions(req.user, habit.user);
 
@@ -171,4 +150,20 @@ export async function resetHabitProgress(req, res) {
   res
     .status(StatusCodes.OK)
     .json({ msg: "Habit progress reset successfull!", habit });
+}
+
+// helpers
+async function getHabitById(habitID) {
+  let habit;
+
+  try {
+    habit = await Habit.findOne({ _id: habitID });
+  } catch (error) {
+    throw new BadRequestError(`No habit with id: ${habitID}`);
+  }
+  if (!habit) {
+    throw new BadRequestError(`No habit with id: ${habitID}`);
+  }
+
+  return habit;
 }
