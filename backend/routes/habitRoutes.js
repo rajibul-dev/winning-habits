@@ -6,15 +6,15 @@ import {
 } from "../middlewares/authentiation.js";
 
 import {
-  addDailyAction,
   createHabit,
   deleteHabit,
   getAllHabits,
   getSingleHabit,
   getUserHabits,
   resetHabitProgress,
-  updateDailyAction,
+  addDailyAction,
   updateSingleHabit,
+  updateCustomDateAction,
 } from "../controllers/habitController.js";
 
 const router = Router();
@@ -37,7 +37,7 @@ router
 router
   .route("/:id/action")
   .post(authenticateUser, addDailyAction)
-  .patch(authenticateUser, updateDailyAction);
+  .patch(authenticateUser, updateCustomDateAction);
 
 router.route("/:id/reset").put(authenticateUser, resetHabitProgress);
 

@@ -24,6 +24,10 @@ const HabitSchema = new Schema(
       ref: "User",
       required: true,
     },
+    isCustomRecordUpdate: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );
@@ -31,6 +35,12 @@ const HabitSchema = new Schema(
 // Handle relational value updates based on changes to the dailyRecords field
 HabitSchema.pre("save", async function (next) {
   if (!this.isModified("dailyRecords")) return next();
+
+  // don't run the daily action logic but do set the "custom status" false
+  if (this.isCustomRecordUpdate) {
+    this.isCustomRecordUpdate = false;
+    return next();
+  }
 
   const latestRecord = this.dailyRecords[this.dailyRecords.length - 1];
   if (!latestRecord) return next();
@@ -67,6 +77,27 @@ HabitSchema.pre("save", async function (next) {
   next();
 });
 
+// Handle when user updates daily actions
+HabitSchema.methods.calculateStreakAndPoints = async function (habit) {
+  const streak = habit.dailyRecords.reduce(
+    (streakSoFar, item, index, dailyRecords) => {
+      const isLatest =
+        dailyRecords[dailyRecords.length - 1]._id.toString() === item._id;
+
+      if (isLatest && item.didIt === "unanswered") return streakSoFar;
+      return item.points;
+    },
+    0,
+  );
+
+  const totalPoints = habit.dailyRecords.reduce((totalPointsSoFar, item) => {
+    return totalPointsSoFar + item.points;
+  }, 0);
+
+  return { streak, totalPoints };
+};
+
+// Achievement handler functions
 async function handleAchievementLogic(habit) {
   if (!habit.user || !habit._id) {
     return console.error("User or habit information missing for achievement");
