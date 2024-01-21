@@ -141,6 +141,7 @@ export async function updateCustomDateAction(req, res) {
         `"${targetRecord.didIt}" is an unsupported answer`,
       );
   }
+  await habit.sortDailyActionsArray(habit.dailyRecords);
   const { streak, totalPoints } = await habit.calculateStreakAndPoints(habit);
   habit.streak = streak;
   habit.totalPoints = totalPoints;
