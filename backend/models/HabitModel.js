@@ -81,7 +81,63 @@ HabitSchema.pre("save", async function (next) {
   next();
 });
 
-// Handle when user updates daily actions
+// Handlers for when user updates daily actions
+HabitSchema.methods.sortDailyActionsArray = function (dailyRecords) {
+  let yesCount = 1;
+
+  dailyRecords.forEach((currentRecord, index) => {
+    if (currentRecord.didIt === "no" || currentRecord.didIt === "unanswered") {
+      yesCount = 1;
+
+      console.log("Starting sort operation, getting portion indexes");
+
+      // Get the unsorted portion's start index
+      const unsortedPortionStartIndex = index + 1;
+      console.log("Target index start: ", unsortedPortionStartIndex);
+
+      // Get the unsorted portion's end index
+      const unsortedPortionEndIndex = findUnsortedPortionEndIndex(
+        dailyRecords,
+        unsortedPortionStartIndex,
+      );
+      console.log("Target index end: ", unsortedPortionEndIndex);
+
+      // Manipulate the properties of each item in the unsorted portion
+      if (unsortedPortionStartIndex !== unsortedPortionEndIndex) {
+        console.log("Starting manipulation...");
+        let changedPoint = 1;
+        for (
+          let i = unsortedPortionStartIndex;
+          i <= unsortedPortionEndIndex;
+          i++
+        ) {
+          // in here, all of the following records will have yeses as their answer
+          const record = dailyRecords[i];
+          record.points = changedPoint;
+          console.log("Manipulation complete!");
+
+          changedPoint++;
+        }
+      } else {
+        console.log("Same indexes, closing instence");
+      }
+    } else {
+      currentRecord.points = yesCount;
+      yesCount++;
+    }
+  });
+};
+
+function findUnsortedPortionEndIndex(dailyRecords, startIndex) {
+  for (let i = startIndex; i < dailyRecords.length; i++) {
+    const record = dailyRecords[i];
+    if (record.didIt === "no" || record.didIt === "unanswered") {
+      return i;
+    }
+  }
+  return dailyRecords.length - 1;
+}
+
 HabitSchema.methods.calculateStreakAndPoints = async function (habit) {
   const streak = habit.dailyRecords.reduce(
     (streakSoFar, item, index, dailyRecords) => {
