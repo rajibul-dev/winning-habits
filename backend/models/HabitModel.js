@@ -28,6 +28,10 @@ const HabitSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isArchived: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );

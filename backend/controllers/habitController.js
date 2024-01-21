@@ -18,7 +18,14 @@ export async function getAllHabits(req, res) {
 }
 
 export async function getUserHabits(req, res) {
-  const userHabits = await Habit.find({ user: req.user.userID });
+  const { showArchived } = req.query;
+  const query = { user: req.user.userID };
+
+  if (showArchived === "true" || showArchived === "false") {
+    query.isArchived = showArchived === "true" ? true : false;
+  }
+
+  const userHabits = await Habit.find(query);
   res.status(StatusCodes.OK).json({ userHabits, count: userHabits.length });
 }
 
@@ -150,6 +157,22 @@ export async function resetHabitProgress(req, res) {
   res
     .status(StatusCodes.OK)
     .json({ msg: "Habit progress reset successfull!", habit });
+}
+
+export async function handleArchive(req, res) {
+  const { id: habitID } = req.params;
+  const { archive } = req.body;
+
+  const habit = await getHabitById(habitID);
+
+  checkPermissions(req.user, habit.user);
+
+  habit.isArchived = archive;
+  await habit.save();
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: `Successfully set archive to ${archive}`, habit });
 }
 
 // helpers

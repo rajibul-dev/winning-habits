@@ -15,6 +15,7 @@ import {
   addDailyAction,
   updateSingleHabit,
   updateCustomDateAction,
+  handleArchive,
 } from "../controllers/habitController.js";
 
 const router = Router();
@@ -40,5 +41,7 @@ router
   .patch(authenticateUser, updateCustomDateAction);
 
 router.route("/:id/reset").put(authenticateUser, resetHabitProgress);
+
+router.route("/:id/archive").post(authenticateUser, handleArchive);
 
 export default router;
