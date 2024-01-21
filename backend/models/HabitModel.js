@@ -86,7 +86,8 @@ HabitSchema.methods.calculateStreakAndPoints = async function (habit) {
   const streak = habit.dailyRecords.reduce(
     (streakSoFar, item, index, dailyRecords) => {
       const isLatest =
-        dailyRecords[dailyRecords.length - 1]._id.toString() === item._id;
+        dailyRecords[dailyRecords.length - 1]._id.toString() ===
+        item._id.toString();
 
       if (isLatest && item.didIt === "unanswered") return streakSoFar;
       return item.points;

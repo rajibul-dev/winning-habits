@@ -86,9 +86,7 @@ export async function addDailyAction(req, res) {
   } else {
     latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
     if (latestRecord.didIt !== "unanswered") {
-      throw new BadRequestError(
-        `You already answered ${latestRecord.didIt}, please try with updating`,
-      );
+      throw new BadRequestError(`You already answered ${latestRecord.didIt}`);
     }
     latestRecord.didIt = answer;
     await habit.save();
@@ -127,7 +125,22 @@ export async function updateCustomDateAction(req, res) {
 
   habit.isCustomRecordUpdate = true;
   targetRecord.didIt = updatedAnswer;
-  targetRecord.points = prequelToTargetRecord.points + 1;
+  switch (targetRecord.didIt) {
+    case "yes":
+      targetRecord.points = prequelToTargetRecord.points + 1;
+      break;
+    case "no":
+      targetRecord.points = 0;
+      break;
+    case "unanswered":
+      targetRecord.points = 0;
+      break;
+
+    default:
+      throw new BadRequestError(
+        `"${targetRecord.didIt}" is an unsupported answer`,
+      );
+  }
   const { streak, totalPoints } = await habit.calculateStreakAndPoints(habit);
   habit.streak = streak;
   habit.totalPoints = totalPoints;
