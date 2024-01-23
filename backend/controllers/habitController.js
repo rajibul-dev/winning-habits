@@ -127,7 +127,7 @@ export async function updateCustomDateAction(req, res) {
   targetRecord.didIt = updatedAnswer;
   switch (targetRecord.didIt) {
     case "yes":
-      targetRecord.points = prequelToTargetRecord.points + 1;
+      targetRecord.points = (prequelToTargetRecord?.points ?? 0) + 1;
       break;
     case "no":
       targetRecord.points = 0;
