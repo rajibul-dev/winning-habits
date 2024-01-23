@@ -32,6 +32,11 @@ const HabitSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    habitStatus: {
+      type: String,
+      enum: ["normal", "strong"],
+      default: "normal",
+    },
   },
   { timestamps: true },
 );
@@ -173,6 +178,8 @@ async function handleAchievementLogic(habit) {
   } catch (error) {
     return console.error("Error creating achievement:", error.message);
   }
+
+  habit.habitStatus = "strong";
 }
 
 async function checkAndRemoveFromAchievements(habit) {
@@ -193,6 +200,8 @@ async function checkAndRemoveFromAchievements(habit) {
       error.message,
     );
   }
+
+  habit.habitStatus = "normal";
 }
 
 export default model("Habit", HabitSchema);
