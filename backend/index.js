@@ -4,6 +4,7 @@ import "express-async-errors";
 import "./scheduleJobs/dailyHabitSchemaManager.js";
 
 import express from "express";
+import cors from "cors";
 const app = express();
 
 import morgan from "morgan";
@@ -18,6 +19,7 @@ import habitRouter from "./routes/habitRoutes.js";
 import achievementRouter from "./routes/achievementRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser(process.env.JWT_SECRET));
