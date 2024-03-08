@@ -19,7 +19,12 @@ import habitRouter from "./routes/habitRoutes.js";
 import achievementRouter from "./routes/achievementRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_ORIGIN,
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser(process.env.JWT_SECRET));
