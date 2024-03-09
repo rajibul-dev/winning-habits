@@ -96,7 +96,14 @@ export async function verifyEmail(req, res) {
   user.verificationToken = "";
   await user.save();
 
-  res.status(StatusCodes.OK).json({ msg: "Email verified" });
+  // Automatic Login:
+  const tokenUser = createTokenUser(user); // Use your existing function
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.status(StatusCodes.OK).json({
+    msg: `Successfully verified your email: ${email}`,
+    user: tokenUser, // Optionally return the user data
+  });
 }
 
 export async function requestNewVerificationEmail(req, res) {
@@ -210,7 +217,7 @@ export async function logout(req, res) {
     expires: new Date(Date.now()),
   });
 
-  res.status(StatusCodes.OK).json({ msg: "User logged out" });
+  res.status(StatusCodes.OK).json({ msg: "You logged out" });
 }
 
 export async function forgotPassword(req, res) {
@@ -248,7 +255,7 @@ export async function forgotPassword(req, res) {
 
   res
     .status(StatusCodes.OK)
-    .send(`Please check your email for reseting the password`);
+    .json({ msg: `Please check your email for reseting the password` });
 }
 
 export async function resetPassword(req, res) {
@@ -276,7 +283,7 @@ export async function resetPassword(req, res) {
   }
 
   // again, we are being sneaky here
-  res.send("Password reset successfully");
+  res.status(StatusCodes.OK).json({ msg: "Password reset successfully" });
 }
 
 export async function changePassword(req, res) {
