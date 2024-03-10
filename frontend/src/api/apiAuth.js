@@ -1,4 +1,4 @@
-import apiClient from "./axios";
+import apiClient from "./axiosConfig";
 
 async function register({ name, email, password }) {
   const res = await apiClient.post("/api/v1/auth/register", {
