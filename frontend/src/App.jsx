@@ -3,8 +3,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 const Root = lazy(() => import("./pages/root"));
 const Login = lazy(() => import("./pages/Login"));
-const Signup = lazy(() => import("./pages/Signup"));
-const AppLayout = lazy(() => import("../ui/AppLayout"));
+const Register = lazy(() => import("./pages/Register"));
+const AppLayout = lazy(() => import("./ui/AppLayout"));
 const Habits = lazy(() => import("./pages/Habits"));
 const Achievements = lazy(() => import("./pages/Achievements"));
 const Archive = lazy(() => import("./pages/Archive"));
@@ -19,7 +19,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Root />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/app" element={<AppLayout />}>
             <Route index element=<Navigate to="habits" /> />
             <Route path="habits" element={<Habits />} />

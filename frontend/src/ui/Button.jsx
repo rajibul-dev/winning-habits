@@ -8,7 +8,7 @@ export default function Button({
   onClick,
   ...rest
 }) {
-  const buttonStyles = `${isBlock ? "block" : "inline-block"} ${isBlock ? "w-full" : "w-auto"} ${size === "big" ? "py-3.5 px-6" : size === "small" ? "py-1.5 px-4" : "py-3 px-5"} ${category === "primary" ? "bg-gray-800 text-white" : "bg-gray-300 text-black"} text-lg rounded-md`;
+  const buttonStyles = `${isBlock ? "block" : "inline-block"} ${isBlock ? "w-full" : "w-auto"} ${size === "big" ? "py-3.5 px-6" : size === "small" ? "py-1.5 px-4" : "py-3 px-5"} ${category === "primary" ? "bg-gray-800 text-white" : "bg-gray-300 text-black"} text-base rounded-md`;
 
   // anchor element
   if (href) {
