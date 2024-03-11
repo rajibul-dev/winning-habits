@@ -2,6 +2,8 @@ import { useState } from "react";
 import Form from "../../ui/Form";
 import FormRowVertical from "../../ui/FormRowVertical";
 import useLogin from "./useLogin";
+import Button from "../../ui/Button.jsx";
+import Input from "../../ui/Input.jsx";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -24,7 +26,7 @@ export default function LoginForm() {
   return (
     <Form onSubmit={handleSubmit}>
       <FormRowVertical label="Email address">
-        <input
+        <Input
           type="email"
           id="email"
           // This makes this form better for password managers
@@ -35,7 +37,7 @@ export default function LoginForm() {
       </FormRowVertical>
 
       <FormRowVertical label="Password">
-        <input
+        <Input
           type="password"
           id="password"
           autoComplete="current-password"
@@ -44,9 +46,11 @@ export default function LoginForm() {
         />
       </FormRowVertical>
 
-      <button disabled={isPending}>
-        {!isPending ? "Login" : "Loading..."}
-      </button>
+      <FormRowVertical>
+        <Button disabled={isPending}>
+          {!isPending ? "Login" : "Loading..."}
+        </Button>
+      </FormRowVertical>
     </Form>
   );
 }

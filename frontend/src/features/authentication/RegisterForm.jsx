@@ -1,6 +1,8 @@
 import { useState } from "react";
 import FormRowVertical from "../../ui/FormRowVertical";
 import Form from "../../ui/Form";
+import Button from "../../ui/Button.jsx";
+import Input from "../../ui/Input.jsx";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -12,7 +14,7 @@ export default function RegisterForm() {
   return (
     <Form onSubmit={handleSubmit}>
       <FormRowVertical className="mb-4" label="Name">
-        <input
+        <Input
           type="name"
           id="name"
           // This makes this form better for password managers
@@ -23,7 +25,7 @@ export default function RegisterForm() {
       </FormRowVertical>
 
       <FormRowVertical label="Email address">
-        <input
+        <Input
           type="email"
           id="email"
           // This makes this form better for password managers
@@ -34,7 +36,7 @@ export default function RegisterForm() {
       </FormRowVertical>
 
       <FormRowVertical label="Password">
-        <input
+        <Input
           type="password"
           id="password"
           autoComplete="current-password"
@@ -43,7 +45,9 @@ export default function RegisterForm() {
         />
       </FormRowVertical>
 
-      <button>Login</button>
+      <FormRowVertical>
+        <Button>Login</Button>
+      </FormRowVertical>
     </Form>
   );
 }
