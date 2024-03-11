@@ -1,5 +1,6 @@
 import LoginForm from "../features/authentication/LoginForm";
 import styled from "styled-components";
+import Heading from "../ui/Heading.jsx";
 
 export const LoginLayout = styled.main`
   min-height: 100vh;
@@ -14,6 +15,7 @@ export const LoginLayout = styled.main`
 export default function Login() {
   return (
     <LoginLayout>
+      <Heading as="h4">Login to your account</Heading>
       <LoginForm />
     </LoginLayout>
   );

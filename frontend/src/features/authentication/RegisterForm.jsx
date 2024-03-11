@@ -3,13 +3,27 @@ import FormRowVertical from "../../ui/FormRowVertical";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button.jsx";
 import Input from "../../ui/Input.jsx";
+import useRegister from "./useRegister.js";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { register, isRegistering } = useRegister();
 
-  function handleSubmit() {}
+  function handleSubmit(e) {
+    e.preventDefault();
+    register(
+      { name, email, password },
+      {
+        onSettled: () => {
+          setName("");
+          setEmail("");
+          setPassword("");
+        },
+      },
+    );
+  }
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -46,7 +60,9 @@ export default function RegisterForm() {
       </FormRowVertical>
 
       <FormRowVertical>
-        <Button>Login</Button>
+        <Button disabled={isRegistering}>
+          {!isRegistering ? "Login" : "Creating account..."}
+        </Button>
       </FormRowVertical>
     </Form>
   );

@@ -8,7 +8,7 @@ import Input from "../../ui/Input.jsx";
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isPending } = useLogin();
+  const { login, isLogining } = useLogin();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -47,8 +47,8 @@ export default function LoginForm() {
       </FormRowVertical>
 
       <FormRowVertical>
-        <Button disabled={isPending}>
-          {!isPending ? "Login" : "Loading..."}
+        <Button disabled={isLogining}>
+          {!isLogining ? "Login" : "Logging in..."}
         </Button>
       </FormRowVertical>
     </Form>

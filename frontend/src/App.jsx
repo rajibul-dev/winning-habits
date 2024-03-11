@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import GlobalStyles from "./styles/GlobalStyles.js";
+import VerifyEmail from "./pages/VerifyEmail.jsx";
 
 const Root = lazy(() => import("./pages/root"));
 const Login = lazy(() => import("./pages/Login"));
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/" element={<Root />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/app" element={<AppLayout />}>
               <Route index element=<Navigate to="habits" /> />
               <Route path="habits" element={<Habits />} />
