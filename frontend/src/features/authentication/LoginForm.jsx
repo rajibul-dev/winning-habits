@@ -1,17 +1,29 @@
 import { useState } from "react";
 import Form from "../../ui/Form";
 import FormRowVertical from "../../ui/FormRowVertical";
-import Button from "../../ui/Button";
+import useLogin from "./useLogin";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, isPending } = useLogin();
 
-  function handleSubmit() {}
+  function handleSubmit(e) {
+    e.preventDefault();
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail("");
+          setPassword("");
+        },
+      },
+    );
+  }
 
   return (
-    <Form className="mx-auto w-96 px-10 py-10" onSubmit={handleSubmit}>
-      <FormRowVertical className="mb-4" label="Email address">
+    <Form onSubmit={handleSubmit}>
+      <FormRowVertical label="Email address">
         <input
           type="email"
           id="email"
@@ -19,7 +31,6 @@ export default function LoginForm() {
           autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="input"
         />
       </FormRowVertical>
 
@@ -30,13 +41,12 @@ export default function LoginForm() {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="input"
         />
       </FormRowVertical>
 
-      <Button isBlock className="mt-5">
-        Login
-      </Button>
+      <button disabled={isPending}>
+        {!isPending ? "Login" : "Loading..."}
+      </button>
     </Form>
   );
 }
