@@ -25,6 +25,11 @@ async function login({ email, password }) {
   return res.data;
 }
 
+async function getCurrentUser() {
+  const res = await apiClient.get("/api/v1/users/showMe");
+  return res.data;
+}
+
 async function logout() {
   const res = await apiClient.get("/api/v1/auth/logout");
   return res.data;
@@ -66,6 +71,7 @@ export {
   register,
   verifyEmail,
   login,
+  getCurrentUser,
   logout,
   requestNewVerificationEmail,
   forgotPassword,
