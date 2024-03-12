@@ -235,7 +235,7 @@ export async function forgotPassword(req, res) {
     const passwordToken = crypto.randomBytes(70).toString("hex");
 
     // send password reset link on email
-    const origin = "http://localhost:5000";
+    const origin = process.env.FRONTEND_ORIGIN;
     await sendPasswordResetLink({
       name: user.name,
       email: user.email,
