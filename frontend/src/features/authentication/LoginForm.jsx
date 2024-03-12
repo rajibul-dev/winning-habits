@@ -29,6 +29,7 @@ export default function LoginForm() {
         <Input
           type="email"
           id="email"
+          name="email"
           // This makes this form better for password managers
           autoComplete="username"
           value={email}
@@ -41,6 +42,7 @@ export default function LoginForm() {
         <Input
           type="password"
           id="password"
+          name="password"
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

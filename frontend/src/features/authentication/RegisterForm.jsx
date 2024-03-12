@@ -43,6 +43,7 @@ export default function RegisterForm() {
         <Input
           type="email"
           id="email"
+          name="email"
           // This makes this form better for password managers
           autoComplete="username"
           value={email}
@@ -54,6 +55,7 @@ export default function RegisterForm() {
       <FormRowVertical label="Password">
         <Input
           type="password"
+          name="password"
           id="password"
           autoComplete="current-password"
           value={password}
