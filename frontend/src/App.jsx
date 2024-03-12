@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import GlobalStyles from "./styles/GlobalStyles.js";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
+import Spinner from "./ui/Spinner.jsx";
+import FullPage from "./ui/FullPage.jsx";
 
 const Root = lazy(() => import("./pages/root"));
 const Login = lazy(() => import("./pages/Login"));
@@ -34,7 +36,13 @@ export default function App() {
       />
       <GlobalStyles />
       <BrowserRouter>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={
+            <FullPage>
+              <Spinner />
+            </FullPage>
+          }
+        >
           <Routes>
             <Route path="/" element={<Root />} />
             <Route path="/login" element={<Login />} />
