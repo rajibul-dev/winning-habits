@@ -5,6 +5,8 @@ import Button from "../../ui/Button.jsx";
 import Input from "../../ui/Input.jsx";
 import useRegister from "./useRegister.js";
 
+// TODO: Show errors
+
 export default function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
