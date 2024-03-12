@@ -35,6 +35,7 @@ export default function RegisterForm() {
           autoComplete="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          required
         />
       </FormRowVertical>
 
@@ -46,6 +47,7 @@ export default function RegisterForm() {
           autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
       </FormRowVertical>
 
@@ -56,6 +58,7 @@ export default function RegisterForm() {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
       </FormRowVertical>
 
