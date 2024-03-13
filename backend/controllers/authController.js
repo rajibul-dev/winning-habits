@@ -23,9 +23,14 @@ export async function register(req, res) {
       throw new BadRequestError("An account already exists with this Email");
     }
 
-    // just set a new verification token for them and replace it in the database with the old token
+    // just set a new verification token for them and replace it in the database with the old token. Edit: modify with the new name and password, and reiterate role
     const verificationToken = crypto.randomBytes(40).toString("hex");
     existingUser.verificationToken = verificationToken;
+    const isFirstAccount = (await User.countDocuments({})) === 0;
+    const role = isFirstAccount ? "admin" : "user";
+    existingUser.role = role;
+    existingUser.name = name;
+    existingUser.password = password;
     await existingUser.save();
 
     // send the token to their email, the token is within a link actually, in the '/verify-email' route we handle that verify link request
