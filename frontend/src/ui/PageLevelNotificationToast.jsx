@@ -5,6 +5,10 @@ const types = {
     background-color: var(--color-green-100);
     color: var(--color-green-700);
   `,
+  error: css`
+    background-color: var(--color-red-100);
+    color: var(--color-red-700);
+  `,
 };
 
 const PageLevelNotificationToast = styled.div`
