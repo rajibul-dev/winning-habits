@@ -15,7 +15,7 @@ export default function ForgotPasswordForm() {
   function handleSubmit(e) {
     e.preventDefault();
     onForgotPassword(email, {
-      onSettled: () => {
+      onSuccess: () => {
         setEmail("");
       },
     });

@@ -5,6 +5,7 @@ import useLogin from "./useLogin";
 import Button from "../../ui/Button.jsx";
 import Input from "../../ui/Input.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
+import InlineLink from "../../ui/InlineAppLink.jsx";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function LoginForm() {
     login(
       { email, password },
       {
-        onSettled: () => {
+        onSuccess: () => {
           setEmail("");
           setPassword("");
         },
@@ -63,6 +64,9 @@ export default function LoginForm() {
           {!isLogining ? "Login" : "Logging in..."}
         </Button>
       </FormRowVertical>
+      <InlineLink to="/forgot-password" usage="forgot-password">
+        Forgot password?
+      </InlineLink>
     </Form>
   );
 }
