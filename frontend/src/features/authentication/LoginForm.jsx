@@ -4,11 +4,12 @@ import FormRowVertical from "../../ui/FormRowVertical";
 import useLogin from "./useLogin";
 import Button from "../../ui/Button.jsx";
 import Input from "../../ui/Input.jsx";
+import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLogining } = useLogin();
+  const { login, isLogining, error } = useLogin();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -25,6 +26,13 @@ export default function LoginForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
+      {error && (
+        <FormRowVertical>
+          <PageLevelNotificationToast type="error">
+            {error.response.data.msg}
+          </PageLevelNotificationToast>
+        </FormRowVertical>
+      )}
       <FormRowVertical label="Email address">
         <Input
           type="email"

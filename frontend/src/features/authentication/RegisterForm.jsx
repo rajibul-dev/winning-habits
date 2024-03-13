@@ -4,14 +4,13 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button.jsx";
 import Input from "../../ui/Input.jsx";
 import useRegister from "./useRegister.js";
-
-// TODO: Show errors
+import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { register, isRegistering } = useRegister();
+  const { register, isRegistering, error } = useRegister();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -29,6 +28,13 @@ export default function RegisterForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
+      {error && (
+        <FormRowVertical>
+          <PageLevelNotificationToast type="error">
+            {error.response.data.msg}
+          </PageLevelNotificationToast>
+        </FormRowVertical>
+      )}
       <FormRowVertical className="mb-4" label="Name">
         <Input
           type="name"

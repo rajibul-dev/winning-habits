@@ -6,7 +6,7 @@ export default function useRegister() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { mutate: register, isPending: isRegistering } = useMutation({
+  const { mutate: register, isPending: isRegistering, error } = useMutation({
     mutationFn: ({ name, email, password }) =>
       apiRegister({ name, email, password }),
     onSuccess: (data) => {
@@ -15,5 +15,5 @@ export default function useRegister() {
     },
   });
 
-  return { register, isRegistering };
+  return { register, isRegistering, error };
 }

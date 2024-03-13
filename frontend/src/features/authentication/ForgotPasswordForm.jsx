@@ -9,7 +9,7 @@ import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx"
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
-  const { status, onForgotPassword, pendingForgotPassword } =
+  const { status, onForgotPassword, pendingForgotPassword, error } =
     useForgotPassword();
   const isSuccessful = status === "success";
 
@@ -24,6 +24,13 @@ export default function ForgotPasswordForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
+      {error && (
+        <FormRowVertical>
+          <PageLevelNotificationToast type="error">
+            {error.response.data.msg}
+          </PageLevelNotificationToast>
+        </FormRowVertical>
+      )}
       {isSuccessful && (
         <FormRowVertical>
           <PageLevelNotificationToast>

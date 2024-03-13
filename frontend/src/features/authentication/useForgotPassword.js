@@ -6,9 +6,10 @@ export default function useForgotPassword() {
     mutate: onForgotPassword,
     status,
     isPending: pendingForgotPassword,
+    error,
   } = useMutation({
     mutationFn: (email) => apiForgotPassword(email),
   });
 
-  return { onForgotPassword, status, pendingForgotPassword };
+  return { onForgotPassword, status, pendingForgotPassword, error };
 }

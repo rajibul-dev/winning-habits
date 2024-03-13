@@ -6,10 +6,11 @@ export default function useResetPassword() {
     mutate: resetPassword,
     isPending: isResetting,
     status,
+    error
   } = useMutation({
     mutationFn: ({ email, token, password }) =>
       apiResetPassword({ email, token, password }),
   });
 
-  return { resetPassword, isResetting, status };
+  return { resetPassword, isResetting, status, error };
 }

@@ -16,7 +16,7 @@ export default function ResetPasswordForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const confirmButtonRef = useRef();
-  const { status, isResetting, resetPassword } = useResetPassword();
+  const { status, isResetting, resetPassword, error } = useResetPassword();
   const navigate = useNavigate();
   const url = useURL();
   const isSuccessful = status === "success";
@@ -39,6 +39,13 @@ export default function ResetPasswordForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
+      {error && (
+        <FormRowVertical>
+          <PageLevelNotificationToast type="error">
+            {error.response.data.msg}
+          </PageLevelNotificationToast>
+        </FormRowVertical>
+      )}
       {isSuccessful && (
         <FormRowVertical>
           <PageLevelNotificationToast>
