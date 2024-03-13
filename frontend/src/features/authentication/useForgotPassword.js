@@ -4,12 +4,12 @@ import { forgotPassword as apiForgotPassword } from "../../api/apiAuth.js";
 export default function useForgotPassword() {
   const {
     mutate: onForgotPassword,
-    status,
+    isSuccess,
     isPending: pendingForgotPassword,
     error,
   } = useMutation({
     mutationFn: (email) => apiForgotPassword(email),
   });
 
-  return { onForgotPassword, status, pendingForgotPassword, error };
+  return { onForgotPassword, isSuccess, pendingForgotPassword, error };
 }

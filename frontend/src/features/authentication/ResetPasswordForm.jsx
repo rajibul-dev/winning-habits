@@ -16,10 +16,9 @@ export default function ResetPasswordForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const confirmButtonRef = useRef();
-  const { status, isResetting, resetPassword, error } = useResetPassword();
+  const { isSuccess, isResetting, resetPassword, error } = useResetPassword();
   const navigate = useNavigate();
   const url = useURL();
-  const isSuccessful = status === "success";
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -46,7 +45,7 @@ export default function ResetPasswordForm() {
           </PageLevelNotificationToast>
         </FormRowVertical>
       )}
-      {isSuccessful && (
+      {isSuccess && (
         <FormRowVertical>
           <PageLevelNotificationToast>
             Password reset successfully!
@@ -54,7 +53,7 @@ export default function ResetPasswordForm() {
         </FormRowVertical>
       )}
 
-      {!isSuccessful && (
+      {!isSuccess && (
         <>
           <FormRowVertical label="New password">
             <InputPasswordShowHide
@@ -82,7 +81,7 @@ export default function ResetPasswordForm() {
         </>
       )}
 
-      {!isSuccessful && (
+      {!isSuccess && (
         <FormRowVertical disabled={isResetting}>
           <Button type="submit">
             {!isResetting ? "Reset password" : "Resetting"}
@@ -90,7 +89,7 @@ export default function ResetPasswordForm() {
         </FormRowVertical>
       )}
 
-      {isSuccessful && (
+      {isSuccess && (
         <FormRowVertical>
           <Button
             onClick={(e) => {

@@ -9,9 +9,8 @@ import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx"
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
-  const { status, onForgotPassword, pendingForgotPassword, error } =
+  const { onForgotPassword, pendingForgotPassword, error, isSuccess } =
     useForgotPassword();
-  const isSuccessful = status === "success";
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -31,7 +30,7 @@ export default function ForgotPasswordForm() {
           </PageLevelNotificationToast>
         </FormRowVertical>
       )}
-      {isSuccessful && (
+      {isSuccess && (
         <FormRowVertical>
           <PageLevelNotificationToast>
             Password reset link has been sent to your email!

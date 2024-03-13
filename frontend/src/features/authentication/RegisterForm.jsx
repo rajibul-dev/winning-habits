@@ -10,7 +10,7 @@ export default function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { register, isRegistering, error } = useRegister();
+  const { register, isRegistering, error, isSuccess } = useRegister();
 
   function handleSubmit(e) {
     e.preventDefault();
