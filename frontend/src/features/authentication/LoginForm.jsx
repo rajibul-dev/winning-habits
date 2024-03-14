@@ -7,6 +7,9 @@ import Input from "../../ui/Input.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import InlineLink from "../../ui/InlineAppLink.jsx";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
+import OrDevider from "../../ui/OrDevider.jsx";
+import OAuth from "./OAuth.jsx";
+import InputPasswordShowHide from "../../ui/InputPasswordShowHide.jsx";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -29,6 +32,10 @@ export default function LoginForm() {
   return (
     <>
       <Form onSubmit={handleSubmit}>
+        <FormRowVertical>
+          <OAuth />
+        </FormRowVertical>
+        <OrDevider />
         {error && (
           <FormRowVertical>
             <PageLevelNotificationToast type="error">
@@ -50,10 +57,8 @@ export default function LoginForm() {
         </FormRowVertical>
 
         <FormRowVertical label="Password">
-          <Input
-            type="password"
+          <InputPasswordShowHide
             id="password"
-            name="password"
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
