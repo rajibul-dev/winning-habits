@@ -11,6 +11,8 @@ import { Toaster } from "react-hot-toast";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
+import ProtectedRoute from "./ui/ProtectedRoute.jsx";
+import ReversedProtectedRoute from "./ui/ReversedProtectedRoute.jsx";
 const Root = lazy(() => import("./pages/root"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
@@ -49,12 +51,54 @@ export default function App() {
         >
           <Routes>
             <Route path="/" element={<Root />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/app" element={<AppLayout />}>
+            <Route
+              path="/login"
+              element={
+                <ReversedProtectedRoute>
+                  <Login />
+                </ReversedProtectedRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <ReversedProtectedRoute>
+                  <Register />
+                </ReversedProtectedRoute>
+              }
+            />
+            <Route
+              path="/verify-email"
+              element={
+                <ReversedProtectedRoute>
+                  <VerifyEmail />
+                </ReversedProtectedRoute>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <ReversedProtectedRoute>
+                  <ForgotPassword />
+                </ReversedProtectedRoute>
+              }
+            />
+            <Route
+              path="/reset-password"
+              element={
+                <ReversedProtectedRoute>
+                  <ResetPassword />
+                </ReversedProtectedRoute>
+              }
+            />
+            <Route
+              path="/app"
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element=<Navigate to="habits" /> />
               <Route path="habits" element={<Habits />} />
               <Route path="habits/:id" element={<SingleHabit />} />
