@@ -114,7 +114,7 @@ html {
 }
 
 body {
-  font-family: "Lato", sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: var(--color-grey-700);
 
   transition: color 0.3s, background-color 0.3s;
@@ -165,6 +165,11 @@ a {
 
 ul {
   list-style: none;
+}
+
+p, a, label, input, blockquote, span, button {
+  letter-spacing: -.4px;
+  word-spacing: 1.1pt;
 }
 
 p,
