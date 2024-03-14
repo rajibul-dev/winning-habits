@@ -4,7 +4,7 @@ import { LoginLayout as RegisterLayout } from "./Login.jsx";
 
 export default function Signup() {
   return (
-    <RegisterLayout>
+    <RegisterLayout $page="register">
       <Heading as="h4">Create your account</Heading>
       <RegisterForm />
     </RegisterLayout>
