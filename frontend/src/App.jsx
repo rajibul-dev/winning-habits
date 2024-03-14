@@ -6,6 +6,7 @@ import GlobalStyles from "./styles/GlobalStyles.js";
 
 import Spinner from "./ui/Spinner.jsx";
 import FullPage from "./ui/FullPage.jsx";
+import { Toaster } from "react-hot-toast";
 
 import VerifyEmail from "./pages/VerifyEmail.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
@@ -65,6 +66,29 @@ export default function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
+
+      <Toaster
+        position="top-center"
+        gutter={12}
+        containerStyle={{
+          margin: "8px",
+        }}
+        toastOptions={{
+          success: {
+            duration: 4000,
+          },
+          error: {
+            duration: 10000,
+          },
+          style: {
+            fontSize: "16px",
+            maxWidth: "500px",
+            padding: "16px 24px",
+            backgroundColor: "var(--color-grey-0)",
+            color: "var(--color-grey-700)",
+          },
+        }}
+      />
     </QueryClientProvider>
   );
 }
