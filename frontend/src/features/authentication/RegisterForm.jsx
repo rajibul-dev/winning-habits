@@ -107,7 +107,7 @@ export default function RegisterForm() {
           </FormRowVertical>
           <FormRowVertical>
             <Button disabled={isRegistering}>
-              {!isRegistering ? "Login" : "Creating account..."}
+              {!isRegistering ? "Register" : "Creating account..."}
             </Button>
           </FormRowVertical>
         </>
