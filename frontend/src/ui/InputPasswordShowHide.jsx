@@ -38,6 +38,7 @@ export default function InputPasswordShowHide({ id, ...rest }) {
     <Wrapper>
       <Input id={id} type={!showPassword ? "password" : "name"} {...rest} />
       <ToggleButton
+        type="button"
         onClick={(e) => {
           e.preventDefault();
           setShowPassword((curr) => !curr);
