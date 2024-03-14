@@ -11,6 +11,12 @@ const InlineLink = styled(Link)`
   }
 
   ${(props) =>
+    props.usage === "pale-color" &&
+    css`
+      color: var(--color-grey-400);
+    `}
+
+  ${(props) =>
     props.usage === "forgot-password" &&
     css`
       display: block;
