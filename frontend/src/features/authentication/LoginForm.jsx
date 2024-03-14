@@ -6,6 +6,7 @@ import Button from "../../ui/Button.jsx";
 import Input from "../../ui/Input.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import InlineLink from "../../ui/InlineAppLink.jsx";
+import SpinnerMini from "../../ui/SpinnerMini.jsx";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -62,7 +63,7 @@ export default function LoginForm() {
 
         <FormRowVertical>
           <Button disabled={isLogining}>
-            {!isLogining ? "Login" : "Logging in..."}
+            {!isLogining ? "Login" : <SpinnerMini />}
           </Button>
         </FormRowVertical>
         <InlineLink to="/forgot-password" usage="forgot-password">

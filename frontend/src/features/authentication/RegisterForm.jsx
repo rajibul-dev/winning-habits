@@ -7,6 +7,7 @@ import useRegister from "./useRegister.js";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import InlineLink from "../../ui/InlineAppLink.jsx";
 import useResendVerificationLink from "./useResendVerificationLink.js";
+import SpinnerMini from "../../ui/SpinnerMini.jsx";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -107,7 +108,7 @@ export default function RegisterForm() {
           </FormRowVertical>
           <FormRowVertical>
             <Button disabled={isRegistering}>
-              {!isRegistering ? "Register" : "Creating account..."}
+              {!isRegistering ? "Register" : <SpinnerMini />}
             </Button>
           </FormRowVertical>
         </>

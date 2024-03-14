@@ -8,6 +8,7 @@ import useResetPassword from "./useResetPassword.js";
 import { useNavigate } from "react-router-dom";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import useURL from "../../hooks/useURL.js";
+import SpinnerMini from "../../ui/SpinnerMini.jsx";
 
 export default function ResetPasswordForm() {
   const [password, setPassword] = useState("");
@@ -81,7 +82,7 @@ export default function ResetPasswordForm() {
       {!isSuccess && (
         <FormRowVertical disabled={isResetting}>
           <Button type="submit">
-            {!isResetting ? "Reset password" : "Resetting"}
+            {!isResetting ? "Reset password" : <SpinnerMini />}
           </Button>
         </FormRowVertical>
       )}
