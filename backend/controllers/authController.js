@@ -391,7 +391,9 @@ export async function google(req, res) {
       // attatch the token to the cookie of the client, so that the authentication middleware can validate it
       refreshToken = existingToken.refreshToken;
       attachCookiesToResponse({ res, user: tokenUser, refreshToken });
-      res.status(StatusCodes.OK).json({ user: tokenUser });
+      res
+        .status(StatusCodes.OK)
+        .json({ msg: `Logged in successfully with ${email}`, user: tokenUser });
       return;
     }
 
