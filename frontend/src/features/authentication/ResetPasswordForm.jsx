@@ -5,12 +5,9 @@ import Input from "../../ui/Input.jsx";
 import Button from "../../ui/Button.jsx";
 import InputPasswordShowHide from "../../ui/InputPasswordShowHide.jsx";
 import useResetPassword from "./useResetPassword.js";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
-
-function useURL() {
-  return new URLSearchParams(useLocation().search);
-}
+import useURL from "../../hooks/useURL.js";
 
 export default function ResetPasswordForm() {
   const [password, setPassword] = useState("");
