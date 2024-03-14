@@ -11,6 +11,8 @@ import { attachCookiesToResponse } from "../utils/jwt/jwt.js";
 import sendPasswordResetLink from "../utils/nodeMailer/sendPasswordResetLink.js";
 import createHash from "../utils/createHash.js";
 
+const origin = process.env.FRONTEND_ORIGIN;
+
 export async function register(req, res) {
   const { name, email, password } = req.body;
 
@@ -34,7 +36,6 @@ export async function register(req, res) {
     await existingUser.save();
 
     // send the token to their email, the token is within a link actually, in the '/verify-email' route we handle that verify link request
-    const origin = `http://localhost:5000`;
     await sendVerificationToken({
       name: existingUser.name,
       email: existingUser.email,
@@ -65,7 +66,7 @@ export async function register(req, res) {
   });
 
   // send verification link in email
-  const origin = `http://localhost:5000`;
+
   await sendVerificationToken({
     user: user.name,
     email: user.email,
@@ -84,6 +85,11 @@ export async function verifyEmail(req, res) {
   const { verificationToken, email } = req.body;
 
   const user = await User.findOne({ email });
+
+  // if already verified
+  if (user.isVerified) {
+    throw new BadRequestError("User is already verified! Please Login!");
+  }
 
   // validate if there is no token at all
   if (!verificationToken) {
@@ -128,7 +134,6 @@ export async function requestNewVerificationEmail(req, res) {
   await user.save();
 
   // Send the new verification email
-  const origin = `http://localhost:5000`;
   await sendVerificationToken({
     user: user.name,
     email: user.email,
@@ -240,7 +245,6 @@ export async function forgotPassword(req, res) {
     const passwordToken = crypto.randomBytes(70).toString("hex");
 
     // send password reset link on email
-    const origin = process.env.FRONTEND_ORIGIN;
     await sendPasswordResetLink({
       name: user.name,
       email: user.email,
@@ -267,7 +271,7 @@ export async function resetPassword(req, res) {
   const { email, token, password } = req.body;
 
   if (!token || !email || !password) {
-    throw new BadRequestError("Please provide all the values");
+    throw new BadRequestError("Credentials missing");
   }
 
   const user = await User.findOne({ email });
@@ -284,6 +288,8 @@ export async function resetPassword(req, res) {
       user.passwordToken = null;
       user.passwordTokenExpirationDate = null;
       await user.save();
+    } else {
+      throw new BadRequestError(`This password reset link has expired`);
     }
   }
 
