@@ -409,5 +409,11 @@ export async function google(req, res) {
       user: user._id,
     };
     await Token.create(cookFirstTokenForUser);
+
+    attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+    res.status(StatusCodes.OK).json({
+      msg: `Logged in successfully with ${email}`,
+      user: tokenUser,
+    });
   }
 }
