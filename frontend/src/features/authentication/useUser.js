@@ -9,7 +9,13 @@ export default function useUser() {
   } = useQuery({
     queryKey: ["user"],
     queryFn: getCurrentUser,
+    retry: false,
   });
 
-  return { user, isLoading, isAuthenticated: Boolean(user), error };
+  return {
+    user,
+    isLoading,
+    isAuthenticated: Boolean(user) && !isLoading,
+    error,
+  };
 }
