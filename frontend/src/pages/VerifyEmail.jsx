@@ -8,13 +8,16 @@ export default function VerifyEmail() {
   const url = useURL();
   const { verifyEmail, isVerifying } = useVerifyEmail();
 
-  useEffect(function () {
-    if (!verifyEmail) return;
-    verifyEmail({
-      verificationToken: url.get("token"),
-      email: url.get("email"),
-    });
-  }, []);
+  useEffect(
+    function () {
+      if (!verifyEmail) return;
+      verifyEmail({
+        verificationToken: url.get("token"),
+        email: url.get("email"),
+      });
+    },
+    [url, verifyEmail],
+  );
 
   if (isVerifying)
     return (
