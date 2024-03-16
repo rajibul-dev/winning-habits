@@ -7,6 +7,15 @@ import express from "express";
 import cors from "cors";
 const app = express();
 
+import fileUpload from "express-fileupload";
+import cloudinaryPackage from "cloudinary";
+const cloudinary = cloudinaryPackage.v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
@@ -26,6 +35,7 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use(fileUpload({ useTempFiles: true }));
 app.use(morgan("dev"));
 app.use(cookieParser(process.env.JWT_SECRET));
 
