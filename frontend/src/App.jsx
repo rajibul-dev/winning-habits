@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -11,18 +11,20 @@ import { Toaster } from "react-hot-toast";
 import VerifyEmail from "./pages/VerifyEmail.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
+
+import Root from "./pages/root";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./ui/ProtectedRoute.jsx";
 import ReversedProtectedRoute from "./ui/ReversedProtectedRoute.jsx";
-const Root = lazy(() => import("./pages/root"));
-const Login = lazy(() => import("./pages/Login"));
-const Register = lazy(() => import("./pages/Register"));
-const AppLayout = lazy(() => import("./ui/AppLayout"));
-const Habits = lazy(() => import("./pages/Habits"));
-const Achievements = lazy(() => import("./pages/Achievements"));
-const Archive = lazy(() => import("./pages/Archive"));
-const SingleHabit = lazy(() => import("./pages/SingleHabit"));
-const Profile = lazy(() => import("./pages/Profile"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+import AppLayout from "./ui/AppLayout";
+import Habits from "./pages/Habits";
+import SingleHabit from "./pages/SingleHabit";
+import Achievements from "./pages/Achievements";
+import Archive from "./pages/Archive";
+import Users from "./pages/Users.jsx";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -104,6 +106,7 @@ export default function App() {
               <Route path="habits/:id" element={<SingleHabit />} />
               <Route path="achievements" element={<Achievements />} />
               <Route path="archive" element={<Archive />} />
+              <Route path="users" element={<Users />} />
               <Route path="profile" element={<Profile />} />
             </Route>
             <Route path="*" element={<NotFound />} />
