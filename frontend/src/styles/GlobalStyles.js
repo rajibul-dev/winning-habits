@@ -170,7 +170,7 @@ ul {
 
 p, a, label, input, blockquote, span, button {
   letter-spacing: -.4px;
-  word-spacing: 1.1pt;
+  word-spacing: 1pt;
 }
 
 p,
