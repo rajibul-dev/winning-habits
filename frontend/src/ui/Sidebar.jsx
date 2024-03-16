@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import Logo from "./Logo.jsx";
+import MainNav from "./MainNav.jsx";
+import HideScrollbarButStillScroll from "../styles/HideScrollbarButStillScroll.js";
 
 const StyledSidebar = styled.aside`
   background-color: var(--color-grey-0);
@@ -8,9 +11,17 @@ const StyledSidebar = styled.aside`
   grid-row: 1 / -1;
   display: flex;
   flex-direction: column;
-  gap: 3.2rem;
+  gap: 10rem;
+  overflow: auto;
+
+  ${HideScrollbarButStillScroll}
 `;
 
 export default function Sidebar() {
-  return <StyledSidebar>Sidebar</StyledSidebar>;
+  return (
+    <StyledSidebar>
+      <Logo />
+      <MainNav />
+    </StyledSidebar>
+  );
 }
