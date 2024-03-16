@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Logo from "./Logo.jsx";
+import UserAvatar from "../features/authentication/UserAvatar.jsx";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
@@ -9,13 +9,13 @@ const StyledHeader = styled.header`
   display: flex;
   gap: 2.4rem;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-end;
 `;
 
 export default function Header() {
   return (
     <StyledHeader>
-      <Logo />
+      <UserAvatar />
     </StyledHeader>
   );
 }
