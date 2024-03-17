@@ -7,3 +7,5 @@ const axiosConfig = {
 const apiClient = axios.create({ ...axiosConfig, withCredentials: true });
 
 export default apiClient;
+
+export const endpointV1 = `/api/v1`;
