@@ -9,9 +9,9 @@ export default function useUser() {
   });
 
   return {
-    user: data.user,
+    user: data?.user,
     isLoading,
-    isAuthenticated: Boolean(data) && !isLoading,
+    isAuthenticated: Boolean(data?.user) && !isLoading,
     error,
   };
 }
