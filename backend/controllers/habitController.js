@@ -175,18 +175,18 @@ export async function resetHabitProgress(req, res) {
 
 export async function handleArchive(req, res) {
   const { id: habitID } = req.params;
-  const { archive } = req.body;
+  const { isArchive } = req.body;
 
   const habit = await getHabitById(habitID);
 
   checkPermissions(req.user, habit.user);
 
-  habit.isArchived = archive;
+  habit.isArchived = isArchive;
   await habit.save();
 
   res
     .status(StatusCodes.OK)
-    .json({ msg: `Successfully set archive to ${archive}`, habit });
+    .json({ msg: `Successfully set archive to ${isArchive}`, habit });
 }
 
 // helpers
