@@ -3,12 +3,13 @@ import { getUserHabits } from "../../api/apiHabits.js";
 
 export default function useHabits() {
   const {
-    data: userHabits,
+    data,
     isLoading: isFetchingUserHabits,
     error,
   } = useQuery({
     queryKey: ["my-habits"],
     queryFn: getUserHabits,
   });
-  return { userHabits, isFetchingUserHabits, error };
+
+  return { data, isFetchingUserHabits, error };
 }

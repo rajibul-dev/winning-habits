@@ -1,12 +1,11 @@
-import styled from "styled-components";
 import Heading from "../ui/Heading.jsx";
-
-const StyledHabits = styled.div``;
+import HabitList from "../features/habits/HabitList.jsx";
 
 export default function Habits() {
   return (
-    <StyledHabits>
+    <>
       <Heading>Habits</Heading>
-    </StyledHabits>
+      <HabitList />
+    </>
   );
 }
