@@ -7,7 +7,7 @@ export default function useUpdateAction() {
   const { mutate: updateAction, isPending: isUpdating } = useMutation({
     mutationFn: ({ habitID, targetRecordID, updatedAnswer }) =>
       updateCustomDateAction({ habitID, targetRecordID, updatedAnswer }),
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error(err.response.data.msg),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["single-habit"],
