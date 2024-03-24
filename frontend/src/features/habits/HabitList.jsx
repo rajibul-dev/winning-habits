@@ -13,6 +13,9 @@ const StyledList = styled.ul`
 
 export default function HabitList() {
   const { data, isFetchingUserHabits, error } = useHabits();
+  const nonArchiveHabits = data?.userHabits.filter(
+    (habit) => !habit.isArchived,
+  );
 
   if (isFetchingUserHabits) return <Spinner />;
   if (error)
@@ -25,7 +28,7 @@ export default function HabitList() {
 
   return (
     <StyledList>
-      {data.userHabits.map((habit) => (
+      {nonArchiveHabits.map((habit) => (
         <HabitListItem key={habit._id} habit={habit} />
       ))}
     </StyledList>
