@@ -31,7 +31,7 @@ const Dates = styled.span`
   &:last-child {
     border: 1px solid var(--color-brand-700);
   }
-  ${(props) => (props.didIt ? css`` : props.didIt === false ? css`` : css``)}
+  ${(props) => (props.$didIt ? css`` : props.$didIt === false ? css`` : css``)}
 `;
 
 export default function SevenDayActionView({ actions }) {
@@ -41,7 +41,7 @@ export default function SevenDayActionView({ actions }) {
         <Weekdays key={action.weekday}>{action.weekday}</Weekdays>
       ))}
       {actions.map((action) => (
-        <Dates key={action.date} didIt={action.didIt}>
+        <Dates key={action.date} $didIt={action.didIt}>
           {action.date}
         </Dates>
       ))}
