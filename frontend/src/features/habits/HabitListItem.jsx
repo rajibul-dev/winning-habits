@@ -2,6 +2,9 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 import Row from "../../ui/Row.jsx";
 import Button from "../../ui/Button.jsx";
+import useAddAction from "./useAddAction.js";
+import { IoIosArrowForward } from "react-icons/io";
+import SevenDayActionView from "./SevenDayActionView.jsx";
 
 const StyledItem = styled.li`
   display: flex;
@@ -11,10 +14,22 @@ const StyledItem = styled.li`
   padding: 3rem;
   border: 1px solid var(--color-grey-300);
 `;
+
+const TopRow = styled(Row)`
+  justify-content: start;
+`;
+
 const Name = styled.p`
   font-size: 2.2rem;
   font-weight: 600;
 `;
+
+const BarRow = styled(Row)`
+  gap: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.8rem;
+`;
+
 const ProgressBar = styled.div`
   height: 2rem;
   background-color: var(--color-grey-200);
@@ -22,6 +37,7 @@ const ProgressBar = styled.div`
   border-radius: var(--border-radius-lg);
   width: 100%;
 `;
+
 const ProgressValue = styled(motion.span)`
   display: inline-block;
   position: absolute;
@@ -30,63 +46,132 @@ const ProgressValue = styled(motion.span)`
   border-radius: var(--border-radius-lg);
   background-color: grey;
 `;
-const Points = styled.span`
-  display: inline-block;
-  font-size: 1.6rem;
-  line-height: 0.5;
-  white-space: nowrap;
-  min-width: 8ch;
-  text-align: end;
+
+const BottomRow = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  margin-top: 1.4rem;
+  justify-items: center;
+  align-items: center;
 `;
 
-const BarRow = styled(Row)`
-  gap: 1rem;
-  flex-shrink: 0;
-  margin-top: 0.8rem;
-`;
-const ButtonsWrapperRow = styled(Row)`
-  gap: 3rem;
-  flex-shrink: 0;
-  margin-top: 1.4rem;
+const CoolNumericDisplayWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: center;
+  padding: 0.8rem;
 `;
+
+const Points = styled.span`
+  display: inline-block;
+  font-size: 6.4rem;
+  white-space: nowrap;
+  line-height: 1;
+  font-weight: 500;
+  color: var(--color-grey-500);
+`;
+
+const NumericValueLabel = styled.span`
+  display: inline-block;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-grey-400);
+  letter-spacing: 1pt;
+`;
+
 const ButtonsRow = styled(Row)`
   gap: 2rem;
+  flex-grow: 1;
 `;
-const ActionButton = styled(Button)`
-  max-width: 100%;
-  padding-inline: 3rem;
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 0.4rem;
-`;
+
+const QuestionWrapper = styled(Row)``;
+
 const Question = styled.p`
   font-size: 1.4rem;
   text-transform: uppercase;
   font-weight: 700;
 `;
 
+const ActionButton = styled(Button)`
+  text-transform: uppercase;
+  max-width: 100%;
+  padding: 1.3rem 2rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  width: 100%;
+`;
+
 function calculateTargetPoints(currentPoints) {
   if (currentPoints < 100) {
-    return 100; // Exception for points below 100
+    return 100;
   } else {
     const roundedHundred = Math.ceil(currentPoints / 100) * 100;
     return roundedHundred;
   }
 }
 
+function prepareLastSevenDayView(dailyRecords) {
+  const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  const result = [];
+
+  // Get today's date and weekday for reference
+  const today = new Date();
+
+  // Populate the result array
+  for (let i = 0; i < 7; i++) {
+    const targetDate = new Date(today);
+    targetDate.setDate(today.getDate() - i);
+
+    const date = targetDate.getDate();
+    const weekdayIndex = targetDate.getDay();
+
+    const didIt = dailyRecords[i]
+      ? dailyRecords[i].didIt === "yes"
+        ? true
+        : dailyRecords[i].didIt === "no"
+          ? false
+          : null
+      : null;
+
+    result.push({
+      weekday: daysOfWeek[weekdayIndex],
+      didIt,
+      date,
+    });
+  }
+
+  return result.reverse();
+}
+
 export default function HabitListItem({ habit }) {
   const { totalPoints, streak, name, _id: habitID, dailyRecords } = habit;
   const latestRecord = dailyRecords[dailyRecords.length - 1] || null;
-  const { didIt, _id: latestRecordID } = latestRecord;
+  const { didIt, _id: latestRecordID } = latestRecord || false;
   const isAnswered = didIt !== "unanswered";
   const targetPoints = calculateTargetPoints(totalPoints);
   const barMinimumPoints = targetPoints - 100;
+  const streakFireLit = streak >= 3;
+  const { addDailyAction, isAnswering } = useAddAction();
+  const sevenDayViewObj = prepareLastSevenDayView(dailyRecords);
+
+  function handleAnswer(answer) {
+    addDailyAction({ habitID, answer });
+  }
 
   return (
     <StyledItem>
-      <Name>{name}</Name>
+      <TopRow type="horizontal">
+        <Name>{name}</Name>
+        <IoIosArrowForward
+          style={{
+            fontSize: `2rem`,
+            color: `var(--color-grey-400)`,
+          }}
+        />
+      </TopRow>
 
       <BarRow type="horizontal">
         <ProgressBar>
@@ -99,20 +184,22 @@ export default function HabitListItem({ habit }) {
             }}
           />
         </ProgressBar>
-        <Points>
-          {totalPoints} / {targetPoints}
-        </Points>
       </BarRow>
 
-      <ButtonsWrapperRow type="horizontal">
-        <Question>Did you do this today?</Question>
-        <ButtonsRow type="horizontal">
-          <ActionButton size="small">Yes</ActionButton>
-          <ActionButton size="small" $variation="secondary">
-            No
-          </ActionButton>
-        </ButtonsRow>
-      </ButtonsWrapperRow>
+      <BottomRow type="horizontal">
+        <CoolNumericDisplayWrapper>
+          <Points>{totalPoints}</Points>
+          <NumericValueLabel>Points</NumericValueLabel>
+        </CoolNumericDisplayWrapper>
+        <SevenDayActionView actions={sevenDayViewObj} />
+        <QuestionWrapper>
+          <Question>Did you do this today?</Question>
+          <ButtonsRow type="horizontal">
+            <ActionButton onClick={() => handleAnswer("yes")}>Yes</ActionButton>
+            <ActionButton onClick={() => handleAnswer("no")}>No</ActionButton>
+          </ButtonsRow>
+        </QuestionWrapper>
+      </BottomRow>
     </StyledItem>
   );
 }
