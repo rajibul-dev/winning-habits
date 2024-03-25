@@ -3,8 +3,11 @@ import styled, { css } from "styled-components";
 import Row from "../../ui/Row.jsx";
 import Button from "../../ui/Button.jsx";
 import useAddAction from "./useAddAction.js";
-import { IoIosArrowForward } from "react-icons/io";
 import SevenDayActionView from "./SevenDayActionView.jsx";
+import Menus from "../../ui/Menu.jsx";
+import { HiPencil, HiTrash } from "react-icons/hi2";
+import { IoArrowUndo } from "react-icons/io5";
+import useUpdateAction from "./useUpdateAction.js";
 
 const StyledItem = styled.li`
   display: flex;
@@ -178,22 +181,37 @@ export default function HabitListItem({ habit }) {
   const barMinimumPoints = targetPoints - 100;
   const streakFireLit = streak >= 3;
   const { addDailyAction, isAnswering } = useAddAction();
+  const { updateAction, isUpdating } = useUpdateAction();
   const sevenDayViewObj = prepareLastSevenDayView(dailyRecords);
 
   function handleAnswer(answer) {
     addDailyAction({ habitID, answer });
   }
 
+  function handleUnAnswer() {
+    updateAction({
+      habitID,
+      targetRecordID: latestRecordID,
+      updatedAnswer: "unanswered",
+    });
+  }
+
   return (
     <StyledItem>
       <TopRow type="horizontal">
         <Name>{name}</Name>
-        <IoIosArrowForward
-          style={{
-            fontSize: `2rem`,
-            color: `var(--color-grey-400)`,
-          }}
-        />
+        <Menus.Menu>
+          <Menus.Toggle id={habitID} />
+          <Menus.List id={habitID}>
+            <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+            {isAnswered && (
+              <Menus.Button icon={<IoArrowUndo />} onClick={handleUnAnswer}>
+                Un-answer
+              </Menus.Button>
+            )}
+            <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+          </Menus.List>
+        </Menus.Menu>
       </TopRow>
 
       <BarRow type="horizontal">

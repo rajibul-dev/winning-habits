@@ -10,7 +10,7 @@ export default function useUpdateAction() {
     onError: (err) => toast.error(err.response.data.msg),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["single-habit"],
+        queryKey: ["my-habits"],
       });
     },
   });

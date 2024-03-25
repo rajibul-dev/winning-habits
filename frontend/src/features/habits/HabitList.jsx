@@ -4,6 +4,7 @@ import Empty from "../../ui/Empty.jsx";
 import Spinner from "../../ui/Spinner.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import HabitListItem from "./HabitListItem.jsx";
+import Menus from "../../ui/Menu.jsx";
 
 const StyledList = styled.ul`
   display: flex;
@@ -47,10 +48,12 @@ export default function HabitList({ show = "non-archived" }) {
   if (!data?.count) return <Empty resourceName={"habits"} />;
 
   return (
-    <StyledList>
-      {habitsToRender.map((habit) => (
-        <HabitListItem key={habit._id} habit={habit} />
-      ))}
-    </StyledList>
+    <Menus>
+      <StyledList>
+        {habitsToRender.map((habit) => (
+          <HabitListItem key={habit._id} habit={habit} />
+        ))}
+      </StyledList>
+    </Menus>
   );
 }
