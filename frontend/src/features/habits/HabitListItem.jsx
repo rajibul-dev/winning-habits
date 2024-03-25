@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Row from "../../ui/Row.jsx";
 import Button from "../../ui/Button.jsx";
 import useAddAction from "./useAddAction.js";
@@ -13,10 +13,11 @@ const StyledItem = styled.li`
   background-color: var(--color-grey-0);
   padding: 3rem;
   border: 1px solid var(--color-grey-300);
+  cursor: pointer;
 `;
 
 const TopRow = styled(Row)`
-  justify-content: start;
+  justify-content: space-between;
 `;
 
 const Name = styled.p`
@@ -102,6 +103,28 @@ const ActionButton = styled(Button)`
   font-weight: 700;
   margin-bottom: 0.4rem;
   width: 100%;
+`;
+
+const Answer = styled.span`
+  display: inline-block;
+  font-size: 2.4rem;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.2rem;
+  font-weight: 500;
+
+  ${(props) =>
+    props.$didIt === "yes"
+      ? css`
+          background-color: var(--color-green-100);
+          border: 1px solid var(--color-green-700);
+          color: var(--color-green-700);
+        `
+      : css`
+          background-color: var(--color-red-100);
+          border: 1px solid var(--color-red-700);
+          color: var(--color-red-700);
+        `}
 `;
 
 function calculateTargetPoints(currentPoints) {
@@ -194,10 +217,16 @@ export default function HabitListItem({ habit }) {
         <SevenDayActionView actions={sevenDayViewObj} />
         <QuestionWrapper>
           <Question>Did you do this today?</Question>
-          <ButtonsRow type="horizontal">
-            <ActionButton onClick={() => handleAnswer("yes")}>Yes</ActionButton>
-            <ActionButton onClick={() => handleAnswer("no")}>No</ActionButton>
-          </ButtonsRow>
+          {!isAnswered ? (
+            <ButtonsRow type="horizontal">
+              <ActionButton onClick={() => handleAnswer("yes")}>
+                Yes
+              </ActionButton>
+              <ActionButton onClick={() => handleAnswer("no")}>No</ActionButton>
+            </ButtonsRow>
+          ) : (
+            <Answer $didIt={didIt}>{didIt}</Answer>
+          )}
         </QuestionWrapper>
       </BottomRow>
     </StyledItem>
