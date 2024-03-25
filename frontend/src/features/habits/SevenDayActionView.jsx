@@ -6,7 +6,6 @@ const sharedStyles = css`
   align-items: center;
   padding: 1rem;
   line-height: 1;
-  border-radius: 1000px;
 `;
 
 const Wrapper = styled.div`
@@ -28,9 +27,20 @@ const Weekdays = styled.span`
 const Dates = styled.span`
   ${sharedStyles}
   color: var(--color-grey-500);
-  &:last-child {
+
+  position: relative;
+  &:last-child::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 3.6rem;
+    width: 3.6rem;
     border: 1px solid var(--color-brand-700);
+    border-radius: 1000px;
   }
+
   ${(props) => (props.$didIt ? css`` : props.$didIt === false ? css`` : css``)}
 `;
 
