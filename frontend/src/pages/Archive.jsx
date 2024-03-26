@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import Heading from "../ui/Heading.jsx";
-
-const StyledArchive = styled.div``;
+import HabitList from "../features/habits/HabitList.jsx";
 
 export default function Archive() {
   return (
-    <StyledArchive>
+    <>
       <Heading>Archived habits</Heading>
-    </StyledArchive>
+      <HabitList show="archived" />
+    </>
   );
 }

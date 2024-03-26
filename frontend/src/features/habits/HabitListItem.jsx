@@ -6,8 +6,11 @@ import useAddAction from "./useAddAction.js";
 import SevenDayActionView from "./SevenDayActionView.jsx";
 import Menus from "../../ui/Menu.jsx";
 import { HiPencil, HiTrash } from "react-icons/hi2";
-import { IoArrowUndo } from "react-icons/io5";
+import { IoArchive, IoArrowUndo } from "react-icons/io5";
 import useUpdateAction from "./useUpdateAction.js";
+import useHandleArchive from "./useHandleArchive.js";
+import { RiInboxUnarchiveFill } from "react-icons/ri";
+import useDeleteHabit from "./useDeleteHabit.js";
 
 const StyledItem = styled.li`
   display: flex;
@@ -173,7 +176,14 @@ function prepareLastSevenDayView(dailyRecords) {
 }
 
 export default function HabitListItem({ habit }) {
-  const { totalPoints, streak, name, _id: habitID, dailyRecords } = habit;
+  const {
+    totalPoints,
+    streak,
+    name,
+    _id: habitID,
+    dailyRecords,
+    isArchived,
+  } = habit;
   const latestRecord = dailyRecords[dailyRecords.length - 1] || null;
   const { didIt, _id: latestRecordID } = latestRecord || false;
   const isAnswered = didIt !== "unanswered";
@@ -182,6 +192,8 @@ export default function HabitListItem({ habit }) {
   const streakFireLit = streak >= 3;
   const { addDailyAction, isAnswering } = useAddAction();
   const { updateAction, isUpdating } = useUpdateAction();
+  const { handleArchive, isPending: isArchiving } = useHandleArchive();
+  const { deleteHabit, isDeleting } = useDeleteHabit();
   const sevenDayViewObj = prepareLastSevenDayView(dailyRecords);
 
   function handleAnswer(answer) {
@@ -196,20 +208,45 @@ export default function HabitListItem({ habit }) {
     });
   }
 
+  function onHandleArchive() {
+    handleArchive({ id: habitID, isArchive: !isArchived });
+  }
+
   return (
     <StyledItem>
       <TopRow type="horizontal">
         <Name>{name}</Name>
         <Menus.Menu>
           <Menus.Toggle id={habitID} />
+
           <Menus.List id={habitID}>
             <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+
             {isAnswered && (
-              <Menus.Button icon={<IoArrowUndo />} onClick={handleUnAnswer}>
+              <Menus.Button
+                icon={<IoArrowUndo />}
+                onClick={handleUnAnswer}
+                disabled={isUpdating}
+              >
                 Un-answer
               </Menus.Button>
             )}
-            <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+
+            <Menus.Button
+              icon={!isArchived ? <IoArchive /> : <RiInboxUnarchiveFill />}
+              onClick={onHandleArchive}
+              disabled={isArchiving}
+            >
+              {!isArchived ? "Archive" : "Unarchive"}
+            </Menus.Button>
+
+            <Menus.Button
+              icon={<HiTrash />}
+              onClick={() => deleteHabit(habitID)}
+              disabled={isDeleting}
+            >
+              Delete
+            </Menus.Button>
           </Menus.List>
         </Menus.Menu>
       </TopRow>
@@ -237,10 +274,18 @@ export default function HabitListItem({ habit }) {
           <Question>Did you do this today?</Question>
           {!isAnswered ? (
             <ButtonsRow type="horizontal">
-              <ActionButton onClick={() => handleAnswer("yes")}>
+              <ActionButton
+                onClick={() => handleAnswer("yes")}
+                disabled={isAnswering}
+              >
                 Yes
               </ActionButton>
-              <ActionButton onClick={() => handleAnswer("no")}>No</ActionButton>
+              <ActionButton
+                onClick={() => handleAnswer("no")}
+                disabled={isAnswering}
+              >
+                No
+              </ActionButton>
             </ButtonsRow>
           ) : (
             <Answer $didIt={didIt}>{didIt}</Answer>

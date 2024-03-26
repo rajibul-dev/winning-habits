@@ -17,7 +17,7 @@ export default function HabitList({ show = "non-archived" }) {
   const nonArchiveHabits = data?.userHabits.filter(
     (habit) => !habit.isArchived,
   );
-  const archiveHabits = data?.userHabits.filter((habit) => !habit.isArchived);
+  const archiveHabits = data?.userHabits.filter((habit) => habit.isArchived);
   const allHabits = data?.userHabits;
 
   let habitsToRender = null;
@@ -45,7 +45,8 @@ export default function HabitList({ show = "non-archived" }) {
         {error.response.data.msg}
       </PageLevelNotificationToast>
     );
-  if (!data?.count) return <Empty resourceName={"habits"} />;
+  if (!data?.count || habitsToRender.length === 0)
+    return <Empty resourceName={"habits"} />;
 
   return (
     <Menus>
