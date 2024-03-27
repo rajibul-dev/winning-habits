@@ -268,7 +268,9 @@ export default function HabitListItem({ habit }) {
       <BottomRow type="horizontal">
         <CoolNumericDisplayWrapper>
           <Points>{totalPoints}</Points>
-          <NumericValueLabel>Points</NumericValueLabel>
+          <NumericValueLabel>
+            Point{totalPoints !== 1 ? "s" : ""}
+          </NumericValueLabel>
         </CoolNumericDisplayWrapper>
         <SevenDayActionView actions={sevenDayViewObj} />
         <QuestionWrapper>
