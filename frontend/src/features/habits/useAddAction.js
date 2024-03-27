@@ -4,7 +4,11 @@ import toast from "react-hot-toast";
 
 export default function useAddAction() {
   const queryClient = useQueryClient();
-  const { mutate: addDailyAction, isPending: isAnswering } = useMutation({
+  const {
+    mutate: addDailyAction,
+    isPending: isAnswering,
+    isSuccess: isAnsweredSuccessfully,
+  } = useMutation({
     mutationFn: ({ habitID, answer }) => apiAddDailyAction({ habitID, answer }),
     onError: (err) => toast.error(err.response.data.msg),
     onSuccess: () => {
@@ -14,5 +18,5 @@ export default function useAddAction() {
     },
   });
 
-  return { addDailyAction, isAnswering };
+  return { addDailyAction, isAnswering, isAnsweredSuccessfully };
 }

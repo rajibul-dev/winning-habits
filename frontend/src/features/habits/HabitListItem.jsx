@@ -11,6 +11,8 @@ import useUpdateAction from "./useUpdateAction.js";
 import useHandleArchive from "./useHandleArchive.js";
 import { RiInboxUnarchiveFill } from "react-icons/ri";
 import useDeleteHabit from "./useDeleteHabit.js";
+import SpinnerMini from "../../ui/SpinnerMini.jsx";
+import { capitalizeString } from "../../utils/capitalizeString.js";
 
 const StyledItem = styled.li`
   display: flex;
@@ -113,11 +115,10 @@ const ActionButton = styled(Button)`
 
 const Answer = styled.span`
   display: inline-block;
-  font-size: 2.4rem;
-  text-transform: uppercase;
-  text-align: center;
-  padding: 0.2rem;
+  font-size: 1.6rem;
+  padding: 0.2rem 1rem;
   font-weight: 500;
+  text-align: center;
 
   ${(props) =>
     props.$didIt === "yes"
@@ -186,7 +187,7 @@ export default function HabitListItem({ habit }) {
   } = habit;
   const latestRecord = dailyRecords[dailyRecords.length - 1] || null;
   const { didIt, _id: latestRecordID } = latestRecord || false;
-  const isAnswered = didIt !== "unanswered";
+  const isAnswered = didIt !== "unanswered" && didIt;
   const targetPoints = calculateTargetPoints(totalPoints);
   const barMinimumPoints = targetPoints - 100;
   const streakFireLit = streak >= 3;
@@ -272,7 +273,8 @@ export default function HabitListItem({ habit }) {
         <SevenDayActionView actions={sevenDayViewObj} />
         <QuestionWrapper>
           <Question>Did you do this today?</Question>
-          {!isAnswered ? (
+
+          {!isAnswered && !isAnswering && !isUpdating && (
             <ButtonsRow type="horizontal">
               <ActionButton
                 onClick={() => handleAnswer("yes")}
@@ -287,11 +289,23 @@ export default function HabitListItem({ habit }) {
                 No
               </ActionButton>
             </ButtonsRow>
-          ) : (
-            <Answer $didIt={didIt}>{didIt}</Answer>
           )}
+
+          {isAnswered && !isUpdating && (
+            <Answer $didIt={didIt}>
+              {capitalizeString(didIt)},{" "}
+              {didIt === "yes" ? "you did it!" : "you didn't."}
+            </Answer>
+          )}
+
+          {(isAnswering || isUpdating) && <SpinnerMiniCenter />}
         </QuestionWrapper>
       </BottomRow>
     </StyledItem>
   );
 }
+
+const SpinnerMiniCenter = styled(SpinnerMini)`
+  text-align: center;
+  margin-inline: auto;
+`;
