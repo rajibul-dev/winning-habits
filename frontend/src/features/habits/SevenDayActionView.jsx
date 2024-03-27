@@ -29,6 +29,9 @@ const Dates = styled.span`
   color: var(--color-grey-500);
 
   position: relative;
+  &:last-child {
+    color: var(--color-brand-700);
+  }
   &:last-child::after {
     content: "";
     position: absolute;
