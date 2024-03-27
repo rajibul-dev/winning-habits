@@ -4,7 +4,11 @@ import toast from "react-hot-toast";
 
 export default function useCreateHabit() {
   const queryClient = useQueryClient();
-  const { mutate: createHabit, isPending: isCreating } = useMutation({
+  const {
+    mutate: createHabit,
+    isPending: isCreating,
+    isSuccess: isCreated,
+  } = useMutation({
     mutationFn: (habit) => apiCreateHabit(habit),
     onSuccess: () => {
       toast.success(`Habit successfully created!`);
@@ -13,5 +17,5 @@ export default function useCreateHabit() {
     onError: (err) => toast.error(err.response.data.msg),
   });
 
-  return { createHabit, isCreating };
+  return { createHabit, isCreating, isCreated };
 }

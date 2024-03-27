@@ -1,9 +1,7 @@
 import apiClient, { endpointV1 } from "./axiosConfig.js";
 
 export async function createHabit(habit) {
-  const res = await apiClient.post(`${endpointV1}/habits`, {
-    habit,
-  });
+  const res = await apiClient.post(`${endpointV1}/habits`, habit);
   return res.data;
 }
 
