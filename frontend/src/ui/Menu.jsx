@@ -45,13 +45,14 @@ const StyledButton = styled.button`
   text-align: left;
   background: none;
   border: none;
-  padding: 1.2rem 2.4rem;
-  font-size: 1.4rem;
+  padding: 1.4rem 1.8rem;
+  padding-right: 4rem;
+  font-size: 1.6rem;
   transition: all 0.2s;
 
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: 1rem;
 
   &:hover {
     background-color: var(--color-grey-50);
@@ -142,7 +143,14 @@ function Button({ children, icon, onClick }) {
     <li>
       <StyledButton onClick={handleClick}>
         {icon}
-        <span>{children}</span>
+        <span
+          style={{
+            display: "inline-block",
+            transform: "translateY(1px)",
+          }}
+        >
+          {children}
+        </span>
       </StyledButton>
     </li>
   );
