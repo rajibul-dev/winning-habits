@@ -13,6 +13,9 @@ import { RiInboxUnarchiveFill } from "react-icons/ri";
 import useDeleteHabit from "./useDeleteHabit.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import { capitalizeString } from "../../utils/capitalizeString.js";
+import Modal from "../../ui/Modal.jsx";
+import ConfirmDelete from "./ConfirmDelete.jsx";
+import EditHabitForm from "./EditHabitForm.jsx";
 
 const StyledItem = styled.li`
   display: flex;
@@ -217,39 +220,56 @@ export default function HabitListItem({ habit }) {
     <StyledItem>
       <TopRow type="horizontal">
         <Name>{name}</Name>
-        <Menus.Menu>
-          <Menus.Toggle id={habitID} />
+        <Modal>
+          <Menus.Menu>
+            <Menus.Toggle id={habitID} />
 
-          <Menus.List id={habitID}>
-            <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+            <Menus.List id={habitID}>
+              <Modal.Open opens="edit">
+                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+              </Modal.Open>
 
-            {isAnswered && (
+              {isAnswered && (
+                <Menus.Button
+                  icon={<IoArrowUndo />}
+                  onClick={handleUnAnswer}
+                  disabled={isUpdating}
+                >
+                  Un-answer
+                </Menus.Button>
+              )}
+
               <Menus.Button
-                icon={<IoArrowUndo />}
-                onClick={handleUnAnswer}
-                disabled={isUpdating}
+                icon={!isArchived ? <IoArchive /> : <RiInboxUnarchiveFill />}
+                onClick={onHandleArchive}
+                disabled={isArchiving}
               >
-                Un-answer
+                {!isArchived ? "Archive" : "Unarchive"}
               </Menus.Button>
-            )}
 
-            <Menus.Button
-              icon={!isArchived ? <IoArchive /> : <RiInboxUnarchiveFill />}
-              onClick={onHandleArchive}
-              disabled={isArchiving}
-            >
-              {!isArchived ? "Archive" : "Unarchive"}
-            </Menus.Button>
+              <Modal.Open opens="delete">
+                <Menus.Button
+                  icon={<HiTrash />}
+                  onClick={() => deleteHabit(habitID)}
+                  disabled={isDeleting}
+                >
+                  Delete
+                </Menus.Button>
+              </Modal.Open>
+            </Menus.List>
 
-            <Menus.Button
-              icon={<HiTrash />}
-              onClick={() => deleteHabit(habitID)}
-              disabled={isDeleting}
-            >
-              Delete
-            </Menus.Button>
-          </Menus.List>
-        </Menus.Menu>
+            <Modal.Window name="edit">
+              <EditHabitForm habitID={habitID} name={name} />
+            </Modal.Window>
+
+            <Modal.Window name="delete">
+              <ConfirmDelete
+                onConfirm={() => deleteHabit(habitID)}
+                disabled={isDeleting}
+              />
+            </Modal.Window>
+          </Menus.Menu>
+        </Modal>
       </TopRow>
 
       <BarRow type="horizontal">

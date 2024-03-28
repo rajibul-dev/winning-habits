@@ -4,8 +4,12 @@ import toast from "react-hot-toast";
 
 export default function useUpdateHabit() {
   const queryClient = useQueryClient();
-  const { mutate: updateHabit, isPending: isUpdating } = useMutation({
-    mutationFn: (id) => apiUpdateSingleHabit(id),
+  const {
+    mutate: updateHabit,
+    isPending: isUpdating,
+    isSuccess: isEdited,
+  } = useMutation({
+    mutationFn: ({ id, name }) => apiUpdateSingleHabit({ id, name }),
     onSuccess: () => {
       toast.success(`Updated habit successfully!`);
       queryClient.invalidateQueries({ queryKey: ["my-habits"] });
@@ -13,5 +17,5 @@ export default function useUpdateHabit() {
     onError: (err) => toast.error(err.response.data.msg),
   });
 
-  return { updateHabit, isUpdating };
+  return { updateHabit, isUpdating, isEdited };
 }

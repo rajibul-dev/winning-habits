@@ -20,8 +20,10 @@ export async function getSingleHabit(id) {
   return res.data;
 }
 
-export async function updateSingleHabit(id) {
-  const res = await apiClient.patch(`${endpointV1}/habits/${id}`);
+export async function updateSingleHabit({ id, name }) {
+  const res = await apiClient.patch(`${endpointV1}/habits/${id}`, {
+    name,
+  });
   return res.data;
 }
 

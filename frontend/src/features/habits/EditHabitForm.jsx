@@ -4,15 +4,19 @@ import Form from "../../ui/Form.jsx";
 import FormRow from "../../ui/FormRow.jsx";
 import FormRowVertical from "../../ui/FormRowVertical.jsx";
 import Input from "../../ui/Input.jsx";
-import useCreateHabit from "./useCreateHabit.js";
 import { useEffect } from "react";
+import useUpdateHabit from "./useUpdateHabit.js";
 
-export default function CreateHabitForm({ onCloseModal }) {
-  const { register, handleSubmit } = useForm();
-  const { createHabit, isCreating, isCreated } = useCreateHabit();
+export default function EditHabitForm({ onCloseModal, habitID, name }) {
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      habit: name,
+    },
+  });
+  const { updateHabit, isUpdating, isEdited } = useUpdateHabit();
 
   function onSubmit(data) {
-    createHabit({ name: data.habit });
+    updateHabit({ id: habitID, name: data.habit });
   }
   function onError(errors) {
     console.log(errors);
@@ -20,11 +24,11 @@ export default function CreateHabitForm({ onCloseModal }) {
 
   useEffect(
     function () {
-      if (isCreated) {
+      if (isEdited) {
         onCloseModal();
       }
     },
-    [isCreated, onCloseModal],
+    [isEdited, onCloseModal],
   );
 
   return (
@@ -39,7 +43,7 @@ export default function CreateHabitForm({ onCloseModal }) {
         />
       </FormRowVertical>
       <FormRow>
-        <Button disabled={isCreating}>Create Habit</Button>
+        <Button disabled={isUpdating}>Save changes</Button>
       </FormRow>
     </Form>
   );
