@@ -104,11 +104,7 @@ function Toggle({ id, type, children }) {
     const rect = e.target.closest("button").getBoundingClientRect();
 
     setPosition({
-      x:
-        window.innerWidth -
-        rect.width -
-        rect.x -
-        (type === "container" ? 20 : 0),
+      x: window.innerWidth - rect.width - rect.x,
       y: rect.y + rect.height + 8,
     });
 
