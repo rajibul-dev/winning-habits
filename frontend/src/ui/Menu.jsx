@@ -85,7 +85,7 @@ function Menus({ children }) {
   );
 }
 
-function Toggle({ id }) {
+function Toggle({ id, type, children }) {
   const { openId, close, open, setPosition } = useContext(MenusContext);
 
   useEffect(() => {
@@ -104,7 +104,11 @@ function Toggle({ id }) {
     const rect = e.target.closest("button").getBoundingClientRect();
 
     setPosition({
-      x: window.innerWidth - rect.width - rect.x,
+      x:
+        window.innerWidth -
+        rect.width -
+        rect.x -
+        (type === "container" ? 20 : 0),
       y: rect.y + rect.height + 8,
     });
 
@@ -113,7 +117,7 @@ function Toggle({ id }) {
 
   return (
     <StyledToggle onClick={handleClick}>
-      <HiEllipsisVertical />
+      {type === "container" ? children : <HiEllipsisVertical />}
     </StyledToggle>
   );
 }

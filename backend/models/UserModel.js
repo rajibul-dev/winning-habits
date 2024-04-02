@@ -47,7 +47,7 @@ const UserSchema = new Schema(
     avatar: {
       type: String,
       default:
-        "https://res.cloudinary.com/drtmxi7rn/image/upload/v1712049754/winning-habits-app/pfps/default-pfp-placeholder.svg",
+        "https://res.cloudinary.com/drtmxi7rn/image/upload/t_no-padding/winning-habits-app/pfps/default-pfp-placeholder.jpg",
     },
   },
   { timestamps: true },
