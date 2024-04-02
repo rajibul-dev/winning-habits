@@ -44,6 +44,11 @@ const UserSchema = new Schema(
     passwordTokenExpirationDate: {
       type: Date,
     },
+    avatar: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/drtmxi7rn/image/upload/v1712049754/winning-habits-app/pfps/default-pfp-placeholder.svg",
+    },
   },
   { timestamps: true },
 );

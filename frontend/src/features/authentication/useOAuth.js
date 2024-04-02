@@ -10,10 +10,12 @@ async function handleGoogleLogin() {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
   const resultsFromGoogle = await signInWithPopup(auth, provider);
+  console.log(resultsFromGoogle);
 
   const res = await apiClient.post("/api/v1/auth/google", {
     name: resultsFromGoogle.user.displayName,
     email: resultsFromGoogle.user.email,
+    avatar: resultsFromGoogle.user.photoURL,
   });
   return res.data;
 }

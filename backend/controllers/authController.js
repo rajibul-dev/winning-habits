@@ -327,7 +327,7 @@ export async function changePassword(req, res) {
 }
 
 export async function google(req, res) {
-  const { name, email } = req.body;
+  const { name, email, avatar } = req.body;
 
   let user = await User.findOne({ email });
 
@@ -344,6 +344,7 @@ export async function google(req, res) {
       name,
       email,
       role,
+      avatar,
       password: generatedPassword,
       isVerified: true,
     });
@@ -370,6 +371,8 @@ export async function google(req, res) {
       user: tokenUser,
     });
   } else {
+    user.avatar = avatar;
+
     const tokenUser = createTokenUser(user);
 
     // get ready to cook a refresh token
