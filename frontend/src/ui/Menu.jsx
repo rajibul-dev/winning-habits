@@ -34,6 +34,7 @@ const StyledList = styled.ul`
 
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-grey-200);
   border-radius: var(--border-radius-md);
 
   right: ${(props) => props.$position.x}px;
@@ -46,7 +47,7 @@ const StyledButton = styled.button`
   background: none;
   border: none;
   padding: 1.4rem 1.8rem;
-  padding-right: 4rem;
+  padding-right: 5rem;
   font-size: 1.6rem;
   transition: all 0.2s;
 
