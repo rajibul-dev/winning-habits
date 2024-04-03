@@ -372,7 +372,7 @@ export async function google(req, res) {
     });
   } else {
     user.avatar = avatar;
-    user.save();
+    await user.save();
 
     const tokenUser = createTokenUser(user);
 
