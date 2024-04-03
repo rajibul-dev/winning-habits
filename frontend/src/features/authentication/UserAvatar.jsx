@@ -55,7 +55,7 @@ function UserAvatar() {
         </StyledUserAvatar>
       </Menus.Toggle>
       <Menus.List id="account dropdown">
-        <Menus.Button icon={<FaUser />}>Manage Account</Menus.Button>
+        <Menus.Button icon={<FaUser />}>Profile</Menus.Button>
         <Menus.Button
           onClick={logout}
           icon={!isLoggingOut ? <RiLogoutCircleLine /> : <SpinnerMini />}
