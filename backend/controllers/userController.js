@@ -1,4 +1,7 @@
 import { StatusCodes } from "http-status-codes";
+import cloudinaryPackage from "cloudinary";
+const cloudinary = cloudinaryPackage.v2;
+import fs from "fs";
 import User from "../models/UserModel.js";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
@@ -43,4 +46,40 @@ export async function updateUser(req, res) {
   attachCookiesToResponse({ res, user: tokenUser });
 
   res.status(StatusCodes.OK).json({ user: tokenUser });
+}
+
+export async function updateAvatar(req, res) {
+  const user = await User.findOne({ _id: req.user.userID });
+
+  if (!req.files) {
+    throw new BadRequestError("No file selected");
+  }
+  const productImage = req.files.image;
+  if (!productImage.mimetype.startsWith("image")) {
+    throw new BadRequestError("Please upload an image");
+  }
+  const maxSize = 1024 * 1024 * 10;
+  if (productImage.size > maxSize) {
+    throw new BadRequestError("Please upload an image smaller than 10MB");
+  }
+
+  const result = await cloudinary.uploader.upload(
+    req.files.image.tempFilePath,
+    {
+      use_filename: true,
+      folder: `winning-habits-app/pfps/${req.user.userID}`,
+    },
+  );
+  fs.unlinkSync(req.files.image.tempFilePath);
+
+  if (!result.secure_url) {
+    throw new BadRequestError("Failed to upload the image");
+  }
+
+  user.avatar = result.secure_url;
+  await user.save();
+
+  res
+    .status(StatusCodes.OK)
+    .json({ image: result.secure_url, msg: "Successfully uploaded the image" });
 }
