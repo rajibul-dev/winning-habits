@@ -79,6 +79,9 @@ export async function updateAvatar(req, res) {
   user.avatar = result.secure_url;
   await user.save();
 
+  const tokenUser = createTokenUser(user);
+  attachCookiesToResponse({ res, user: tokenUser });
+
   res
     .status(StatusCodes.OK)
     .json({ image: result.secure_url, msg: "Successfully uploaded the image" });
