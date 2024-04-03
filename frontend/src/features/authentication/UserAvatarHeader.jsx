@@ -32,7 +32,7 @@ const Name = styled.span`
   color: var(--color-grey-500);
 `;
 
-function UserAvatar() {
+function UserAvatarHeader() {
   const { user } = useUser();
   const { name, avatar } = user;
   const { logout, isLoggingOut } = useLogout();
@@ -67,4 +67,4 @@ function UserAvatar() {
   );
 }
 
-export default UserAvatar;
+export default UserAvatarHeader;
