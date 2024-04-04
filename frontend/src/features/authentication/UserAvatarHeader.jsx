@@ -6,6 +6,7 @@ import { RiLogoutCircleLine } from "react-icons/ri";
 import { FaUser } from "react-icons/fa";
 import useLogout from "./useLogout.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
+import { useNavigate } from "react-router-dom";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -18,7 +19,6 @@ const StyledUserAvatar = styled.div`
 
 const Avatar = styled.img`
   display: block;
-  width: 4rem;
   width: 3.6rem;
   aspect-ratio: 1;
   object-fit: cover;
@@ -36,6 +36,7 @@ function UserAvatarHeader() {
   const { user } = useUser();
   const { name, avatar } = user;
   const { logout, isLoggingOut } = useLogout();
+  const navigate = useNavigate();
 
   return (
     <Menus>
@@ -55,7 +56,12 @@ function UserAvatarHeader() {
         </StyledUserAvatar>
       </Menus.Toggle>
       <Menus.List id="account dropdown">
-        <Menus.Button icon={<FaUser />}>Profile</Menus.Button>
+        <Menus.Button
+          onClick={() => navigate("/app/profile")}
+          icon={<FaUser />}
+        >
+          Profile
+        </Menus.Button>
         <Menus.Button
           onClick={logout}
           icon={!isLoggingOut ? <RiLogoutCircleLine /> : <SpinnerMini />}
