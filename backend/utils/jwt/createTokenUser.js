@@ -4,5 +4,6 @@ export default function (user) {
     userID: user._id,
     role: user.role,
     avatar: user.avatar,
+    email: user.email,
   };
 }
