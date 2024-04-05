@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import cloudinaryPackage from "cloudinary";
 const cloudinary = cloudinaryPackage.v2;
 import fs from "fs";
-import User from "../models/UserModel.js";
+import User, { defaultImageURL } from "../models/UserModel.js";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
 import createTokenUser from "../utils/jwt/createTokenUser.js";
@@ -50,6 +50,8 @@ export async function updateUser(req, res) {
 
 export async function updateAvatar(req, res) {
   const user = await User.findOne({ _id: req.user.userID });
+  const existingImageURL = user.avatar || null;
+  const isThatDefaultImage = existingImageURL === defaultImageURL;
 
   if (!req.files) {
     throw new BadRequestError("No file selected");
@@ -74,6 +76,16 @@ export async function updateAvatar(req, res) {
 
   if (!result.secure_url) {
     throw new BadRequestError("Failed to upload the image");
+  }
+
+  if (!isThatDefaultImage && existingImageURL) {
+    const parts = existingImageURL.split("/winning-habits-app/");
+    const filename = `winning-habits-app/${parts[parts.length - 1]}`;
+    const filenameWithoutExtension = filename.substring(
+      0,
+      filename.lastIndexOf("."),
+    );
+    await cloudinary.uploader.destroy(filenameWithoutExtension);
   }
 
   user.avatar = result.secure_url;
