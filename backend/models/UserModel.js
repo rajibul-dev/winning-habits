@@ -2,6 +2,9 @@ import { Schema, model } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcryptjs";
 
+export const defaultImageURL =
+  "https://res.cloudinary.com/drtmxi7rn/image/upload/t_no-padding/winning-habits-app/pfps/default-pfp-placeholder.jpg";
+
 const UserSchema = new Schema(
   {
     name: {
@@ -46,8 +49,7 @@ const UserSchema = new Schema(
     },
     avatar: {
       type: String,
-      default:
-        "https://res.cloudinary.com/drtmxi7rn/image/upload/t_no-padding/winning-habits-app/pfps/default-pfp-placeholder.jpg",
+      default: defaultImageURL,
     },
   },
   { timestamps: true },
