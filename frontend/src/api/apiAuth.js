@@ -74,3 +74,21 @@ export async function updateUser(name) {
   });
   return res.data;
 }
+
+export async function updateAvatar(imageFile) {
+  const formData = new FormData();
+  formData.append("image", imageFile);
+  formData.append("upload_preset", "friendsbook");
+
+  const res = await apiClient.patch(
+    `${endpointV1}/users/updateAvatar`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+
+  return res.data;
+}

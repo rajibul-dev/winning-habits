@@ -5,6 +5,8 @@ import { MdCloudUpload } from "react-icons/md";
 import styled, { css } from "styled-components";
 import Button from "../../ui/Button.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
+import useUpdateAvatar from "./useUpdateAvatar.js";
+import SpinnerMini from "../../ui/SpinnerMini.jsx";
 
 const Container = styled.div`
   padding: 2.4rem 0;
@@ -57,7 +59,7 @@ const GuideText = styled.p`
 `;
 
 const PreviewImage = styled.img`
-  /*  width: 30rem; */
+  max-height: 50rem;
 `;
 const RemoveSelectionButton = styled.button`
   border: none;
@@ -76,9 +78,10 @@ const UploadButton = styled(Button)`
   width: 100%;
 `;
 
-export default function ImageSelector() {
+export default function ImageSelector({ onCloseModal }) {
   const [image, setFiles] = useState([]);
   const [rejected, setRejected] = useState([]);
+  const { updateAvatar, isUpdatingAvatar, isUpdatedAvatar } = useUpdateAvatar();
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     if (acceptedFiles?.length) {
@@ -116,6 +119,21 @@ export default function ImageSelector() {
     // Revoke the data uris to avoid memory leaks
     return () => image.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [image]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!image.length) return;
+    updateAvatar(image[0]);
+  }
+
+  useEffect(
+    function () {
+      if (isUpdatedAvatar) {
+        onCloseModal();
+      }
+    },
+    [isUpdatedAvatar, onCloseModal],
+  );
 
   return (
     <Container>
@@ -164,7 +182,9 @@ export default function ImageSelector() {
             </RemoveSelectionButton>
             <PreviewImage src={image[0].preview} />
           </div>
-          <UploadButton>Upload image</UploadButton>
+          <UploadButton onClick={handleSubmit} disabled={isUpdatingAvatar}>
+            {!isUpdatingAvatar ? "Upload image" : <SpinnerMini />}
+          </UploadButton>
         </>
       )}
     </Container>
