@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import useURL from "../../hooks/useURL.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
+import apiErrorFormat from "../../api/apiErrorFormat.js";
 
 export default function ResetPasswordForm() {
   const [password, setPassword] = useState("");
@@ -39,7 +40,7 @@ export default function ResetPasswordForm() {
       {error && (
         <FormRowVertical>
           <PageLevelNotificationToast type="error">
-            {error.response.data.msg}
+            {apiErrorFormat(error)}
           </PageLevelNotificationToast>
         </FormRowVertical>
       )}

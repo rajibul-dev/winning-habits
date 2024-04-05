@@ -11,6 +11,7 @@ import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import OrDevider from "../../ui/OrDevider.jsx";
 import OAuth from "./OAuth.jsx";
 import InputPasswordShowHide from "../../ui/InputPasswordShowHide.jsx";
+import apiErrorFormat from "../../api/apiErrorFormat.js";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -74,7 +75,7 @@ export default function RegisterForm() {
         {error && (
           <FormRowVertical>
             <PageLevelNotificationToast type="error">
-              {error.response.data.msg}
+              {apiErrorFormat(error)}
             </PageLevelNotificationToast>
           </FormRowVertical>
         )}

@@ -9,6 +9,9 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import buttonWithIconStyles from "../../styles/buttonWithIconStyles.js";
 import Modal from "../../ui/Modal.jsx";
 import ImageSelector from "./ImageSelector.jsx";
+import Spinner from "../../ui/Spinner.jsx";
+import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
+import apiErrorFormat from "../../api/apiErrorFormat.js";
 
 const StyledForm = styled.form`
   display: grid;
@@ -89,6 +92,14 @@ export default function ProfileEditForm() {
 
   function onSubmit() {}
   function onError() {}
+
+  if (isLoading) return <Spinner />;
+  if (error)
+    return (
+      <PageLevelNotificationToast type="error">
+        {apiErrorFormat(error)}
+      </PageLevelNotificationToast>
+    );
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit, onError)}>

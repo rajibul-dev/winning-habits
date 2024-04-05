@@ -5,6 +5,7 @@ import Spinner from "../../ui/Spinner.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import HabitListItem from "./HabitListItem.jsx";
 import Menus from "../../ui/Menu.jsx";
+import apiErrorFormat from "../../api/apiErrorFormat.js";
 
 const StyledList = styled.ul`
   display: flex;
@@ -42,7 +43,7 @@ export default function HabitList({ show = "non-archived" }) {
   if (error)
     return (
       <PageLevelNotificationToast type="error">
-        {error.response.data.msg}
+        {apiErrorFormat(error)}
       </PageLevelNotificationToast>
     );
   if (!data?.count || habitsToRender.length === 0)

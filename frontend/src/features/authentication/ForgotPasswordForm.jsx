@@ -6,6 +6,7 @@ import Button from "../../ui/Button.jsx";
 import useForgotPassword from "./useForgotPassword.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
+import apiErrorFormat from "../../api/apiErrorFormat.js";
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ export default function ForgotPasswordForm() {
       {error && (
         <FormRowVertical>
           <PageLevelNotificationToast type="error">
-            {error.response.data.msg}
+            {apiErrorFormat(error)}
           </PageLevelNotificationToast>
         </FormRowVertical>
       )}
