@@ -67,3 +67,10 @@ export async function changePassword({ currentPassword, newPassword }) {
   });
   return res.data;
 }
+
+export async function updateUser(name) {
+  const res = await apiClient.patch(`${endpointV1}/users/updateUser`, {
+    name,
+  });
+  return res.data;
+}

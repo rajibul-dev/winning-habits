@@ -16,6 +16,7 @@ export default function EditHabitForm({ onCloseModal, habitID, name }) {
   const { updateHabit, isUpdating, isEdited } = useUpdateHabit();
 
   function onSubmit(data) {
+    if (data.habit === name) return onCloseModal();
     updateHabit({ id: habitID, name: data.habit });
   }
   function onError(errors) {

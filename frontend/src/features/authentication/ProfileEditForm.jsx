@@ -12,11 +12,14 @@ import ImageSelector from "./ImageSelector.jsx";
 import Spinner from "../../ui/Spinner.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import apiErrorFormat from "../../api/apiErrorFormat.js";
+import useUpdateUser from "./useUpdateUser.js";
+import SpinnerMini from "../../ui/SpinnerMini.jsx";
 
 const StyledForm = styled.form`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(12, auto);
+  column-gap: 2rem;
   align-items: center;
   padding: 2.4rem 4rem;
   background-color: var(--color-grey-0);
@@ -89,9 +92,12 @@ export default function ProfileEditForm() {
       email,
     },
   });
+  const { updateUser, isUpdating } = useUpdateUser();
 
-  function onSubmit() {}
-  function onError() {}
+  function onSubmit(data) {
+    if (data.name === name) return;
+    updateUser(data.name);
+  }
 
   if (isLoading) return <Spinner />;
   if (error)
@@ -102,7 +108,7 @@ export default function ProfileEditForm() {
     );
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit, onError)}>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <FormRowVerticalModified label="Your name">
         <Input id="name" {...register("name")} />
       </FormRowVerticalModified>
@@ -134,7 +140,9 @@ export default function ProfileEditForm() {
         />
       </FormRowVerticalModified>
 
-      <SubmitButton>Save changes</SubmitButton>
+      <SubmitButton disabled={isUpdating}>
+        {!isUpdating ? "Save changes" : <SpinnerMini />}
+      </SubmitButton>
     </StyledForm>
   );
 }
