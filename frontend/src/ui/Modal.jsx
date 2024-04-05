@@ -21,6 +21,9 @@ const StyledModal = styled.div`
   @media (max-width: 32em) {
     width: 85%;
   }
+
+  @media (max-height: 27em) {
+  }
 `;
 
 const Overlay = styled.div`
@@ -81,7 +84,7 @@ function Open({ children, opens: opensWindowName }) {
   return cloneElement(children, { onClick: () => open(opensWindowName) });
 }
 
-function Window({ children, name }) {
+function Window({ children, name, noXButton = false }) {
   const { openName, close } = useContext(ModalContext);
   const ref = useOutsideClick(close);
 
@@ -90,9 +93,11 @@ function Window({ children, name }) {
   return createPortal(
     <Overlay>
       <StyledModal ref={ref}>
-        <Button onClick={close}>
-          <HiXMark />
-        </Button>
+        {!noXButton && (
+          <Button onClick={close}>
+            <HiXMark />
+          </Button>
+        )}
 
         <div>{cloneElement(children, { onCloseModal: close })}</div>
       </StyledModal>

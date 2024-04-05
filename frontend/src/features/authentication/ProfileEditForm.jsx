@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Input from "../../ui/Input.jsx";
 import FormRowVertical from "../../ui/FormRowVertical.jsx";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,8 @@ import Button from "../../ui/Button.jsx";
 import InlineLink from "../../ui/InlineAppLink.jsx";
 import { MdDelete, MdEdit } from "react-icons/md";
 import buttonWithIconStyles from "../../styles/buttonWithIconStyles.js";
+import Modal from "../../ui/Modal.jsx";
+import ImageSelector from "./ImageSelector.jsx";
 
 const StyledForm = styled.form`
   display: grid;
@@ -93,15 +95,26 @@ export default function ProfileEditForm() {
       <FormRowVerticalModified label="Your name">
         <Input id="name" {...register("name")} />
       </FormRowVerticalModified>
+
       <AvatarPortion>
         <Avatar src={avatar || "default-user.jpg"} alt={`Avatar of ${name}`} />
-        <UploadImageButton type="button" size="small">
-          <MdEdit /> <span>Update avatar</span>
-        </UploadImageButton>
+
+        <Modal>
+          <Modal.Open opens="image-upload">
+            <UploadImageButton type="button" size="small">
+              <MdEdit /> <span>Update avatar</span>
+            </UploadImageButton>
+          </Modal.Open>
+          <Modal.Window name="image-upload" noXButton>
+            <ImageSelector />
+          </Modal.Window>
+        </Modal>
+
         <RemoveButton as="button" type="button" $usage="pale-color">
           <MdDelete /> <span>Remove avatar</span>
         </RemoveButton>
       </AvatarPortion>
+
       <FormRowVerticalModified label="Your email address">
         <Input
           {...register("email", {
@@ -109,6 +122,7 @@ export default function ProfileEditForm() {
           })}
         />
       </FormRowVerticalModified>
+
       <SubmitButton>Save changes</SubmitButton>
     </StyledForm>
   );
