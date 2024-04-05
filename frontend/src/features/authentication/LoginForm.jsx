@@ -72,7 +72,7 @@ export default function LoginForm() {
             {!isLogining ? "Login" : <SpinnerMini />}
           </Button>
         </FormRowVertical>
-        <InlineLink to="/forgot-password" usage="forgot-password">
+        <InlineLink to="/forgot-password" $usage="forgot-password">
           Forgot password?
         </InlineLink>
       </Form>
@@ -84,7 +84,7 @@ export default function LoginForm() {
         }}
       >
         Don't have an account?&nbsp;&nbsp;
-        <InlineLink to="/register" usage="pale-color">
+        <InlineLink to="/register" $usage="pale-color">
           Create an account
         </InlineLink>
       </p>

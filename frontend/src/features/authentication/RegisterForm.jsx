@@ -153,7 +153,7 @@ export default function RegisterForm() {
         }}
       >
         Already have an account?&nbsp;&nbsp;
-        <InlineLink to="/login" usage="pale-color">
+        <InlineLink to="/login" $usage="pale-color">
           Login
         </InlineLink>
       </p>
