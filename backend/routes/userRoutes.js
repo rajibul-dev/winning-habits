@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getAllUsers,
   getSingleUser,
+  removeAvatar,
   showMe,
   updateAvatar,
   updateUser,
@@ -19,6 +20,7 @@ router
 router.route("/showMe").get(authenticateUser, showMe);
 router.route("/updateUser").patch(authenticateUser, updateUser);
 router.route("/updateAvatar").patch(authenticateUser, updateAvatar);
+router.route("/removeAvatar").delete(authenticateUser, removeAvatar);
 router.route("/:id").get(authenticateUser, getSingleUser);
 
 export default router;

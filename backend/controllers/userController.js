@@ -99,3 +99,32 @@ export async function updateAvatar(req, res) {
     msg: "Successfully uploaded the image",
   });
 }
+
+export async function removeAvatar(req, res) {
+  const user = await User.findOne({ _id: req.user.userID });
+  const existingImageURL = user.avatar || null;
+
+  if (existingImageURL === defaultImageURL) {
+    throw new BadRequestError(`There is no image to begin with`);
+  }
+
+  if (existingImageURL) {
+    const parts = existingImageURL.split("/winning-habits-app/");
+    const filename = `winning-habits-app/${parts[parts.length - 1]}`;
+    const filenameWithoutExtension = filename.substring(
+      0,
+      filename.lastIndexOf("."),
+    );
+    await cloudinary.uploader.destroy(filenameWithoutExtension);
+  }
+
+  user.avatar = defaultImageURL;
+  await user.save();
+
+  const tokenUser = createTokenUser(user);
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.status(StatusCodes.OK).json({
+    msg: "Successfully removed the image",
+  });
+}

@@ -92,3 +92,8 @@ export async function updateAvatar(imageFile) {
 
   return res.data;
 }
+
+export async function removeAvatar() {
+  const res = await apiClient.delete(`${endpointV1}/users/removeAvatar`);
+  return res.data;
+}

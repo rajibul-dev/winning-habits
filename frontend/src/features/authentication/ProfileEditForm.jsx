@@ -14,6 +14,7 @@ import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx"
 import apiErrorFormat from "../../api/apiErrorFormat.js";
 import useUpdateUser from "./useUpdateUser.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
+import useRemoveAvatar from "./useRemoveAvatar.js";
 
 const StyledForm = styled.form`
   display: grid;
@@ -85,7 +86,9 @@ const SubmitButton = styled(Button)`
 
 export default function ProfileEditForm() {
   const { user, isLoading, error } = useUser();
-  const { name, email, avatar } = user;
+  const name = user?.name || "Default Name";
+  const email = user?.email || "user@example.com";
+  const avatar = user?.avatar || "/default-avatar.png";
   const { register, handleSubmit } = useForm({
     defaultValues: {
       name,
@@ -93,6 +96,7 @@ export default function ProfileEditForm() {
     },
   });
   const { updateUser, isUpdating } = useUpdateUser();
+  const { removeAvatar, isRemoving } = useRemoveAvatar();
 
   function onSubmit(data) {
     if (data.name === name) return;
@@ -127,8 +131,20 @@ export default function ProfileEditForm() {
           </Modal.Window>
         </Modal>
 
-        <RemoveButton as="button" type="button" $usage="pale-color">
-          <MdDelete /> <span>Remove avatar</span>
+        <RemoveButton
+          onClick={removeAvatar}
+          disabled={isRemoving}
+          as="button"
+          type="button"
+          $usage="pale-color"
+        >
+          {!isRemoving ? (
+            <>
+              <MdDelete /> <span>Remove avatar</span>
+            </>
+          ) : (
+            <SpinnerMini />
+          )}
         </RemoveButton>
       </AvatarPortion>
 
