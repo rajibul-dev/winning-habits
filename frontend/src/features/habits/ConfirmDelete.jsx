@@ -20,10 +20,28 @@ const StyledConfirmDelete = styled.div`
 `;
 
 function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
+  let heading = "";
+  let para = "";
+  let action = "";
+
+  switch (resourceName) {
+    case "avatar":
+      heading = `Remove avatar`;
+      para = `Are you sure you want to remove your avatar?`;
+      action = `Remove avatar`;
+      break;
+
+    default:
+      heading = `Delete ${resourceName}`;
+      para = `Are you sure you want to delete this ${resourceName} permanently?`;
+      action = "Delete";
+      break;
+  }
+
   return (
     <StyledConfirmDelete>
-      <Heading as="h3">Delete {resourceName}</Heading>
-      <p>Are you sure you want to delete this {resourceName} permanently?</p>
+      <Heading as="h3">{heading}</Heading>
+      <p>{para}</p>
 
       <div>
         <Button
@@ -34,7 +52,7 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
           Cancel
         </Button>
         <Button $variation="danger" disabled={disabled} onClick={onConfirm}>
-          Delete
+          {action}
         </Button>
       </div>
     </StyledConfirmDelete>

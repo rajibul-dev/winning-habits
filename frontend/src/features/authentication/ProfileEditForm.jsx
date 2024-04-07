@@ -15,6 +15,7 @@ import apiErrorFormat from "../../api/apiErrorFormat.js";
 import useUpdateUser from "./useUpdateUser.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import useRemoveAvatar from "./useRemoveAvatar.js";
+import ConfirmDelete from "../habits/ConfirmDelete.jsx";
 
 const StyledForm = styled.form`
   display: grid;
@@ -129,23 +130,31 @@ export default function ProfileEditForm() {
           <Modal.Window name="image-upload" noXButton>
             <ImageSelector />
           </Modal.Window>
+          <Modal.Open opens="remove-avatar">
+            <RemoveButton
+              onClick={removeAvatar}
+              disabled={isRemoving}
+              as="button"
+              type="button"
+              $usage="pale-color"
+            >
+              {!isRemoving ? (
+                <>
+                  <MdDelete /> <span>Remove avatar</span>
+                </>
+              ) : (
+                <SpinnerMini />
+              )}
+            </RemoveButton>
+          </Modal.Open>
+          <Modal.Window name="remove-avatar">
+            <ConfirmDelete
+              onConfirm={removeAvatar}
+              disabled={isRemoving}
+              resourceName={"avatar"}
+            />
+          </Modal.Window>
         </Modal>
-
-        <RemoveButton
-          onClick={removeAvatar}
-          disabled={isRemoving}
-          as="button"
-          type="button"
-          $usage="pale-color"
-        >
-          {!isRemoving ? (
-            <>
-              <MdDelete /> <span>Remove avatar</span>
-            </>
-          ) : (
-            <SpinnerMini />
-          )}
-        </RemoveButton>
       </AvatarPortion>
 
       <FormRowVerticalModified label="Your email address">

@@ -266,6 +266,7 @@ export default function HabitListItem({ habit }) {
               <ConfirmDelete
                 onConfirm={() => deleteHabit(habitID)}
                 disabled={isDeleting}
+                resourceName={`habit "${name}"`}
               />
             </Modal.Window>
           </Menus.Menu>
