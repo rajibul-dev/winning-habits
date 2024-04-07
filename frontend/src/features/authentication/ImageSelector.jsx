@@ -112,7 +112,7 @@ export default function ImageSelector({ onCloseModal }) {
       "image/gif": [],
       "image/webp": [],
     },
-    maxSize: 1024 * 1000 * 10, // 10 MB
+    maxSize: 1024 * 1024 * 10, // 10 MB
   });
 
   useEffect(() => {
