@@ -103,7 +103,7 @@ export default function App() {
             >
               <Route index element=<Navigate to="habits" /> />
               <Route path="habits" element={<Habits />} />
-              <Route path="habits/:id" element={<SingleHabit />} />
+              <Route path="habits/:habitID" element={<SingleHabit />} />
               <Route path="achievements" element={<Achievements />} />
               <Route path="archive" element={<Archive />} />
               <Route path="users" element={<Users />} />

@@ -3,7 +3,7 @@ import { getSingleHabit } from "../../api/apiHabits.js";
 import { useSearchParams } from "react-router-dom";
 
 export default function useSingleHabit() {
-  const { id } = useSearchParams();
+  const { habitID } = useSearchParams();
 
   const {
     data: habit,
@@ -11,7 +11,7 @@ export default function useSingleHabit() {
     error,
   } = useQuery({
     queryFn: getSingleHabit,
-    queryKey: ["habit", id],
+    queryKey: ["habit", habitID],
   });
 
   return { habit, isLoading, error };
