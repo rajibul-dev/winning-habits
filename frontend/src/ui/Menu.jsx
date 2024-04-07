@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import { createPortal } from "react-dom";
 import useOutsideClick from "../hooks/useOutsideClick.js";
@@ -58,11 +58,21 @@ const StyledButton = styled.button`
   &:hover {
     background-color: var(--color-grey-50);
   }
+  ${(props) =>
+    props.$isDanger &&
+    css`
+      color: var(--color-red-700);
+    `}
 
   & svg {
     width: 1.6rem;
     height: 1.6rem;
     color: var(--color-grey-400);
+    ${(props) =>
+      props.$isDanger &&
+      css`
+        color: var(--color-red-600);
+      `}
     transition: all 0.3s;
   }
 `;
@@ -132,7 +142,7 @@ function List({ children, id }) {
   );
 }
 
-function Button({ children, icon, onClick }) {
+function Button({ children, icon, onClick, isDanger = false }) {
   const { close } = useContext(MenusContext);
 
   function handleClick() {
@@ -142,7 +152,7 @@ function Button({ children, icon, onClick }) {
 
   return (
     <li>
-      <StyledButton onClick={handleClick}>
+      <StyledButton $isDanger={isDanger} onClick={handleClick}>
         {icon}
         <span
           style={{

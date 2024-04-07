@@ -183,7 +183,7 @@ export default function ImageSelector({ onCloseModal }) {
             <PreviewImage src={image[0].preview} />
           </div>
           <UploadButton onClick={handleSubmit} disabled={isUpdatingAvatar}>
-            {!isUpdatingAvatar ? "Upload image" : <SpinnerMini />}
+            {!isUpdatingAvatar ? "Upload photo" : <SpinnerMini />}
           </UploadButton>
         </>
       )}

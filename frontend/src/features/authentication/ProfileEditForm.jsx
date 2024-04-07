@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import useUser from "./useUser.js";
 import Button from "../../ui/Button.jsx";
 import InlineLink from "../../ui/InlineAppLink.jsx";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdAddAPhoto, MdDelete, MdEdit } from "react-icons/md";
 import buttonWithIconStyles from "../../styles/buttonWithIconStyles.js";
 import Modal from "../../ui/Modal.jsx";
 import ImageSelector from "./ImageSelector.jsx";
@@ -16,6 +16,9 @@ import useUpdateUser from "./useUpdateUser.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import useRemoveAvatar from "./useRemoveAvatar.js";
 import ConfirmDelete from "../habits/ConfirmDelete.jsx";
+
+export const defaultImageURL =
+  "https://res.cloudinary.com/drtmxi7rn/image/upload/t_no-padding/winning-habits-app/pfps/default-pfp-placeholder.jpg";
 
 const StyledForm = styled.form`
   display: grid;
@@ -98,6 +101,7 @@ export default function ProfileEditForm() {
   });
   const { updateUser, isUpdating } = useUpdateUser();
   const { removeAvatar, isRemoving } = useRemoveAvatar();
+  const isDefaultAvatar = avatar === defaultImageURL;
 
   function onSubmit(data) {
     if (data.name === name) return;
@@ -124,36 +128,37 @@ export default function ProfileEditForm() {
         <Modal>
           <Modal.Open opens="image-upload">
             <UploadImageButton type="button" size="small">
-              <MdEdit /> <span>Update avatar</span>
+              {!isDefaultAvatar ? (
+                <>
+                  <MdEdit /> <span>Change avatar</span>
+                </>
+              ) : (
+                <>
+                  <MdAddAPhoto /> <span>Add avatar</span>
+                </>
+              )}
             </UploadImageButton>
           </Modal.Open>
           <Modal.Window name="image-upload" noXButton>
             <ImageSelector />
           </Modal.Window>
-          <Modal.Open opens="remove-avatar">
-            <RemoveButton
-              onClick={removeAvatar}
-              disabled={isRemoving}
-              as="button"
-              type="button"
-              $usage="pale-color"
-            >
-              {!isRemoving ? (
-                <>
+
+          {!isDefaultAvatar && (
+            <>
+              <Modal.Open opens="remove-avatar">
+                <RemoveButton as="button" type="button" $usage="pale-color">
                   <MdDelete /> <span>Remove avatar</span>
-                </>
-              ) : (
-                <SpinnerMini />
-              )}
-            </RemoveButton>
-          </Modal.Open>
-          <Modal.Window name="remove-avatar">
-            <ConfirmDelete
-              onConfirm={removeAvatar}
-              disabled={isRemoving}
-              resourceName={"avatar"}
-            />
-          </Modal.Window>
+                </RemoveButton>
+              </Modal.Open>
+              <Modal.Window name="remove-avatar">
+                <ConfirmDelete
+                  onConfirm={removeAvatar}
+                  disabled={isRemoving}
+                  resourceName={"avatar"}
+                />
+              </Modal.Window>
+            </>
+          )}
         </Modal>
       </AvatarPortion>
 

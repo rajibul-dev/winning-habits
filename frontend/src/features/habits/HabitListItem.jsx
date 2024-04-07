@@ -249,6 +249,7 @@ export default function HabitListItem({ habit }) {
 
               <Modal.Open opens="delete">
                 <Menus.Button
+                  isDanger
                   icon={<HiTrash />}
                   onClick={() => deleteHabit(habitID)}
                   disabled={isDeleting}
