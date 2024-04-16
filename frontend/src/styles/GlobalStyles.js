@@ -97,8 +97,6 @@ const GlobalStyles = createGlobalStyle`
   --border-radius-sm: 5px;
   --border-radius-md: 7px;
   --border-radius-lg: 9px;
-
-
 }
 
 *,
@@ -149,15 +147,13 @@ input:disabled {
   color: var(--color-grey-500);
 }
 
-/*
+
 input:focus,
-button:focus,
 textarea:focus,
 select:focus {
   outline: 2px solid var(--color-brand-600);
   outline-offset: -1px;
 }
-*/
 
 /* Parent selector, finally 😃 */
 button:has(svg) {

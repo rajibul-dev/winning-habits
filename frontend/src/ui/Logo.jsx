@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import LogoSVG from "../assets/logo-light-mode.svg";
+import LogoSVGDark from "../assets/logo-dark-mode.svg";
+import { useDarkMode } from "../context/DarkModeContext";
 
 const StyledLogo = styled.div`
   text-align: center;
@@ -11,9 +13,12 @@ const Img = styled.img`
 `;
 
 export default function Logo() {
+  const { isDarkMode } = useDarkMode();
+  const src = isDarkMode ? LogoSVGDark : LogoSVG;
+
   return (
     <StyledLogo>
-      <Img src={LogoSVG} alt="winning habits logo" />
+      <Img src={src} alt="winning habits logo" />
     </StyledLogo>
   );
 }
