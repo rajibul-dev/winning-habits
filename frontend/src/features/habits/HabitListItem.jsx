@@ -81,16 +81,16 @@ const Points = styled.span`
   white-space: nowrap;
   line-height: 1;
   font-weight: 500;
-  color: var(--color-grey-500);
+  color: var(--color-grey-700);
 `;
 
 const NumericValueLabel = styled.span`
   display: inline-block;
   font-size: 1.2rem;
   text-transform: uppercase;
-  font-weight: 700;
-  color: var(--color-grey-400);
-  letter-spacing: 1pt;
+  font-weight: 800;
+  color: var(--color-grey-600);
+  letter-spacing: 0.5pt;
 `;
 
 const ButtonsRow = styled(Row)`
