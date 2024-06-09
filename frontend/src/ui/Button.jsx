@@ -49,9 +49,21 @@ const variations = {
     background-color: var(--color-brand-600);
     box-shadow: inset 0 -6px 0 var(--color-brand-800);
 
-    &:hover {
-      background-color: var(--color-brand-600);
-    }
+    ${(props) =>
+      props.size !== "small"
+        ? css`
+            &:hover {
+              background-color: var(--color-brand-500-modified-1);
+              box-shadow:
+                inset 0 -6px 0 var(--color-brand-800),
+                0 0 10px var(--color-brand-500-modified-1-shadow);
+            }
+          `
+        : css`
+            &:hover {
+              background-color: var(--color-brand-500-modified-1);
+            }
+          `}
   `,
   secondary: css`
     color: var(--color-grey-600);
@@ -74,7 +86,7 @@ const variations = {
 
 const Button = styled.button`
   border: none;
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-sm);
 
   ${(props) => variations[props.$variation]}
