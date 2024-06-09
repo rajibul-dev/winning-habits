@@ -16,6 +16,7 @@ import { capitalizeString } from "../../utils/capitalizeString.js";
 import Modal from "../../ui/Modal.jsx";
 import ConfirmDelete from "./ConfirmDelete.jsx";
 import EditHabitForm from "./EditHabitForm.jsx";
+import { PiFireSimpleFill } from "react-icons/pi";
 
 const StyledItem = styled.li`
   display: flex;
@@ -29,6 +30,7 @@ const StyledItem = styled.li`
 
 const TopRow = styled(Row)`
   justify-content: space-between;
+  align-items: center;
 `;
 
 const Name = styled.p`
@@ -61,7 +63,7 @@ const ProgressValue = styled(motion.span)`
 
 const BottomRow = styled.div`
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto 1fr auto;
   margin-top: 1.4rem;
   justify-items: center;
   align-items: center;
@@ -82,6 +84,41 @@ const Points = styled.span`
   line-height: 1;
   font-weight: 500;
   color: var(--color-grey-700);
+`;
+
+const Streak = styled.div`
+  position: relative;
+  transform: translateX(8rem);
+
+  & span {
+    font-size: 3.6rem;
+    font-weight: 700;
+    display: inline-block;
+    color: var(--color-grey-500);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    transform: translate(-50%, -42%);
+
+    ${(props) =>
+      props.answer === "yes" &&
+      css`
+        color: white;
+        text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+      `}
+  }
+  & svg {
+    font-size: 11rem;
+    fill: var(--color-grey-300);
+    transform: translateY(2px);
+
+    ${(props) =>
+      props.answer === "yes" &&
+      css`
+        fill: #f59e0b;
+      `}
+  }
 `;
 
 const NumericValueLabel = styled.span`
@@ -133,7 +170,7 @@ const Answer = styled.span`
       : css`
           background-color: var(--color-red-100);
           border: 1px solid var(--color-red-700);
-          color: var(--color-red-700);
+          color: var(--color-red-800);
         `}
 `;
 
@@ -294,6 +331,12 @@ export default function HabitListItem({ habit }) {
             Point{totalPoints !== 1 ? "s" : ""}
           </NumericValueLabel>
         </CoolNumericDisplayWrapper>
+
+        <Streak answer={didIt}>
+          <span>{streak}</span>
+          <PiFireSimpleFill />
+        </Streak>
+
         <SevenDayActionView actions={sevenDayViewObj} />
         <QuestionWrapper>
           <Question>Did you do this today?</Question>
