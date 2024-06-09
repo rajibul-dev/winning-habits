@@ -11,7 +11,7 @@ export default function Habits() {
       <HabitList />
       <Modal>
         <Modal.Open opens="create-habit">
-          <Button>Create Habit</Button>
+          <Button size="large">Create Habit</Button>
         </Modal.Open>
         <Modal.Window name="create-habit">
           <CreateHabitForm />
