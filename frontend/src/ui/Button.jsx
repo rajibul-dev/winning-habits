@@ -7,26 +7,50 @@ const sizes = {
     text-transform: uppercase;
     font-weight: 600;
     text-align: center;
+    box-shadow: none;
   `,
   medium: css`
     font-size: 1.4rem;
-    padding: 1.3rem 1.6rem;
-    font-weight: 500;
+
+    ${(props) =>
+      props.$variation === "primary" &&
+      css`
+        /* offset-x | offset-y | blur-radius | color */
+        text-shadow: 0 1.5px 0 var(--color-brand-800);
+        letter-spacing: 0.03pt;
+      `}
+
+    padding-inline: 1.6rem;
+    padding-top: 1.3rem;
+    padding-bottom: 1.7rem;
+    font-weight: 700;
   `,
   large: css`
-    font-size: 1.6rem;
-    padding: 1.5rem 2.4rem;
-    font-weight: 500;
+    font-size: 1.8rem;
+
+    ${(props) =>
+      props.$variation === "primary" &&
+      css`
+        /* offset-x | offset-y | blur-radius | color */
+        text-shadow: 0 1.5px 0 var(--color-brand-800);
+        letter-spacing: 0.03pt;
+      `}
+
+    padding-inline: 2.4rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.9rem;
+    font-weight: 700;
   `,
 };
 
 const variations = {
   primary: css`
-    color: var(--color-grey-0);
-    background-color: var(--color-grey-600);
+    color: var(--color-brand-50);
+    background-color: var(--color-brand-600);
+    box-shadow: inset 0 -6px 0 var(--color-brand-800);
 
     &:hover {
-      background-color: var(--color-brand-700);
+      background-color: var(--color-brand-600);
     }
   `,
   secondary: css`
@@ -53,8 +77,8 @@ const Button = styled.button`
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
 
-  ${(props) => sizes[props.size]}
   ${(props) => variations[props.$variation]}
+  ${(props) => sizes[props.size]}
 `;
 
 Button.defaultProps = {
