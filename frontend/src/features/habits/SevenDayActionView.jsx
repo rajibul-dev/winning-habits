@@ -27,6 +27,7 @@ const Weekdays = styled.span`
 const Dates = styled.span`
   ${sharedStyles}
   color: var(--color-grey-500);
+  font-weight: 600;
 
   position: relative;
   &:last-child {
