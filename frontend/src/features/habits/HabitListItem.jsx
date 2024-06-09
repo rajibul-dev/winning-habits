@@ -307,6 +307,7 @@ export default function HabitListItem({ habit }) {
                 Yes
               </ActionButton>
               <ActionButton
+                $variation="constGrey"
                 onClick={() => handleAnswer("no")}
                 disabled={isAnswering}
               >
