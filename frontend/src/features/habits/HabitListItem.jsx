@@ -1,7 +1,6 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Row from "../../ui/Row.jsx";
 import SevenDayActionView from "./SevenDayActionView.jsx";
-import { PiFireSimpleFill } from "react-icons/pi";
 import HabitMenuOptions from "./HabitMenuOptions.jsx";
 import ProgressBar from "../../ui/ProgressBar.jsx";
 import NumericStatsMinimal from "../../ui/NumericStatMinimal.jsx";
@@ -11,7 +10,7 @@ import StreakFire from "./StreakFire.jsx";
 const StyledItem = styled.li`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.3rem;
   background-color: var(--color-grey-0);
   padding: 3rem;
   border: 1px solid var(--color-grey-300);
@@ -24,7 +23,7 @@ const TopRow = styled(Row)`
 `;
 
 const Name = styled.p`
-  font-size: 2.2rem;
+  font-size: 2.6rem;
   font-weight: 600;
 `;
 
@@ -40,43 +39,6 @@ const BottomRow = styled.div`
   margin-top: 1.4rem;
   justify-items: center;
   align-items: center;
-`;
-
-const Streak = styled.div`
-  position: relative;
-  transform: translateX(8rem);
-
-  & span {
-    font-size: 3.6rem;
-    font-weight: 700;
-    display: inline-block;
-    color: var(--color-grey-500);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 3;
-    transform: translate(-50%, -42%);
-
-    ${(props) =>
-      props.answer === "yes" &&
-      css`
-        color: white;
-        text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
-      `}
-  }
-
-  & svg {
-    font-size: 11rem;
-    fill: var(--color-grey-300);
-    transform: translateY(2px);
-
-    ${(props) =>
-      props.answer === "yes" &&
-      css`
-        /* TODO: */
-        fill: var(--color-lime-500);
-      `}
-  }
 `;
 
 function calculateTargetPoints(currentPoints) {
@@ -123,7 +85,7 @@ export default function HabitListItem({ habit }) {
               (targetPoints - barMinimumPoints)) *
             100
           }
-          // TODO: Bar color and shadow
+          streak={streak}
         />
       </BarRow>
 

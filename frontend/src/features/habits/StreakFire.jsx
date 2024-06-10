@@ -40,16 +40,17 @@ const Streak = styled.div`
     ${(props) =>
       props.answer === "yes" &&
       props.streak >= 7 &&
-      props.streak <= 13 &&
+      props.streak <= 20 &&
       css`
-        fill: var(--color-amber-500);
+        fill: var(--color-yellow-400);
       `}
 
     ${(props) =>
       props.answer === "yes" &&
-      props.streak >= 14 &&
+      props.streak >= 21 &&
       css`
         fill: var(--color-orange-500);
+        filter: drop-shadow(0 0 7px var(--color-orange-500-shadow-2));
       `}
   }
 `;
