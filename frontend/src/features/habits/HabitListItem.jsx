@@ -9,6 +9,7 @@ import { capitalizeString } from "../../utils/capitalizeString.js";
 import { PiFireSimpleFill } from "react-icons/pi";
 import HabitMenuOptions from "./HabitMenuOptions.jsx";
 import ProgressBar from "../../ui/ProgressBar.jsx";
+import NumericStatsMinimal from "../../ui/NumericStatMinimal.jsx";
 
 const StyledItem = styled.li`
   display: flex;
@@ -83,6 +84,7 @@ const Streak = styled.div`
         text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
       `}
   }
+
   & svg {
     font-size: 11rem;
     fill: var(--color-grey-300);
@@ -241,12 +243,10 @@ export default function HabitListItem({ habit }) {
       </BarRow>
 
       <BottomRow type="horizontal">
-        <CoolNumericDisplayWrapper>
-          <Points>{totalPoints}</Points>
-          <NumericValueLabel>
-            Point{totalPoints !== 1 ? "s" : ""}
-          </NumericValueLabel>
-        </CoolNumericDisplayWrapper>
+        <NumericStatsMinimal
+          label={`Point${totalPoints !== 1 ? "s" : ""}`}
+          number={totalPoints}
+        />
 
         <Streak answer={didIt}>
           <span>{streak}</span>
