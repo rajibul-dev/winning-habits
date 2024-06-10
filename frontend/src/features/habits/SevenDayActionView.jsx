@@ -48,13 +48,48 @@ const Dates = styled.span`
   ${(props) => (props.$didIt ? css`` : props.$didIt === false ? css`` : css``)}
 `;
 
-export default function SevenDayActionView({ actions }) {
+function prepareLastSevenDayView(dailyRecords) {
+  const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  const result = [];
+
+  // Get today's date and weekday for reference
+  const today = new Date();
+
+  // Populate the result array
+  for (let i = 0; i < 7; i++) {
+    const targetDate = new Date(today);
+    targetDate.setDate(today.getDate() - i);
+
+    const date = targetDate.getDate();
+    const weekdayIndex = targetDate.getDay();
+
+    const didIt = dailyRecords[i]
+      ? dailyRecords[i].didIt === "yes"
+        ? true
+        : dailyRecords[i].didIt === "no"
+          ? false
+          : null
+      : null;
+
+    result.push({
+      weekday: daysOfWeek[weekdayIndex],
+      didIt,
+      date,
+    });
+  }
+
+  return result.reverse();
+}
+
+export default function SevenDayActionView({ dailyRecords }) {
+  const lastSevenDayActions = prepareLastSevenDayView(dailyRecords);
+
   return (
     <Wrapper>
-      {actions.map((action) => (
+      {lastSevenDayActions.map((action) => (
         <Weekdays key={action.weekday}>{action.weekday}</Weekdays>
       ))}
-      {actions.map((action) => (
+      {lastSevenDayActions.map((action) => (
         <Dates key={action.date} $didIt={action.didIt}>
           {action.date}
         </Dates>
