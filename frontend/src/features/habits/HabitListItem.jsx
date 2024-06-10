@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import styled, { css } from "styled-components";
 import Row from "../../ui/Row.jsx";
 import Button from "../../ui/Button.jsx";
@@ -9,6 +8,7 @@ import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import { capitalizeString } from "../../utils/capitalizeString.js";
 import { PiFireSimpleFill } from "react-icons/pi";
 import HabitMenuOptions from "./HabitMenuOptions.jsx";
+import ProgressBar from "../../ui/ProgressBar.jsx";
 
 const StyledItem = styled.li`
   display: flex;
@@ -34,24 +34,6 @@ const BarRow = styled(Row)`
   gap: 1rem;
   flex-shrink: 0;
   margin-top: 0.8rem;
-`;
-
-const ProgressBar = styled.div`
-  height: 2rem;
-  background-color: var(--color-grey-200);
-  position: relative;
-  border-radius: var(--border-radius-lg);
-  width: 100%;
-`;
-
-const ProgressValue = styled(motion.span)`
-  display: inline-block;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  border-radius: var(--border-radius-lg);
-  /* TODO: */
-  background-color: var(--color-lime-500);
 `;
 
 const BottomRow = styled.div`
@@ -248,16 +230,14 @@ export default function HabitListItem({ habit }) {
       </TopRow>
 
       <BarRow type="horizontal">
-        <ProgressBar>
-          <ProgressValue
-            initial={{
-              width: 0,
-            }}
-            animate={{
-              width: `${((totalPoints - barMinimumPoints) / (targetPoints - barMinimumPoints)) * 100}%`,
-            }}
-          />
-        </ProgressBar>
+        <ProgressBar
+          percentage={
+            ((totalPoints - barMinimumPoints) /
+              (targetPoints - barMinimumPoints)) *
+            100
+          }
+          // TODO: Bar color and shadow
+        />
       </BarRow>
 
       <BottomRow type="horizontal">
