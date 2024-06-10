@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const StyledProgressBar = styled.div`
   height: 2rem;
@@ -15,11 +15,26 @@ const ProgressValue = styled(motion.span)`
   height: 100%;
   width: 100%;
   border-radius: var(--border-radius-lg);
-  background-color: ${({ barColor }) => barColor || "var(--color-lime-500)"};
-  box-shadow: ${({ barGlow }) => barGlow || "none"};
+  background-color: var(--color-lime-500);
+
+  ${({ streak }) =>
+    streak >= 7 &&
+    streak <= 20 &&
+    css`
+      background-color: var(--color-yellow-400);
+    `}
+
+  ${({ streak }) =>
+    streak >= 21 &&
+    css`
+      background-color: var(--color-orange-500);
+      box-shadow:
+        0 -7px 0 var(--color-orange-500-shadow),
+        0 7px 0 var(--color-orange-500-shadow);
+    `}
 `;
 
-export default function ProgressBar({ percentage, barColor, barGlow }) {
+export default function ProgressBar({ percentage, streak }) {
   return (
     <StyledProgressBar>
       <ProgressValue
@@ -29,8 +44,7 @@ export default function ProgressBar({ percentage, barColor, barGlow }) {
         animate={{
           width: `${percentage}%`,
         }}
-        barColor={barColor}
-        barGlow={barGlow}
+        streak={streak}
       />
     </StyledProgressBar>
   );
