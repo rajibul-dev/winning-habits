@@ -10,7 +10,7 @@ import apiErrorFormat from "../../api/apiErrorFormat.js";
 const StyledList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 3rem;
 `;
 
 export default function HabitList({ show = "non-archived" }) {
