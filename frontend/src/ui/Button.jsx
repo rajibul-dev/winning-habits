@@ -22,7 +22,8 @@ const sizes = {
 
     padding-inline: 1.6rem;
     padding-top: 1.3rem;
-    padding-bottom: 1.7rem;
+    padding-bottom: ${({ $variation }) =>
+      $variation === "primary" ? css`1.7rem` : css`1.3rem`};
     font-weight: 700;
   `,
   large: css`
@@ -38,7 +39,8 @@ const sizes = {
 
     padding-inline: 2.4rem;
     padding-top: 1.5rem;
-    padding-bottom: 1.9rem;
+    padding-bottom: ${({ $variation }) =>
+      $variation === "primary" ? css`1.9rem` : css`1.5rem`};
     font-weight: 700;
   `,
 };
