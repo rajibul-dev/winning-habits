@@ -4,19 +4,11 @@ import Row from "../../ui/Row.jsx";
 import Button from "../../ui/Button.jsx";
 import useAddAction from "./useAddAction.js";
 import SevenDayActionView from "./SevenDayActionView.jsx";
-import Menus from "../../ui/Menu.jsx";
-import { HiPencil, HiTrash } from "react-icons/hi2";
-import { IoArchive, IoArrowUndo } from "react-icons/io5";
 import useUpdateAction from "./useUpdateAction.js";
-import useHandleArchive from "./useHandleArchive.js";
-import { RiInboxUnarchiveFill } from "react-icons/ri";
-import useDeleteHabit from "./useDeleteHabit.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import { capitalizeString } from "../../utils/capitalizeString.js";
-import Modal from "../../ui/Modal.jsx";
-import ConfirmDelete from "./ConfirmDelete.jsx";
-import EditHabitForm from "./EditHabitForm.jsx";
 import { PiFireSimpleFill } from "react-icons/pi";
+import HabitMenuOptions from "./HabitMenuOptions.jsx";
 
 const StyledItem = styled.li`
   display: flex;
@@ -234,83 +226,25 @@ export default function HabitListItem({ habit }) {
   const barMinimumPoints = targetPoints - 100;
   const streakFireLit = streak >= 3;
   const { addDailyAction, isAnswering } = useAddAction();
-  const { updateAction, isUpdating } = useUpdateAction();
-  const { handleArchive, isPending: isArchiving } = useHandleArchive();
-  const { deleteHabit, isDeleting } = useDeleteHabit();
+  const { isUpdating } = useUpdateAction();
+
   const sevenDayViewObj = prepareLastSevenDayView(dailyRecords);
 
   function handleAnswer(answer) {
     addDailyAction({ habitID, answer });
   }
 
-  function handleUnAnswer() {
-    updateAction({
-      habitID,
-      targetRecordID: latestRecordID,
-      updatedAnswer: "unanswered",
-    });
-  }
-
-  function onHandleArchive() {
-    handleArchive({ id: habitID, isArchive: !isArchived });
-  }
-
   return (
     <StyledItem>
       <TopRow type="horizontal">
         <Name>{name}</Name>
-        <Modal>
-          <Menus.Menu>
-            <Menus.Toggle id={habitID} />
-
-            <Menus.List id={habitID}>
-              <Modal.Open opens="edit">
-                <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
-              </Modal.Open>
-
-              {isAnswered && (
-                <Menus.Button
-                  icon={<IoArrowUndo />}
-                  onClick={handleUnAnswer}
-                  disabled={isUpdating}
-                >
-                  Un-answer
-                </Menus.Button>
-              )}
-
-              <Menus.Button
-                icon={!isArchived ? <IoArchive /> : <RiInboxUnarchiveFill />}
-                onClick={onHandleArchive}
-                disabled={isArchiving}
-              >
-                {!isArchived ? "Archive" : "Unarchive"}
-              </Menus.Button>
-
-              <Modal.Open opens="delete">
-                <Menus.Button
-                  isDanger
-                  icon={<HiTrash />}
-                  onClick={() => deleteHabit(habitID)}
-                  disabled={isDeleting}
-                >
-                  Delete
-                </Menus.Button>
-              </Modal.Open>
-            </Menus.List>
-
-            <Modal.Window name="edit">
-              <EditHabitForm habitID={habitID} name={name} />
-            </Modal.Window>
-
-            <Modal.Window name="delete">
-              <ConfirmDelete
-                onConfirm={() => deleteHabit(habitID)}
-                disabled={isDeleting}
-                resourceName={`habit "${name}"`}
-              />
-            </Modal.Window>
-          </Menus.Menu>
-        </Modal>
+        <HabitMenuOptions
+          habitID={habitID}
+          isAnswered={isAnswered}
+          name={name}
+          latestRecordID={latestRecordID}
+          isArchived={isArchived}
+        />
       </TopRow>
 
       <BarRow type="horizontal">
