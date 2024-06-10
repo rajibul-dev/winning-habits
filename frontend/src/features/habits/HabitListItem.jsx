@@ -58,7 +58,8 @@ const ProgressValue = styled(motion.span)`
   height: 100%;
   width: 100%;
   border-radius: var(--border-radius-lg);
-  background-color: grey;
+  /* TODO: */
+  background-color: var(--color-lime-500);
 `;
 
 const BottomRow = styled.div`
@@ -116,7 +117,8 @@ const Streak = styled.div`
     ${(props) =>
       props.answer === "yes" &&
       css`
-        fill: #f59e0b;
+        /* TODO: */
+        fill: var(--color-lime-500);
       `}
   }
 `;
