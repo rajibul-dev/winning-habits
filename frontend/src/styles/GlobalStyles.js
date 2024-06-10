@@ -97,10 +97,11 @@ const GlobalStyles = createGlobalStyle`
 
   /* PROGRESS BAR AND STREAK COLORS */
   --color-lime-500: #84cc16; /* 1-6 */
-  --color-amber-500: #f59e0b; /* 7-13 streak fire color */
+  --color-amber-500: #f59e0b; /* 7-20 streak fire color */
   --color-yellow-400: #facc15; /* 7-20 */
   --color-orange-500: #f97316; /* 21-89 */
   --color-orange-500-shadow: rgba(249, 116, 22, 0.4); /* 21-89 flair */
+  --color-orange-500-shadow-2: rgba(249, 116, 22, 0.7); /* 21-89 flair */
   
   --border-radius-tiny: 3px;
   --border-radius-sm: 5px;
