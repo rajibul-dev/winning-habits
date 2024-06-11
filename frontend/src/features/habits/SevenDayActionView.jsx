@@ -48,11 +48,12 @@ const Dates = styled.span`
       }
     `}
 
-  ${({ $didIt, streak }) =>
+  ${({ $didIt, $streak }) =>
     $didIt === true
       ? css`
           z-index: 0;
           color: white;
+          font-weight: 700;
           &::after {
             content: "";
             position: absolute;
@@ -61,7 +62,11 @@ const Dates = styled.span`
             transform: translate(-50%, -50%);
             height: 3.6rem;
             width: 3.6rem;
-            background-color: var(--color-amber-500);
+            background-color: ${$streak >= 1 && $streak <= 6
+              ? `var(--color-lime-500)`
+              : $streak >= 7 && $streak <= 20
+                ? `var(--color-yellow-400)`
+                : `var(--color-orange-500)`};
             border-radius: 50%;
             z-index: -1;
           }
