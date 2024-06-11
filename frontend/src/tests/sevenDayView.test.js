@@ -35,7 +35,7 @@ describe("prepareLastSevenDayView", () => {
         _id: "66681035bf51199iep4271bbd863d",
       },
       {
-        didIt: "yes",
+        didIt: "unanswered",
         points: 1,
         date: "2024-06-06T08:52:05.498+00:00",
         _id: "66681035bkfmvf5119971bbd863d",
@@ -47,7 +47,7 @@ describe("prepareLastSevenDayView", () => {
         _id: "666810302k35bf5119971bbd863d",
       },
       {
-        didIt: "unanswered",
+        didIt: "no",
         points: 0,
         date: "2024-06-08T08:52:05.498+00:00",
         _id: "6668103bniro5bf5119971bbd863d",
@@ -79,9 +79,9 @@ describe("prepareLastSevenDayView", () => {
     const result = prepareLastSevenDayView(dailyRecords);
     expect(result).toEqual([
       { weekday: "We", didIt: true, date: 5 },
-      { weekday: "Th", didIt: true, date: 6 },
+      { weekday: "Th", didIt: null, date: 6 },
       { weekday: "Fr", didIt: true, date: 7 },
-      { weekday: "Sa", didIt: null, date: 8 },
+      { weekday: "Sa", didIt: false, date: 8 },
       { weekday: "Su", didIt: true, date: 9 },
       { weekday: "Mo", didIt: true, date: 10 },
       { weekday: "Tu", didIt: true, date: 11 },
