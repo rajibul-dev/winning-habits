@@ -17,7 +17,7 @@ const Streak = styled.div`
     transform: translate(-50%, -42%);
 
     ${(props) =>
-      props.answer === "yes" &&
+      props.$answer === "yes" &&
       css`
         color: white;
         text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
@@ -30,24 +30,24 @@ const Streak = styled.div`
     transform: translateY(2px);
 
     ${(props) =>
-      props.answer === "yes" &&
-      props.streak >= 1 &&
-      props.streak <= 6 &&
+      props.$answer === "yes" &&
+      props.$streak >= 1 &&
+      props.$streak <= 6 &&
       css`
         fill: var(--color-lime-500);
       `}
 
     ${(props) =>
-      props.answer === "yes" &&
-      props.streak >= 7 &&
-      props.streak <= 20 &&
+      props.$answer === "yes" &&
+      props.$streak >= 7 &&
+      props.$streak <= 20 &&
       css`
         fill: var(--color-yellow-400);
       `}
 
     ${(props) =>
-      props.answer === "yes" &&
-      props.streak >= 21 &&
+      props.$answer === "yes" &&
+      props.$streak >= 21 &&
       css`
         fill: var(--color-orange-500);
         filter: drop-shadow(0 0 7px var(--color-orange-500-shadow-2));
@@ -57,7 +57,7 @@ const Streak = styled.div`
 
 export default function StreakFire({ streak, didIt }) {
   return (
-    <Streak streak={streak} answer={didIt}>
+    <Streak $streak={streak} $answer={didIt}>
       <span>{streak}</span>
       <PiFireSimpleFill />
     </Streak>
