@@ -20,9 +20,6 @@ const Weekdays = styled.span`
   ${sharedStyles}
   color: var(--color-grey-600);
   font-weight: 600;
-  &:nth-child(7) {
-    color: var(--color-brand-700);
-  }
 `;
 const Dates = styled.span`
   ${sharedStyles}
@@ -30,22 +27,48 @@ const Dates = styled.span`
   font-weight: 600;
 
   position: relative;
-  &:last-child {
-    color: var(--color-brand-700);
-  }
-  &:last-child::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    height: 3.6rem;
-    width: 3.6rem;
-    border: 1px solid var(--color-brand-700);
-    border-radius: 1000px;
-  }
 
-  ${(props) => (props.$didIt ? css`` : props.$didIt === false ? css`` : css``)}
+  ${({ $didIt }) =>
+    $didIt === null &&
+    css`
+      &:last-child {
+        z-index: 0;
+        &::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          height: 3.6rem;
+          width: 3.6rem;
+          background-color: var(--color-grey-300);
+          border-radius: 50%;
+          z-index: -1;
+        }
+      }
+    `}
+
+  ${({ $didIt, streak }) =>
+    $didIt === true
+      ? css`
+          z-index: 0;
+          color: white;
+          &::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 3.6rem;
+            width: 3.6rem;
+            background-color: var(--color-amber-500);
+            border-radius: 50%;
+            z-index: -1;
+          }
+        `
+      : $didIt === false
+        ? css``
+        : css``}
 `;
 
 export function prepareLastSevenDayView(dailyRecords) {
@@ -89,7 +112,7 @@ export function prepareLastSevenDayView(dailyRecords) {
   return result;
 }
 
-export default function SevenDayActionView({ dailyRecords }) {
+export default function SevenDayActionView({ dailyRecords, streak }) {
   const lastSevenDayActions = prepareLastSevenDayView(dailyRecords);
 
   return (
@@ -98,7 +121,7 @@ export default function SevenDayActionView({ dailyRecords }) {
         <Weekdays key={action.weekday}>{action.weekday}</Weekdays>
       ))}
       {lastSevenDayActions.map((action) => (
-        <Dates key={action.date} $didIt={action.didIt}>
+        <Dates key={action.date} $didIt={action.didIt} $streak={streak}>
           {action.date}
         </Dates>
       ))}

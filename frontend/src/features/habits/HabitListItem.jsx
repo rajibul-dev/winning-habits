@@ -97,7 +97,7 @@ export default function HabitListItem({ habit }) {
 
         <StreakFire streak={streak} didIt={didIt} />
 
-        <SevenDayActionView dailyRecords={dailyRecords} />
+        <SevenDayActionView dailyRecords={dailyRecords} streak={streak} />
 
         <HabitActionButtons
           habitID={habitID}
