@@ -12,7 +12,7 @@ describe("prepareLastSevenDayView", () => {
       },
       {
         didIt: "yes",
-        points: 1,
+        points: 1, // the points field is actually irrelevant in this test
         date: "2024-06-02T08:52:05.498+00:00",
         _id: "66681035bf511997dkfjdlkf1bbd863d",
       },
@@ -136,7 +136,7 @@ describe("prepareLastSevenDayView", () => {
       date.setDate(startDate.getDate() + index);
       return {
         didIt: index % 3 === 0 ? "yes" : index % 3 === 1 ? "no" : "unanswered",
-        points: 1,
+        points: this.didIt === "yes" ? 1 : 0,
         date: date.toISOString(),
         _id: `record_${index}`,
       };
@@ -152,13 +152,13 @@ describe("prepareLastSevenDayView", () => {
       },
       {
         didIt: "no",
-        points: 1,
+        points: 0,
         date: "2024-05-27T08:52:05.498+00:00",
         _id: "record_694",
       },
       {
         didIt: "unanswered",
-        points: 1,
+        points: 0,
         date: "2024-05-28T08:52:05.498+00:00",
         _id: "record_695",
       },
@@ -170,13 +170,13 @@ describe("prepareLastSevenDayView", () => {
       },
       {
         didIt: "no",
-        points: 1,
+        points: 0,
         date: "2024-05-30T08:52:05.498+00:00",
         _id: "record_697",
       },
       {
         didIt: "unanswered",
-        points: 1,
+        points: 0,
         date: "2024-05-31T08:52:05.498+00:00",
         _id: "record_698",
       },
