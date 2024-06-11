@@ -148,7 +148,7 @@ describe("prepareLastSevenDayView", () => {
         didIt: "yes",
         points: 1,
         date: "2024-05-26T08:52:05.498+00:00",
-        _id: "record_693",
+        _id: "record_693", // id doesn't matter so just placehonders
       },
       {
         didIt: "no",
