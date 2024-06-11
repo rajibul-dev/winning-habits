@@ -52,21 +52,23 @@ export function prepareLastSevenDayView(dailyRecords) {
   const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
   const result = [];
 
-  // Get today's date and weekday for reference
+  // Get today's date and normalize to the start of the day
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   // Create a map of dates to their corresponding dailyRecords
   const dateRecordMap = dailyRecords.reduce((map, record) => {
-    const date = new Date(record.date).toDateString(); // Normalize date to string
-    map[date] = record;
+    const date = new Date(record.date);
+    date.setHours(0, 0, 0, 0);
+    map[date.toDateString()] = record;
     return map;
   }, {});
 
-  // Populate the result array
-  for (let i = 0; i < 7; i++) {
+  // Populate the result array with the last seven days
+  for (let i = 6; i >= 0; i--) {
     const targetDate = new Date(today);
     targetDate.setDate(today.getDate() - i);
-    const dateStr = targetDate.toDateString(); // Normalize date to string
+    const dateStr = targetDate.toDateString();
 
     const record = dateRecordMap[dateStr];
     const didIt = record
@@ -84,7 +86,7 @@ export function prepareLastSevenDayView(dailyRecords) {
     });
   }
 
-  return result.reverse();
+  return result;
 }
 
 export default function SevenDayActionView({ dailyRecords }) {
