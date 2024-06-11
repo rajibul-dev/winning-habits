@@ -63,7 +63,7 @@ const Dates = styled.span`
             height: 3.6rem;
             width: 3.6rem;
 
-            background-color: ${$streak >= 1 && $streak <= 6
+            background-color: ${$streak >= 0 && $streak <= 6
               ? `var(--color-lime-500)`
               : $streak >= 7 && $streak <= 20
                 ? `var(--color-yellow-400)`
