@@ -48,7 +48,7 @@ const Dates = styled.span`
       }
     `}
 
-  ${({ $didIt, $streak }) =>
+  ${({ $didIt, $streak, $position }) =>
     $didIt === true
       ? css`
           z-index: 0;
@@ -62,12 +62,44 @@ const Dates = styled.span`
             transform: translate(-50%, -50%);
             height: 3.6rem;
             width: 3.6rem;
+
             background-color: ${$streak >= 1 && $streak <= 6
               ? `var(--color-lime-500)`
               : $streak >= 7 && $streak <= 20
                 ? `var(--color-yellow-400)`
                 : `var(--color-orange-500)`};
-            border-radius: 50%;
+
+            ${$position === "single" &&
+            css`
+              border-radius: 50%;
+            `}
+            ${$position === "middle" &&
+            css`
+              width: 120%;
+            `}
+            ${$position === "left" &&
+            css`
+              box-shadow: 10px 0 0
+                ${$streak >= 1 && $streak <= 6
+                  ? `var(--color-lime-500)`
+                  : $streak >= 7 && $streak <= 20
+                    ? `var(--color-yellow-400)`
+                    : `var(--color-orange-500)`};
+              border-top-left-radius: 50%;
+              border-bottom-left-radius: 50%;
+            `}
+            ${$position === "right" &&
+            css`
+              box-shadow: -10px 0 0
+                ${$streak >= 1 && $streak <= 6
+                  ? `var(--color-lime-500)`
+                  : $streak >= 7 && $streak <= 20
+                    ? `var(--color-yellow-400)`
+                    : `var(--color-orange-500)`};
+              border-top-right-radius: 50%;
+              border-bottom-right-radius: 50%;
+            `}
+            
             z-index: -1;
           }
         `
@@ -125,11 +157,32 @@ export default function SevenDayActionView({ dailyRecords, streak }) {
       {lastSevenDayActions.map((action) => (
         <Weekdays key={action.weekday}>{action.weekday}</Weekdays>
       ))}
-      {lastSevenDayActions.map((action) => (
-        <Dates key={action.date} $didIt={action.didIt} $streak={streak}>
-          {action.date}
-        </Dates>
-      ))}
+
+      {lastSevenDayActions.map((action, index) => {
+        let position = null;
+        const prevAnswer = lastSevenDayActions[index - 1]?.didIt ?? null;
+        const nextAnswer = lastSevenDayActions[index + 1]?.didIt ?? null;
+        if (prevAnswer && nextAnswer) {
+          position = "middle";
+        } else if (!prevAnswer && nextAnswer) {
+          position = "left";
+        } else if (prevAnswer && !nextAnswer) {
+          position = "right";
+        } else {
+          position = "single";
+        }
+
+        return (
+          <Dates
+            key={action.date}
+            $didIt={action.didIt}
+            $streak={streak}
+            $position={position}
+          >
+            {action.date}
+          </Dates>
+        );
+      })}
     </Wrapper>
   );
 }
