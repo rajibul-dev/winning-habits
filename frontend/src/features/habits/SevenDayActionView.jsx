@@ -48,33 +48,39 @@ const Dates = styled.span`
   ${(props) => (props.$didIt ? css`` : props.$didIt === false ? css`` : css``)}
 `;
 
-function prepareLastSevenDayView(dailyRecords) {
+export function prepareLastSevenDayView(dailyRecords) {
   const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
   const result = [];
 
   // Get today's date and weekday for reference
   const today = new Date();
 
+  // Create a map of dates to their corresponding dailyRecords
+  const dateRecordMap = dailyRecords.reduce((map, record) => {
+    const date = new Date(record.date).toDateString(); // Normalize date to string
+    map[date] = record;
+    return map;
+  }, {});
+
   // Populate the result array
   for (let i = 0; i < 7; i++) {
     const targetDate = new Date(today);
     targetDate.setDate(today.getDate() - i);
+    const dateStr = targetDate.toDateString(); // Normalize date to string
 
-    const date = targetDate.getDate();
-    const weekdayIndex = targetDate.getDay();
-
-    const didIt = dailyRecords[i]
-      ? dailyRecords[i].didIt === "yes"
+    const record = dateRecordMap[dateStr];
+    const didIt = record
+      ? record.didIt === "yes"
         ? true
-        : dailyRecords[i].didIt === "no"
+        : record.didIt === "no"
           ? false
           : null
       : null;
 
     result.push({
-      weekday: daysOfWeek[weekdayIndex],
+      weekday: daysOfWeek[targetDate.getDay()],
       didIt,
-      date,
+      date: targetDate.getDate(),
     });
   }
 
