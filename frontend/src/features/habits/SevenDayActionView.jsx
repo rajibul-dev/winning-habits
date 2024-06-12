@@ -20,6 +20,25 @@ const Weekdays = styled.span`
   ${sharedStyles}
   color: var(--color-grey-600);
   font-weight: 600;
+
+  &:nth-child(7) {
+    ${({ $didIt, $streak }) =>
+      $didIt === true &&
+      css`
+        color: ${$streak >= 0 && $streak <= 6
+          ? `var(--color-lime-500)`
+          : $streak >= 7 && $streak <= 20
+            ? `var(--color-yellow-400)`
+            : `var(--color-orange-500)`};
+      `}
+  }
+  &:nth-child(7) {
+    ${({ $didIt }) =>
+      $didIt === false &&
+      css`
+        color: var(--color-red-700);
+      `}
+  }
 `;
 const Dates = styled.span`
   ${sharedStyles}
@@ -155,7 +174,9 @@ export default function SevenDayActionView({ dailyRecords, streak }) {
   return (
     <Wrapper>
       {lastSevenDayActions.map((action) => (
-        <Weekdays key={action.weekday}>{action.weekday}</Weekdays>
+        <Weekdays $didIt={action.didIt} $streak={streak} key={action.weekday}>
+          {action.weekday}
+        </Weekdays>
       ))}
 
       {lastSevenDayActions.map((action, index) => {
