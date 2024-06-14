@@ -153,7 +153,7 @@ function Button({ children, icon, onClick, isDanger = false }) {
   }
 
   return (
-    <li>
+    <li className="menu">
       <StyledButton $isDanger={isDanger} onClick={handleClick}>
         {icon}
         <span

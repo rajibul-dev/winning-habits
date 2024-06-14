@@ -6,6 +6,7 @@ import ProgressBar from "../../ui/ProgressBar.jsx";
 import NumericStatsMinimal from "../../ui/NumericStatMinimal.jsx";
 import HabitActionButtons from "./HabitActionButtons.jsx";
 import StreakFire from "./StreakFire.jsx";
+import { useNavigate } from "react-router-dom";
 
 const StyledItem = styled.li`
   display: flex;
@@ -64,18 +65,28 @@ export default function HabitListItem({ habit }) {
   const isAnswered = didIt !== "unanswered" && didIt;
   const targetPoints = calculateTargetPoints(totalPoints);
   const barMinimumPoints = targetPoints - 100;
+  const navigate = useNavigate();
+
+  function goToSingleHabitPage(e) {
+    const importantClasses = ["habit-menu", "action-buttons", "menu", "modal"];
+    if (!importantClasses.some((cls) => e.target.closest(`.${cls}`))) {
+      navigate(habitID);
+    }
+  }
 
   return (
-    <StyledItem>
+    <StyledItem onClick={goToSingleHabitPage}>
       <TopRow type="horizontal">
         <Name>{name}</Name>
-        <HabitMenuOptions
-          habitID={habitID}
-          isAnswered={isAnswered}
-          name={name}
-          latestRecordID={latestRecordID}
-          isArchived={isArchived}
-        />
+        <div className="habit-menu">
+          <HabitMenuOptions
+            habitID={habitID}
+            isAnswered={isAnswered}
+            name={name}
+            latestRecordID={latestRecordID}
+            isArchived={isArchived}
+          />
+        </div>
       </TopRow>
 
       <BarRow type="horizontal">

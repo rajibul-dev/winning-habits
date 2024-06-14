@@ -92,7 +92,7 @@ function Window({ children, name, noXButton = false }) {
 
   return createPortal(
     <Overlay>
-      <StyledModal ref={ref}>
+      <StyledModal className="modal" ref={ref}>
         {!noXButton && (
           <Button onClick={close}>
             <HiXMark />

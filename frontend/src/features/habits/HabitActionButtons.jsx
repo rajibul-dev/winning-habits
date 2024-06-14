@@ -59,7 +59,7 @@ export default function HabitActionButtons({ habitID, isAnswered, didIt }) {
   }
 
   return (
-    <Wrapper>
+    <Wrapper className="action-buttons">
       <Question>Did you do this today?</Question>
 
       {!isAnswered && !isAnswering && !isUpdating && (
