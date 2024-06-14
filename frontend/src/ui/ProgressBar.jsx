@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import styled, { css } from "styled-components";
+import { useDarkMode } from "../context/DarkModeContext.jsx";
 
 const StyledProgressBar = styled.div`
   height: 2rem;
@@ -45,10 +46,26 @@ const valueNumStyles = css`
 const StartValueNum = styled.span`
   ${valueNumStyles}
   left: .5rem;
+
+  ${({ $isDarkMode, $percentage }) => {
+    if (!$isDarkMode && $percentage >= 2) {
+      return css`
+        color: var(--color-grey-50);
+      `;
+    }
+  }}
 `;
 const EndValueNum = styled.span`
   ${valueNumStyles}
   right: .5rem;
+
+  ${({ $isDarkMode, $percentage }) => {
+    if (!$isDarkMode && $percentage >= 99) {
+      return css`
+        color: var(--color-grey-50);
+      `;
+    }
+  }}
 `;
 
 export default function ProgressBar({
@@ -57,6 +74,8 @@ export default function ProgressBar({
   startValueNum,
   endValueNum,
 }) {
+  const { isDarkMode } = useDarkMode();
+
   return (
     <StyledProgressBar>
       <ProgressValue
@@ -68,8 +87,12 @@ export default function ProgressBar({
         }}
         streak={streak}
       />
-      <StartValueNum>{startValueNum}</StartValueNum>
-      <EndValueNum>{endValueNum}</EndValueNum>
+      <StartValueNum $percentage={percentage} $isDarkMode={isDarkMode}>
+        {startValueNum}
+      </StartValueNum>
+      <EndValueNum $percentage={percentage} $isDarkMode={isDarkMode}>
+        {endValueNum}
+      </EndValueNum>
     </StyledProgressBar>
   );
 }
