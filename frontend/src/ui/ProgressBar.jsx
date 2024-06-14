@@ -34,7 +34,29 @@ const ProgressValue = styled(motion.span)`
     `}
 `;
 
-export default function ProgressBar({ percentage, streak }) {
+const valueNumStyles = css`
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 500;
+  color: var(--color-grey-900);
+`;
+const StartValueNum = styled.span`
+  ${valueNumStyles}
+  left: .5rem;
+`;
+const EndValueNum = styled.span`
+  ${valueNumStyles}
+  right: .5rem;
+`;
+
+export default function ProgressBar({
+  percentage,
+  streak,
+  startValueNum,
+  endValueNum,
+}) {
   return (
     <StyledProgressBar>
       <ProgressValue
@@ -46,6 +68,8 @@ export default function ProgressBar({ percentage, streak }) {
         }}
         streak={streak}
       />
+      <StartValueNum>{startValueNum}</StartValueNum>
+      <EndValueNum>{endValueNum}</EndValueNum>
     </StyledProgressBar>
   );
 }

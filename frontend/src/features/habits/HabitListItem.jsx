@@ -86,6 +86,8 @@ export default function HabitListItem({ habit }) {
             100
           }
           streak={streak}
+          startValueNum={barMinimumPoints}
+          endValueNum={targetPoints}
         />
       </BarRow>
 
