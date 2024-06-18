@@ -99,7 +99,7 @@ const Dates = styled.span`
             ${$position === "left" &&
             css`
               box-shadow: 10px 0 0
-                ${$streak >= 1 && $streak <= 6
+                ${$streak >= 0 && $streak <= 6
                   ? `var(--color-lime-500)`
                   : $streak >= 7 && $streak <= 20
                     ? `var(--color-yellow-400)`
@@ -110,7 +110,7 @@ const Dates = styled.span`
             ${$position === "right" &&
             css`
               box-shadow: -10px 0 0
-                ${$streak >= 1 && $streak <= 6
+                ${$streak >= 0 && $streak <= 6
                   ? `var(--color-lime-500)`
                   : $streak >= 7 && $streak <= 20
                     ? `var(--color-yellow-400)`
