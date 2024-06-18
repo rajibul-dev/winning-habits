@@ -8,6 +8,7 @@ export default function useSingleHabit() {
   const { data, isLoading, error } = useQuery({
     queryFn: () => getSingleHabit(habitID),
     queryKey: ["habit", habitID],
+    retry: false,
   });
 
   return { data, isLoading, error };
