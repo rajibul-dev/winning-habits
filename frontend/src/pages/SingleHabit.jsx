@@ -1,3 +1,5 @@
+import SingleHabitFeature from "../features/habits/SingleHabitFeature.jsx";
+
 export default function SingleHabit() {
-  return <div className="">SingleHabit</div>;
+  return <SingleHabitFeature />;
 }

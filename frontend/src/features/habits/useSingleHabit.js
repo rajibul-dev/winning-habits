@@ -5,14 +5,10 @@ import { useParams } from "react-router-dom";
 export default function useSingleHabit() {
   const { habitID } = useParams();
 
-  const {
-    data: habit,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryFn: () => getSingleHabit(habitID),
     queryKey: ["habit", habitID],
   });
 
-  return { habit, isLoading, error };
+  return { data, isLoading, error };
 }
