@@ -17,7 +17,7 @@ export default function SingleHabitFeature() {
       <>
         <Empty resourceName="Habit" />
         <GoBackLink to={-1}>
-          <Button>Go back to Habits page</Button>
+          <Button>Go back to habits page</Button>
         </GoBackLink>
       </>
     );
