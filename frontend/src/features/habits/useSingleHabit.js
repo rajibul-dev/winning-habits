@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { getSingleHabit } from "../../api/apiHabits.js";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function useSingleHabit() {
-  const { habitID } = useSearchParams();
+  const { habitID } = useParams();
 
   const {
     data: habit,
     isLoading,
     error,
   } = useQuery({
-    queryFn: getSingleHabit,
+    queryFn: () => getSingleHabit(habitID),
     queryKey: ["habit", habitID],
   });
 
