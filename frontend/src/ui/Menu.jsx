@@ -40,6 +40,8 @@ const StyledList = styled.ul`
 
   right: ${(props) => props.$position.x}px;
   top: ${(props) => props.$position.y}px;
+
+  z-index: 99;
 `;
 
 const StyledButton = styled.button`
