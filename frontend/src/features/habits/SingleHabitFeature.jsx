@@ -20,6 +20,7 @@ const StyledHeading = styled(Heading)`
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 1rem;
 
   & svg {
     display: inline-block;
