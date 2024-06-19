@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import styled, { css } from "styled-components";
 import { useDarkMode } from "../context/DarkModeContext.jsx";
+import streakColor from "../features/habits/streakColor.js";
 
 const StyledProgressBar = styled.div`
   height: 2rem;
@@ -16,23 +17,15 @@ const ProgressValue = styled(motion.span)`
   height: 100%;
   width: 100%;
   border-radius: var(--border-radius-lg);
-  background-color: var(--color-lime-500);
-
-  ${({ streak }) =>
-    streak >= 7 &&
-    streak <= 20 &&
-    css`
-      background-color: var(--color-yellow-400);
-    `}
+  background-color: ${({ streak }) => streakColor(streak)};
 
   ${({ streak }) =>
     streak >= 21 &&
     css`
-      background-color: var(--color-orange-500);
       box-shadow:
         0 -7px 0 var(--color-orange-500-shadow),
         0 7px 0 var(--color-orange-500-shadow);
-    `}
+    `};
 `;
 
 const valueNumStyles = css`

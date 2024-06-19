@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import streakColor from "./streakColor.js";
 
 const sharedStyles = css`
   display: flex;
@@ -25,11 +26,7 @@ const Weekdays = styled.span`
     ${({ $didIt, $streak }) =>
       $didIt === true &&
       css`
-        color: ${$streak >= 0 && $streak <= 6
-          ? `var(--color-lime-500)`
-          : $streak >= 7 && $streak <= 20
-            ? `var(--color-yellow-400)`
-            : `var(--color-orange-500)`};
+        color: ${streakColor($streak)};
       `}
   }
   &:nth-child(7) {
@@ -81,40 +78,28 @@ const Dates = styled.span`
             transform: translate(-50%, -50%);
             height: 3.6rem;
             width: 3.6rem;
-
-            background-color: ${$streak >= 0 && $streak <= 6
-              ? `var(--color-lime-500)`
-              : $streak >= 7 && $streak <= 20
-                ? `var(--color-yellow-400)`
-                : `var(--color-orange-500)`};
+            background-color: ${streakColor($streak)};
 
             ${$position === "single" &&
             css`
               border-radius: 50%;
             `}
+
             ${$position === "middle" &&
             css`
               width: 120%;
             `}
+
             ${$position === "left" &&
             css`
-              box-shadow: 10px 0 0
-                ${$streak >= 0 && $streak <= 6
-                  ? `var(--color-lime-500)`
-                  : $streak >= 7 && $streak <= 20
-                    ? `var(--color-yellow-400)`
-                    : `var(--color-orange-500)`};
+              box-shadow: 10px 0 0 ${streakColor($streak)};
               border-top-left-radius: 50%;
               border-bottom-left-radius: 50%;
             `}
+            
             ${$position === "right" &&
             css`
-              box-shadow: -10px 0 0
-                ${$streak >= 0 && $streak <= 6
-                  ? `var(--color-lime-500)`
-                  : $streak >= 7 && $streak <= 20
-                    ? `var(--color-yellow-400)`
-                    : `var(--color-orange-500)`};
+              box-shadow: -10px 0 0 ${streakColor($streak)};
               border-top-right-radius: 50%;
               border-bottom-right-radius: 50%;
             `}

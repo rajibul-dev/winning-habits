@@ -1,5 +1,6 @@
 import { PiFireSimpleFill } from "react-icons/pi";
 import styled, { css } from "styled-components";
+import streakColor from "./streakColor.js";
 
 const Streak = styled.div`
   position: relative;
@@ -31,25 +32,15 @@ const Streak = styled.div`
 
     ${(props) =>
       props.$answer === "yes" &&
-      props.$streak >= 1 &&
-      props.$streak <= 6 &&
+      props.$streak !== 0 &&
       css`
-        fill: var(--color-lime-500);
-      `}
-
-    ${(props) =>
-      props.$answer === "yes" &&
-      props.$streak >= 7 &&
-      props.$streak <= 20 &&
-      css`
-        fill: var(--color-yellow-400);
+        fill: ${streakColor(props.$streak)};
       `}
 
     ${(props) =>
       props.$answer === "yes" &&
       props.$streak >= 21 &&
       css`
-        fill: var(--color-orange-500);
         filter: drop-shadow(0 0 7px var(--color-orange-500-shadow-2));
       `}
   }
