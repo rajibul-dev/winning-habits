@@ -11,9 +11,12 @@ export default function useAddAction() {
   } = useMutation({
     mutationFn: ({ habitID, answer }) => apiAddDailyAction({ habitID, answer }),
     onError: (err) => toast.error(err.response.data.msg),
-    onSuccess: () => {
+    onSuccess: (data, { habitID }) => {
       queryClient.invalidateQueries({
         queryKey: ["my-habits"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["habit", habitID],
       });
     },
   });

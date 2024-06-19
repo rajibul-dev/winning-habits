@@ -10,9 +10,10 @@ export default function useUpdateHabit() {
     isSuccess: isEdited,
   } = useMutation({
     mutationFn: ({ id, name }) => apiUpdateSingleHabit({ id, name }),
-    onSuccess: () => {
+    onSuccess: (data, { id }) => {
       toast.success(`Updated habit successfully!`);
       queryClient.invalidateQueries({ queryKey: ["my-habits"] });
+      queryClient.invalidateQueries({ queryKey: ["habit", id] });
     },
     onError: (err) => toast.error(err.response.data.msg),
   });

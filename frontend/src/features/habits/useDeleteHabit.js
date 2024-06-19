@@ -6,9 +6,10 @@ export default function useDeleteHabit() {
   const queryClient = useQueryClient();
   const { mutate: deleteHabit, isPending: isDeleting } = useMutation({
     mutationFn: (id) => apiDeleteHabit(id),
-    onSuccess: () => {
+    onSuccess: (data, id) => {
       toast.success(`Habit successfully deleted`);
       queryClient.invalidateQueries({ queryKey: ["my-habits"] });
+      queryClient.invalidateQueries({ queryKey: ["habit", id] });
     },
     onError: (err) => toast.error(err.response.data.msg),
   });

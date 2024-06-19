@@ -8,9 +8,12 @@ export default function useUpdateAction() {
     mutationFn: ({ habitID, targetRecordID, updatedAnswer }) =>
       updateCustomDateAction({ habitID, targetRecordID, updatedAnswer }),
     onError: (err) => toast.error(err.response.data.msg),
-    onSuccess: () => {
+    onSuccess: (data, { habitID }) => {
       queryClient.invalidateQueries({
         queryKey: ["my-habits"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["habit", habitID],
       });
     },
   });

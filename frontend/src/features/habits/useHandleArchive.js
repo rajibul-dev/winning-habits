@@ -7,11 +7,14 @@ export default function useHandleArchive() {
 
   const { mutate: handleArchive, isPending } = useMutation({
     mutationFn: ({ id, isArchive }) => apiHandleArchive({ id, isArchive }),
-    onSuccess: (data) => {
+    onSuccess: (data, { id }) => {
       // TODO: to show whether archived or unarchived
       console.log(data);
       queryClient.invalidateQueries({
         queryKey: ["my-habits"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["habit", id],
       });
       toast.success(`Action successful!`);
     },

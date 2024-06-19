@@ -6,9 +6,10 @@ export default function useResetProgress() {
   const queryClient = useQueryClient();
   const { mutate: resetProgress, isPending: isResetting } = useMutation({
     mutationFn: (id) => resetHabitProgress(id),
-    onSuccess: () => {
+    onSuccess: (data, id) => {
       toast.success(`Habit progress reset successfully`);
-      queryClient.invalidateQueries({ queryKey: ["single-habit"] });
+      queryClient.invalidateQueries({ queryKey: ["my-habits"] });
+      queryClient.invalidateQueries({ queryKey: ["habit", id] });
     },
     onError: (err) => toast.error(err.response.data.msg),
   });
