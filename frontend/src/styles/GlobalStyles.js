@@ -103,10 +103,23 @@ const GlobalStyles = createGlobalStyle`
   --color-orange-500-shadow: rgba(249, 116, 22, 0.4); /* 21-89 flair */
   --color-orange-500-shadow-2: rgba(249, 116, 22, 0.7); /* 21-89 flair */
   
+  /* BORDER RADIOUS */
   --border-radius-tiny: 3px;
   --border-radius-sm: 5px;
   --border-radius-md: 7px;
   --border-radius-lg: 9px;
+
+  /* FONT SIZES */
+  --font-size-base: 1.6rem;
+  --font-size-sm: 1.4rem;
+  --font-size-xsm: 1.2rem;
+  --font-size-lg: 1.8rem;
+  --font-size-xlg: 2.2rem;
+  --font-size-2xl: 2.4rem;
+  --font-size-3xl: 3rem;
+  --font-size-4xl: 3.6rem;
+  --font-size-5xl: 4.8rem;
+  --font-size-6xl: 6.4rem;
 }
 
 *,
@@ -132,7 +145,7 @@ body {
   transition: color 0.3s, background-color 0.3s;
   min-height: 100vh;
   line-height: 1.5;
-  font-size: 1.6rem;
+  font-size: var(--font-size-base);
 }
 
 input,

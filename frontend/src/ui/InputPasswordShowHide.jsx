@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  font-size: 1.6rem;
+  font-size: var(--font-size-base);
   border: 1px solid var(--color-grey-300);
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-sm);

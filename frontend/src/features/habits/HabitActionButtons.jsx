@@ -9,7 +9,7 @@ import { capitalizeString } from "../../utils/capitalizeString.js";
 const Wrapper = styled(Row)``;
 
 const Question = styled.p`
-  font-size: 1.4rem;
+  font-size: var(--font-size-sm);
   text-transform: uppercase;
   font-weight: 700;
 `;
@@ -31,7 +31,7 @@ const ActionButton = styled(Button)`
 
 const Answer = styled.span`
   display: inline-block;
-  font-size: 1.6rem;
+  font-size: var(--font-size-base);
   padding: 0.2rem 1rem;
   font-weight: 500;
   text-align: center;

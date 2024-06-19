@@ -18,12 +18,12 @@ const ValueCol = styled(Row)`
   gap: 0.2rem;
 `;
 const Value = styled.p`
-  font-size: 4.8rem;
+  font-size: var(--font-size-5xl);
   font-weight: 600;
   line-height: 1;
 `;
 const Label = styled.p`
-  font-size: 1.6rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--color-grey-500);
 `;

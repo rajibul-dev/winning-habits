@@ -49,7 +49,7 @@ const StyledButton = styled.button`
   border: none;
   padding: 1.4rem 1.8rem;
   padding-right: 5rem;
-  font-size: 1.6rem;
+  font-size: var(--font-size-base);
   transition: all 0.2s;
 
   display: flex;

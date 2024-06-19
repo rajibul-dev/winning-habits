@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 const sizes = {
   small: css`
-    font-size: 1.2rem;
+    font-size: var(--font-size-xsm);
     padding: 0.6rem 0.8rem;
     text-transform: uppercase;
     font-weight: 600;
@@ -10,7 +10,7 @@ const sizes = {
     box-shadow: none;
   `,
   medium: css`
-    font-size: 1.4rem;
+    font-size: var(--font-size-sm);
 
     ${(props) =>
       props.$variation === "primary" &&
@@ -27,7 +27,7 @@ const sizes = {
     font-weight: 700;
   `,
   large: css`
-    font-size: 1.8rem;
+    font-size: var(--font-size-lg);
 
     ${(props) =>
       props.$variation === "primary" &&

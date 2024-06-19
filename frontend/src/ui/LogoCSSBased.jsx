@@ -20,14 +20,14 @@ const StyledTrophyIcon = styled.img`
 
 const FirstWord = styled.span`
   display: inline-block;
-  font-size: 1.8rem;
+  font-size: var(--font-size-lg);
   font-weight: 500;
   letter-spacing: 0.3pt;
 `;
 
 const SecondWord = styled.span`
   display: inline-block;
-  font-size: 2.2rem;
+  font-size: var(--font-size-xlg);
   font-weight: 900;
   letter-spacing: 0.3pt;
   transform: translateX(0.06rem);

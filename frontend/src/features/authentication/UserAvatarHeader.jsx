@@ -13,7 +13,7 @@ const StyledUserAvatar = styled.div`
   gap: 1.2rem;
   align-items: center;
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: var(--font-size-sm);
   color: var(--color-grey-600);
 `;
 
@@ -27,7 +27,7 @@ const Avatar = styled.img`
   outline: 2px solid var(--color-grey-100);
 `;
 const Name = styled.span`
-  font-size: 1.6rem;
+  font-size: var(--font-size-base);
   font-weight: 700;
   color: var(--color-grey-500);
 `;

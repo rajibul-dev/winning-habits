@@ -13,7 +13,7 @@ const types = {
 
 const PageLevelNotificationToast = styled.div`
   padding: 1.6rem;
-  font-size: 1.6rem;
+  font-size: var(--font-size-base);
   ${(props) => types[props.type]}
 `;
 

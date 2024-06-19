@@ -24,7 +24,7 @@ const TopRow = styled(Row)`
 `;
 
 const Name = styled.p`
-  font-size: 2.4rem;
+  font-size: var(--font-size-2xl);
   font-weight: 600;
 `;
 

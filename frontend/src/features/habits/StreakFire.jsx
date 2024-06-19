@@ -7,7 +7,7 @@ const Streak = styled.div`
   transform: translateX(8rem);
 
   & span {
-    font-size: 3.6rem;
+    font-size: var(--font-size-4xl);
     font-weight: 700;
     display: inline-block;
     color: var(--color-grey-500);

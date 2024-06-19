@@ -19,7 +19,7 @@ const Form = styled.form`
   ${(props) => props.type === "modal" && css``}
     
   overflow: hidden;
-  font-size: 1.4rem;
+  font-size: var(--font-size-sm);
 `;
 
 Form.defaultProps = {

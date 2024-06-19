@@ -48,7 +48,7 @@ const GuideText = styled.p`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
+  font-size: var(--font-size-sm);
   text-align: center;
   color: var(--color-grey-400);
   line-height: 1.5;
