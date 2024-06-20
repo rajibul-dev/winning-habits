@@ -11,14 +11,18 @@ import ProgressBar from "../../ui/ProgressBar.jsx";
 import StatCard from "../../ui/StatCard.jsx";
 import { PiFireSimpleFill } from "react-icons/pi";
 import streakColor from "./streakColor.js";
+import HabitMenuOptions from "./HabitMenuOptions.jsx";
+import Menus from "../../ui/Menu.jsx";
+import HabitActionButtons from "./HabitActionButtons.jsx";
 
 const FULL_POINTS = 1000;
 
 const GoBackLink = styled(Link)``;
 
-const StyledHeading = styled(Heading)`
+const TopRow = styled(Row)`
   display: flex;
   align-items: center;
+  justify-content: start;
   gap: 1rem;
   margin-bottom: 1rem;
 
@@ -27,10 +31,24 @@ const StyledHeading = styled(Heading)`
     width: 3.4rem;
     height: 3.4rem;
     cursor: pointer;
-    &:hover {
+    &.back-btn:hover {
       background-color: var(--color-grey-200);
     }
   }
+`;
+
+const ContentColumn = styled(Row)`
+  gap: 4rem;
+`;
+const SettingsColumn = styled(Row)``;
+const GridWrapper = styled(Row)``;
+
+const ActionButtonWrapper = styled.div`
+  margin-left: 5rem;
+`;
+
+const StyledHeading = styled(Heading)`
+  margin-right: auto;
 `;
 
 const ProgressBarRow = styled(Row)``;
@@ -55,37 +73,69 @@ export default function SingleHabitFeature() {
       </>
     );
 
-  const { name, totalPoints, streak } = data.habit;
+  const {
+    name,
+    totalPoints,
+    streak,
+    _id: habitID,
+    dailyRecords,
+    isArchived,
+  } = data.habit;
+  const latestRecord = dailyRecords[dailyRecords.length - 1] || null;
+  const { didIt, _id: latestRecordID } = latestRecord || false;
+  const isAnswered = didIt !== "unanswered" && didIt;
 
   const streakFireColor = streakColor(streak);
 
   return (
-    <>
-      <StyledHeading>
-        <IoArrowBack onClick={() => navigate(-1)} />
-        {name}
-      </StyledHeading>
+    <Menus>
+      <TopRow type="horizontal">
+        <IoArrowBack className="back-btn" onClick={() => navigate(-1)} />
+        <StyledHeading>{name}</StyledHeading>
+        <HabitMenuOptions
+          habitID={habitID}
+          isAnswered={isAnswered}
+          name={name}
+          latestRecordID={latestRecordID}
+          isArchived={isArchived}
+        />
+      </TopRow>
 
-      <StatsRow type="horizontal">
-        <StatCard
-          icon={<IoSparkles color="var(--color-yellow-400)" />}
-          value={totalPoints}
-          label="Points"
-        />
-        <StatCard
-          icon={<PiFireSimpleFill color={streakFireColor} />}
-          value={streak}
-          label="Day streak"
-        />
-      </StatsRow>
-
-      <ProgressBarRow>
-        <ProgressBar
-          percentage={(totalPoints / FULL_POINTS) * 100}
-          startValueNum={0}
-          endValueNum={FULL_POINTS}
-        />
-      </ProgressBarRow>
-    </>
+      <GridWrapper type="horizontal">
+        <ContentColumn>
+          <StatsRow type="horizontal">
+            <StatCard
+              icon={<IoSparkles color="var(--color-yellow-400)" />}
+              value={totalPoints}
+              label="Points"
+            />
+            <StatCard
+              icon={
+                <PiFireSimpleFill
+                  color={isAnswered ? streakFireColor : `var(--color-grey-300)`}
+                />
+              }
+              value={streak}
+              label="Day streak"
+            />
+            <ActionButtonWrapper>
+              <HabitActionButtons
+                habitID={habitID}
+                didIt={didIt}
+                isAnswered={isAnswered}
+              />
+            </ActionButtonWrapper>
+          </StatsRow>
+          <ProgressBarRow>
+            <ProgressBar
+              percentage={(totalPoints / FULL_POINTS) * 100}
+              startValueNum={0}
+              endValueNum={FULL_POINTS}
+            />
+          </ProgressBarRow>
+        </ContentColumn>
+        <SettingsColumn></SettingsColumn>
+      </GridWrapper>
+    </Menus>
   );
 }
