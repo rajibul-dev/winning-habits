@@ -41,10 +41,13 @@ const ContentColumn = styled(Row)`
   gap: 4rem;
 `;
 const SettingsColumn = styled(Row)``;
-const GridWrapper = styled(Row)``;
+const GridWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+`;
 
 const ActionButtonWrapper = styled.div`
-  margin-left: 5rem;
+  margin-left: auto;
 `;
 
 const StyledHeading = styled(Heading)`
