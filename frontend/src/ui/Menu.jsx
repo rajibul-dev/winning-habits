@@ -34,7 +34,7 @@ const StyledList = styled.ul`
 
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
-  border: 1px solid var(--color-grey-200);
+  border: var(--usual-layout-border);
   border-radius: var(--border-radius-md);
   overflow: hidden;
 

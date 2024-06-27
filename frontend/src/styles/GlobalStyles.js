@@ -120,7 +120,9 @@ const GlobalStyles = createGlobalStyle`
   --font-size-4xl: 3.6rem;
   --font-size-5xl: 4.8rem;
   --font-size-6xl: 6.4rem;
-}
+
+  /* BORDERS */
+  --usual-layout-border: var(--usual-layout-border);}
 
 *,
 *::before,
