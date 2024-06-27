@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import DarkModeToggleBtn from "./DarkModeToggleBtn.jsx";
 
 const StyledHeaderMenu = styled.ul`
@@ -8,8 +7,6 @@ const StyledHeaderMenu = styled.ul`
 `;
 
 function HeaderMenu() {
-  const navigate = useNavigate();
-
   return (
     <StyledHeaderMenu>
       <DarkModeToggleBtn />
