@@ -37,18 +37,7 @@ const TopRow = styled(Row)`
   }
 `;
 
-const ContentColumn = styled(Row)`
-  gap: 4rem;
-`;
-const SettingsColumn = styled(Row)``;
-const GridWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1.7fr 1fr;
-`;
-
-const ActionButtonWrapper = styled.div`
-  margin-left: auto;
-`;
+const ActionButtonWrapper = styled.div``;
 
 const StyledHeading = styled(Heading)`
   margin-right: auto;
@@ -88,7 +77,8 @@ export default function SingleHabitFeature() {
   const { didIt, _id: latestRecordID } = latestRecord || false;
   const isAnswered = didIt !== "unanswered" && didIt;
 
-  const streakFireColor = streakColor(streak);
+  const streakFireColor =
+    streak === 0 ? `var(--color-grey-300)` : streakColor(streak);
 
   return (
     <Menus>
@@ -104,41 +94,37 @@ export default function SingleHabitFeature() {
         />
       </TopRow>
 
-      <GridWrapper type="horizontal">
-        <ContentColumn>
-          <StatsRow type="horizontal">
-            <StatCard
-              icon={<IoSparkles color="var(--color-yellow-400)" />}
-              value={totalPoints}
-              label="Points"
+      <StatsRow type="horizontal">
+        <StatCard
+          icon={<IoSparkles color="var(--color-yellow-400)" />}
+          value={totalPoints}
+          label="Points"
+        />
+        <StatCard
+          icon={
+            <PiFireSimpleFill
+              color={isAnswered ? streakFireColor : `var(--color-grey-300)`}
             />
-            <StatCard
-              icon={
-                <PiFireSimpleFill
-                  color={isAnswered ? streakFireColor : `var(--color-grey-300)`}
-                />
-              }
-              value={streak}
-              label="Day streak"
-            />
-            <ActionButtonWrapper>
-              <HabitActionButtons
-                habitID={habitID}
-                didIt={didIt}
-                isAnswered={isAnswered}
-              />
-            </ActionButtonWrapper>
-          </StatsRow>
-          <ProgressBarRow>
-            <ProgressBar
-              percentage={(totalPoints / FULL_POINTS) * 100}
-              startValueNum={0}
-              endValueNum={FULL_POINTS}
-            />
-          </ProgressBarRow>
-        </ContentColumn>
-        <SettingsColumn></SettingsColumn>
-      </GridWrapper>
+          }
+          value={streak}
+          label="Day streak"
+        />
+        <ActionButtonWrapper>
+          <HabitActionButtons
+            habitID={habitID}
+            didIt={didIt}
+            isAnswered={isAnswered}
+            variant="design-2"
+          />
+        </ActionButtonWrapper>
+      </StatsRow>
+      <ProgressBarRow>
+        <ProgressBar
+          percentage={(totalPoints / FULL_POINTS) * 100}
+          startValueNum={0}
+          endValueNum={FULL_POINTS}
+        />
+      </ProgressBarRow>
     </Menus>
   );
 }
