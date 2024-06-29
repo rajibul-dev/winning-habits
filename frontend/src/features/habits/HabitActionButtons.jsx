@@ -182,7 +182,9 @@ export default function HabitActionButtons({
         {isAnswered && !isUpdating && (
           <StyledAnswer $didIt={didIt}>
             {capitalizeString(didIt)},{" "}
-            {didIt === "yes" ? "you did it!" : "you didn't."}
+            {didIt === "yes"
+              ? `you did it${variant === "design-2" ? ` today!` : `!`}`
+              : `you didn't${variant === "design-2" ? ` do it today.` : `.`}`}
           </StyledAnswer>
         )}
 
