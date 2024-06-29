@@ -117,12 +117,12 @@ const Answer = styled.span`
     if ($variant === "design-2") {
       return $didIt === "yes"
         ? css`
-            background-color: var(--color-green-100);
+            background-color: transparent;
             border: none;
             color: var(--color-green-700);
           `
         : css`
-            background-color: var(--color-red-100);
+            background-color: transparent;
             border: none;
             color: var(--color-red-800);
           `;
