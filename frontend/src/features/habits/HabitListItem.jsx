@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Row from "../../ui/Row.jsx";
 import SevenDayActionView from "./SevenDayActionView.jsx";
 import HabitMenuOptions from "./HabitMenuOptions.jsx";
 import ProgressBar from "../../ui/ProgressBar.jsx";
@@ -9,37 +8,57 @@ import StreakFire from "./StreakFire.jsx";
 import { useNavigate } from "react-router-dom";
 
 const StyledItem = styled.li`
-  display: flex;
-  flex-direction: column;
-  gap: 2.3rem;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(3, auto);
+  row-gap: 3rem;
+  align-items: center;
+
   background-color: var(--color-grey-0);
   padding: 3rem;
   border: 1px solid var(--color-grey-300);
   cursor: pointer;
 `;
 
-const TopRow = styled(Row)`
-  justify-content: space-between;
-  align-items: center;
-`;
-
 const Name = styled.p`
+  grid-row: 1 / 2;
+  grid-column: 1 / -2;
+
   font-size: var(--font-size-2xl);
   font-weight: 600;
 `;
 
-const BarRow = styled(Row)`
-  gap: 1rem;
-  flex-shrink: 0;
-  margin-top: 0.8rem;
+const BarContainer = styled.div`
+  grid-row: 2 / 3;
+  grid-column: 1 / -1;
 `;
 
-const BottomRow = styled.div`
-  display: grid;
-  grid-template-columns: auto auto 1fr auto;
-  margin-top: 1.4rem;
-  justify-items: center;
-  align-items: center;
+const StyledMenu = styled.div`
+  grid-row: 1 / 2;
+  grid-column: -2 / -1;
+  align-self: center;
+  justify-self: end;
+`;
+
+const PointsWrapper = styled.div`
+  grid-row: 3 / 4;
+  grid-column: 1 / 2;
+`;
+
+const FireWrapper = styled.div`
+  grid-row: 3 / 4;
+  grid-column: 3 / 4;
+`;
+
+const SevenDayViewWrapper = styled.div`
+  grid-row: 3 / 4;
+  grid-column: 4 / span 4;
+`;
+
+const ActionWrapper = styled.div`
+  grid-row: 3 / 4;
+  grid-column: -4 / -1;
+  justify-self: end;
 `;
 
 function calculateTargetPoints(currentPoints) {
@@ -76,20 +95,19 @@ export default function HabitListItem({ habit }) {
 
   return (
     <StyledItem onClick={goToSingleHabitPage}>
-      <TopRow type="horizontal">
-        <Name>{name}</Name>
-        <div className="habit-menu">
-          <HabitMenuOptions
-            habitID={habitID}
-            isAnswered={isAnswered}
-            name={name}
-            latestRecordID={latestRecordID}
-            isArchived={isArchived}
-          />
-        </div>
-      </TopRow>
+      <Name>{name}</Name>
 
-      <BarRow type="horizontal">
+      <StyledMenu className="habit-menu">
+        <HabitMenuOptions
+          habitID={habitID}
+          isAnswered={isAnswered}
+          name={name}
+          latestRecordID={latestRecordID}
+          isArchived={isArchived}
+        />
+      </StyledMenu>
+
+      <BarContainer>
         <ProgressBar
           percentage={
             ((totalPoints - barMinimumPoints) /
@@ -100,24 +118,30 @@ export default function HabitListItem({ habit }) {
           startValueNum={barMinimumPoints}
           endValueNum={targetPoints}
         />
-      </BarRow>
+      </BarContainer>
 
-      <BottomRow type="horizontal">
+      <PointsWrapper>
         <NumericStatsMinimal
           label={`Point${totalPoints !== 1 ? "s" : ""}`}
           number={totalPoints}
         />
+      </PointsWrapper>
 
+      <FireWrapper>
         <StreakFire streak={streak} didIt={didIt} />
+      </FireWrapper>
 
+      <SevenDayViewWrapper>
         <SevenDayActionView dailyRecords={dailyRecords} streak={streak} />
+      </SevenDayViewWrapper>
 
+      <ActionWrapper>
         <HabitActionButtons
           habitID={habitID}
           didIt={didIt}
           isAnswered={isAnswered}
         />
-      </BottomRow>
+      </ActionWrapper>
     </StyledItem>
   );
 }

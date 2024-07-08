@@ -4,7 +4,6 @@ import streakColor from "./streakColor.js";
 
 const Streak = styled.div`
   position: relative;
-  transform: translateX(8rem);
 
   & span {
     font-size: var(--font-size-4xl);
