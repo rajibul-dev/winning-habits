@@ -102,6 +102,13 @@ const GlobalStyles = createGlobalStyle`
     --color-orange-500: #f97316; /* 21-89 */
     --color-orange-500-shadow: rgba(249, 116, 22, 0.4); /* 21-89 flair */
     --color-orange-500-shadow-2: rgba(249, 116, 22, 0.7); /* 21-89 flair */
+
+    /* CONST REDS AND GREENS */
+    --color-const-red-100: #fee2e2;
+    --color-const-red-700: #991b1b;
+
+    --color-const-green-100: #dcfce7;
+    --color-const-green-700: #15803d;
     
     /* BORDER RADIOUS */
     --border-radius-tiny: 3px;
