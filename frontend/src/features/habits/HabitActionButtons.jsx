@@ -31,13 +31,15 @@ const Wrapper = styled(Row)`
     if ($variant === "design-2" && $didIt !== "unanswered") {
       if ($didIt === "yes") {
         return css`
-          background-color: var(--color-green-100);
           // TODO: find better design for this
+          background-color: var(--color-green-100);
+          /* background-color: var(--color-const-green-700); */
         `;
       } else {
         return css`
           // TODO: find better design for this
           background-color: var(--color-red-100);
+          /* background-color: var(--color-const-red-800); */
         `;
       }
     }
@@ -52,6 +54,7 @@ const Question = styled.p`
   ${({ $variant }) =>
     $variant === "design-2" &&
     css`
+      font-weight: 800;
       text-align: center;
       font-size: 2rem;
     `}
@@ -138,11 +141,13 @@ const Answer = styled.span`
             background-color: transparent;
             border: none;
             color: var(--color-green-700);
+            /* color: var(--color-const-green-100); */
           `
         : css`
             background-color: transparent;
             border: none;
             color: var(--color-red-800);
+            /* color: var(--color-const-red-100); */
           `;
     }
   }}
