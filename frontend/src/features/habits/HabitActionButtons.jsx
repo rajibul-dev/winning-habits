@@ -19,12 +19,12 @@ const Wrapper = styled(Row)`
     $variant === "design-2" &&
     css`
       border: 1px solid var(--color-grey-400);
-      height: 11rem;
-      width: 25rem;
+      height: 100%;
+      width: 100%;
       padding: 1rem 3rem;
       margin: 0 auto;
       justify-content: center;
-      gap: 1rem;
+      gap: 1.6rem;
     `}
 
   ${({ $variant, $didIt }) => {
@@ -32,9 +32,11 @@ const Wrapper = styled(Row)`
       if ($didIt === "yes") {
         return css`
           background-color: var(--color-green-100);
+          // TODO: find better design for this
         `;
       } else {
         return css`
+          // TODO: find better design for this
           background-color: var(--color-red-100);
         `;
       }
@@ -46,6 +48,13 @@ const Question = styled.p`
   font-size: var(--font-size-sm);
   text-transform: uppercase;
   font-weight: 700;
+
+  ${({ $variant }) =>
+    $variant === "design-2" &&
+    css`
+      text-align: center;
+      font-size: 2rem;
+    `}
 
   ${({ $variant, $isAnswered }) =>
     $variant === "design-2" &&
@@ -59,7 +68,11 @@ const ButtonsRow = styled(Row)`
   gap: 2rem;
   flex-grow: 1;
 
-  ${({ $variant }) => $variant === "design-2" && css``}
+  ${({ $variant }) =>
+    $variant === "design-2" &&
+    css`
+      flex-grow: 0;
+    `}
 `;
 
 const ActionButton = styled(Button)`
@@ -96,7 +109,12 @@ const Answer = styled.span`
 
   ${({ $variant }) => {
     if ($variant === "design-2") {
-      return css``;
+      return css`
+        font-size: 2rem;
+        text-transform: uppercase;
+        font-weight: 800;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      `;
     }
   }}
 

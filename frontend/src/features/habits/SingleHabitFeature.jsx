@@ -17,9 +17,20 @@ import HabitActionButtons from "./HabitActionButtons.jsx";
 
 const FULL_POINTS = 1000;
 
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(3, max-content);
+  row-gap: 3rem;
+  column-gap: 3rem;
+`;
+
 const GoBackLink = styled(Link)``;
 
-const TopRow = styled(Row)`
+const HeadingWithBackBtnWrapper = styled(Row)`
+  grid-column: 1 / -1;
+  grid-row: 1 / 2;
+
   display: flex;
   align-items: center;
   justify-content: start;
@@ -37,17 +48,32 @@ const TopRow = styled(Row)`
   }
 `;
 
-const ActionButtonWrapper = styled.div``;
-
 const StyledHeading = styled(Heading)`
   margin-right: auto;
 `;
 
-const ProgressBarRow = styled(Row)``;
+const PointsWrapper = styled.div`
+  grid-row: 2 / 3;
+  grid-column: 1 / span 2;
+  align-self: center;
+`;
 
-const StatsRow = styled(Row)`
-  justify-content: start;
-  gap: 3rem;
+const StreakWrapper = styled.div`
+  grid-row: 2 / 3;
+  grid-column: 3 / span 2;
+  align-self: center;
+`;
+
+const ActionButtonWrapper = styled.div`
+  grid-row: 2 / span 2;
+  grid-column: 5 / -1;
+  justify-self: stretch;
+  align-self: stretch;
+`;
+
+const ProgressBarWrapper = styled.div`
+  grid-row: 3 /4;
+  grid-column: 1 / span 4;
 `;
 
 export default function SingleHabitFeature() {
@@ -82,33 +108,39 @@ export default function SingleHabitFeature() {
 
   return (
     <Menus>
-      <TopRow type="horizontal">
-        <IoArrowBack className="back-btn" onClick={() => navigate(-1)} />
-        <StyledHeading>{name}</StyledHeading>
-        <HabitMenuOptions
-          habitID={habitID}
-          isAnswered={isAnswered}
-          name={name}
-          latestRecordID={latestRecordID}
-          isArchived={isArchived}
-        />
-      </TopRow>
+      <GridContainer>
+        <HeadingWithBackBtnWrapper type="horizontal">
+          <IoArrowBack className="back-btn" onClick={() => navigate(-1)} />
+          <StyledHeading>{name}</StyledHeading>
+          <HabitMenuOptions
+            habitID={habitID}
+            isAnswered={isAnswered}
+            name={name}
+            latestRecordID={latestRecordID}
+            isArchived={isArchived}
+          />
+        </HeadingWithBackBtnWrapper>
 
-      <StatsRow type="horizontal">
-        <StatCard
-          icon={<IoSparkles color="var(--color-yellow-400)" />}
-          value={totalPoints}
-          label="Points"
-        />
-        <StatCard
-          icon={
-            <PiFireSimpleFill
-              color={isAnswered ? streakFireColor : `var(--color-grey-300)`}
-            />
-          }
-          value={streak}
-          label="Day streak"
-        />
+        <PointsWrapper>
+          <StatCard
+            icon={<IoSparkles color="var(--color-yellow-400)" />}
+            value={totalPoints}
+            label="Points"
+          />
+        </PointsWrapper>
+
+        <StreakWrapper>
+          <StatCard
+            icon={
+              <PiFireSimpleFill
+                color={isAnswered ? streakFireColor : `var(--color-grey-300)`}
+              />
+            }
+            value={streak}
+            label="Day streak"
+          />
+        </StreakWrapper>
+
         <ActionButtonWrapper>
           <HabitActionButtons
             habitID={habitID}
@@ -117,14 +149,15 @@ export default function SingleHabitFeature() {
             variant="design-2"
           />
         </ActionButtonWrapper>
-      </StatsRow>
-      <ProgressBarRow>
-        <ProgressBar
-          percentage={(totalPoints / FULL_POINTS) * 100}
-          startValueNum={0}
-          endValueNum={FULL_POINTS}
-        />
-      </ProgressBarRow>
+
+        <ProgressBarWrapper>
+          <ProgressBar
+            percentage={(totalPoints / FULL_POINTS) * 100}
+            startValueNum={0}
+            endValueNum={FULL_POINTS}
+          />
+        </ProgressBarWrapper>
+      </GridContainer>
     </Menus>
   );
 }

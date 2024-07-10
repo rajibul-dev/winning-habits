@@ -4,6 +4,7 @@ import Row from "./Row.jsx";
 const Card = styled(Row)`
   border: 1px solid var(--color-grey-400);
   align-items: center;
+  justify-content: center;
   gap: 2rem;
   padding: 1.4rem 3rem;
 `;
