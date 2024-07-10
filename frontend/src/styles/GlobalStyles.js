@@ -105,7 +105,7 @@ const GlobalStyles = createGlobalStyle`
 
     /* CONST REDS AND GREENS */
     --color-const-red-100: #fee2e2;
-    --color-const-red-700: #991b1b;
+    --color-const-red-800: #991b1b;
 
     --color-const-green-100: #dcfce7;
     --color-const-green-700: #15803d;
