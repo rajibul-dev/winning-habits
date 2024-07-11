@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import { createPortal } from "react-dom";
 import useOutsideClick from "../hooks/useOutsideClick.js";
+import useOnScrollHandler from "../hooks/useOnScrollHandler.js";
 
 const Menu = styled.div`
   display: flex;
@@ -101,17 +102,7 @@ function Menus({ children }) {
 function Toggle({ id, type, children }) {
   const { openId, close, open, setPosition } = useContext(MenusContext);
 
-  useEffect(() => {
-    function handleScroll() {
-      if (openId) {
-        close();
-        document.removeEventListener("wheel", handleScroll);
-      }
-    }
-    if (openId) document.addEventListener("wheel", handleScroll);
-
-    return () => document.removeEventListener("wheel", handleScroll);
-  }, [openId, close]);
+  useOnScrollHandler({ condition: openId, handler: close });
 
   function handleClick(e) {
     e.stopPropagation();
