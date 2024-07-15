@@ -6,11 +6,12 @@ import { useNavigate } from "react-router-dom";
 export default function useLogout() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
   const { mutate: logout, isPending: isLoggingOut } = useMutation({
     mutationFn: apiLogout,
     onSuccess: () => {
       toast.success(`User logged out`);
-      queryClient.removeQueries(["user", "my-habits"]);
+      queryClient.removeQueries();
       navigate("/login", { replace: true });
     },
   });
