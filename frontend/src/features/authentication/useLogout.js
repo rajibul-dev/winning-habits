@@ -11,7 +11,7 @@ export default function useLogout() {
     onSuccess: () => {
       toast.success(`User logged out`);
       queryClient.removeQueries(["user", "my-habits"]);
-      navigate("/login");
+      navigate("/login", { replace: true });
     },
   });
   return { logout, isLoggingOut };
