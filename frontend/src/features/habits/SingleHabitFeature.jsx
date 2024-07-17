@@ -1,19 +1,20 @@
+import { IoArrowBack } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import Empty from "../../ui/Empty.jsx";
-import Heading from "../../ui/Heading.jsx";
-import Spinner from "../../ui/Spinner.jsx";
-import useSingleHabit from "./useSingleHabit.js";
 import styled from "styled-components";
 import Button from "../../ui/Button.jsx";
-import { IoArrowBack, IoSparkles } from "react-icons/io5";
-import Row from "../../ui/Row.jsx";
+import Empty from "../../ui/Empty.jsx";
+import Heading from "../../ui/Heading.jsx";
 import ProgressBar from "../../ui/ProgressBar.jsx";
-import StatCard from "../../ui/StatCard.jsx";
-import { PiFireSimpleFill } from "react-icons/pi";
-import streakColor from "./streakColor.js";
-import HabitMenuOptions from "./HabitMenuOptions.jsx";
+import Row from "../../ui/Row.jsx";
+import Spinner from "../../ui/Spinner.jsx";
+import useSingleHabit from "./useSingleHabit.js";
+
 import Menus from "../../ui/Menu.jsx";
 import HabitActionButtons from "./HabitActionButtons.jsx";
+import HabitMenuOptions from "./HabitMenuOptions.jsx";
+import streakColor from "./streakColor.js";
+import HabitStatistics from "./HabitStatistics.jsx";
+import HabitCalender from "./HabitCalender.jsx";
 
 const FULL_POINTS = 1000;
 
@@ -52,18 +53,6 @@ const StyledHeading = styled(Heading)`
   margin-right: auto;
 `;
 
-const PointsWrapper = styled.div`
-  grid-row: 2 / 3;
-  grid-column: 1 / span 2;
-  align-self: center;
-`;
-
-const StreakWrapper = styled.div`
-  grid-row: 2 / 3;
-  grid-column: 3 / span 2;
-  align-self: center;
-`;
-
 const ActionButtonWrapper = styled.div`
   grid-row: 2 / span 2;
   grid-column: 5 / -1;
@@ -73,6 +62,10 @@ const ActionButtonWrapper = styled.div`
 
 const ProgressBarWrapper = styled.div`
   grid-row: 3 /4;
+  grid-column: 1 / span 4;
+`;
+
+const CalendarWrapper = styled.div`
   grid-column: 1 / span 4;
 `;
 
@@ -121,25 +114,12 @@ export default function SingleHabitFeature() {
           />
         </HeadingWithBackBtnWrapper>
 
-        <PointsWrapper>
-          <StatCard
-            icon={<IoSparkles color="var(--color-yellow-400)" />}
-            value={totalPoints}
-            label="Points"
-          />
-        </PointsWrapper>
-
-        <StreakWrapper>
-          <StatCard
-            icon={
-              <PiFireSimpleFill
-                color={isAnswered ? streakFireColor : `var(--color-grey-300)`}
-              />
-            }
-            value={streak}
-            label="Day streak"
-          />
-        </StreakWrapper>
+        <HabitStatistics
+          isAnswered={isAnswered}
+          streak={streak}
+          streakFireColor={streakFireColor}
+          totalPoints={totalPoints}
+        />
 
         <ActionButtonWrapper>
           <HabitActionButtons
@@ -157,6 +137,13 @@ export default function SingleHabitFeature() {
             endValueNum={FULL_POINTS}
           />
         </ProgressBarWrapper>
+
+        <CalendarWrapper>
+          <HabitCalender
+            streakFireColor={streakFireColor}
+            dailyRecords={dailyRecords}
+          />
+        </CalendarWrapper>
       </GridContainer>
     </Menus>
   );
