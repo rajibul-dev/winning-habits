@@ -35,7 +35,7 @@ const Wrapper = styled(Row)`
           background-color: var(--color-green-100);
           /* background-color: var(--color-const-green-700); */
         `;
-      } else {
+      } else if ($didIt === "no") {
         return css`
           // TODO: find better design for this
           background-color: var(--color-red-100);
