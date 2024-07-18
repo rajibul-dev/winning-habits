@@ -70,6 +70,9 @@ const StyledDayPicker = styled(DayPicker)`
     &.rdp-day_selected::before {
       background-color: #fff;
     }
+    &.yes::before {
+      background-color: #fff;
+    }
   }
 
   & .left {
@@ -209,6 +212,9 @@ export default function HabitCalender({ dailyRecords, streakFireColor }) {
       selected={selected}
       onSelect={setSelected}
       modifiers={{
+        yes: dailyRecordsFormatted
+          .filter((record) => record.didIt === "yes")
+          .map((record) => record.date),
         left: dailyRecordsFormatted
           .filter((record) => record.didIt === "yes")
           .filter((record) => record.position === "left" && !record.edge)
@@ -255,6 +261,7 @@ export default function HabitCalender({ dailyRecords, streakFireColor }) {
           .map((record) => record.date),
       }}
       modifiersClassNames={{
+        yes: "yes",
         left: "left",
         middle: "middle",
         right: "right",
