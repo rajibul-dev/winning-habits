@@ -133,6 +133,7 @@ export default function SingleHabitFeature() {
         <ProgressBarWrapper>
           <ProgressBar
             percentage={(totalPoints / FULL_POINTS) * 100}
+            streak={streak}
             startValueNum={0}
             endValueNum={FULL_POINTS}
           />
