@@ -2,7 +2,12 @@ import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import styled, { css } from "styled-components";
-import { isSunday, isSaturday } from "date-fns";
+import {
+  isSunday,
+  isSaturday,
+  isFirstDayOfMonth,
+  isLastDayOfMonth,
+} from "date-fns";
 
 const sharedStylesYesCellParent = css`
   z-index: 2;
@@ -102,12 +107,12 @@ const StyledDayPicker = styled(DayPicker)`
   }
 
   & .left--right-edge {
+    //
     ${sharedStylesYesCellParent}
     &::after {
       ${({ $streakFireColor }) =>
         sharedStylesYesCellAfterPseudo($streakFireColor)}
 
-      box-shadow: 10px 0 0 ${({ $streakFireColor }) => $streakFireColor};
       border-top-left-radius: 50%;
       border-bottom-left-radius: 50%;
     }
@@ -119,9 +124,7 @@ const StyledDayPicker = styled(DayPicker)`
       ${({ $streakFireColor }) =>
         sharedStylesYesCellAfterPseudo($streakFireColor)}
 
-      box-shadow: 10px 0 0 ${({ $streakFireColor }) => $streakFireColor};
-      border-top-left-radius: 50%;
-      border-bottom-left-radius: 50%;
+      box-shadow: -5px 0 0 ${({ $streakFireColor }) => $streakFireColor};
     }
   }
 
@@ -131,9 +134,8 @@ const StyledDayPicker = styled(DayPicker)`
       ${({ $streakFireColor }) =>
         sharedStylesYesCellAfterPseudo($streakFireColor)}
 
-      box-shadow: 10px 0 0 ${({ $streakFireColor }) => $streakFireColor};
-      border-top-left-radius: 50%;
-      border-bottom-left-radius: 50%;
+      border-top-right-radius: 50%;
+      border-bottom-right-radius: 50%;
     }
   }
 
@@ -143,9 +145,7 @@ const StyledDayPicker = styled(DayPicker)`
       ${({ $streakFireColor }) =>
         sharedStylesYesCellAfterPseudo($streakFireColor)}
 
-      box-shadow: 10px 0 0 ${({ $streakFireColor }) => $streakFireColor};
-      border-top-left-radius: 50%;
-      border-bottom-left-radius: 50%;
+      box-shadow: 5px 0 0 ${({ $streakFireColor }) => $streakFireColor};
     }
   }
 
@@ -164,6 +164,8 @@ export default function HabitCalender({ dailyRecords, streakFireColor }) {
   const [selected, setSelected] = useState();
 
   const dailyRecordsFormatted = dailyRecords.map((record, index, records) => {
+    const recordDate = new Date(record.date);
+
     let position = null;
     const prevAnswer = records[index - 1]?.didIt === "yes" ?? null;
     const nextAnswer = records[index + 1]?.didIt === "yes" ?? null;
@@ -178,27 +180,28 @@ export default function HabitCalender({ dailyRecords, streakFireColor }) {
     }
 
     let sunOrSat = false;
-    if (isSunday()) sunOrSat = "sun";
-    if (isSaturday()) sunOrSat = "sat";
+    if (isSunday(recordDate)) sunOrSat = "sun";
+    if (isSaturday(recordDate)) sunOrSat = "sat";
 
     let edge = false;
     if (
       (position === "left" && sunOrSat === "sat") ||
-      (position === "middle" && sunOrSat === "sat")
+      (position === "middle" && sunOrSat === "sat") ||
+      (position === "left" && isLastDayOfMonth(recordDate)) ||
+      (position === "middle" && isLastDayOfMonth(recordDate))
     ) {
       edge = "right-edge";
     } else if (
       (position === "right" && sunOrSat === "sun") ||
-      (position === "middle" && sunOrSat === "sun")
+      (position === "middle" && sunOrSat === "sun") ||
+      (position === "right" && isFirstDayOfMonth(recordDate)) ||
+      (position === "middle" && isFirstDayOfMonth(recordDate))
     ) {
       edge = "left-edge";
     }
 
     return { ...record, date: new Date(record.date), position, edge };
   });
-
-  console.log(dailyRecordsFormatted);
-  console.log(streakFireColor);
 
   return (
     <StyledDayPicker
@@ -274,3 +277,7 @@ export default function HabitCalender({ dailyRecords, streakFireColor }) {
 // middle--right-edge
 // right--left-edge
 // middle--left-edge
+// left--month-end
+// middle--month-end
+// right--month-start
+// middle--month-start
