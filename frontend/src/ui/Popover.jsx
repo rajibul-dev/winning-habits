@@ -87,20 +87,28 @@ function Popover({ children, placementX, placementY }) {
 function Trigger({ children, triggerType, id, state }) {
   const { openId, close, open, setReferenceElement } =
     useContext(PopoverContext);
+  const [selected, setSelected] = useState(false);
 
-  function handleClick(e) {
+  function handleClick() {
+    if (triggerType === "both" && !selected) {
+      setSelected(true);
+      return;
+    }
+
     if (openId === id) {
+      setSelected(false);
       close();
     } else {
       open(id);
     }
   }
 
-  const handleMouseEnter = (e) => {
+  const handleMouseEnter = () => {
     open(id);
   };
 
   const handleMouseLeave = () => {
+    if (selected) return;
     close();
   };
 
@@ -112,9 +120,18 @@ function Trigger({ children, triggerType, id, state }) {
 
   const clonedChild = React.cloneElement(children, {
     ref: setReferenceElement,
-    onClick: triggerType === "click" ? handleClick : undefined,
-    onMouseEnter: triggerType === "hover" ? handleMouseEnter : undefined,
-    onMouseLeave: triggerType === "hover" ? handleMouseLeave : undefined,
+    onClick:
+      triggerType === "click" || triggerType === "both"
+        ? handleClick
+        : undefined,
+    onMouseEnter:
+      triggerType === "hover" || triggerType === "both"
+        ? handleMouseEnter
+        : undefined,
+    onMouseLeave:
+      triggerType === "hover" || triggerType === "both"
+        ? handleMouseLeave
+        : undefined,
   });
 
   return <TriggerContainer>{clonedChild}</TriggerContainer>;
