@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Portal from "./Portal.jsx";
 import { usePopper } from "react-popper";
 import useOutsideClick from "../hooks/useOutsideClick.js";
@@ -10,13 +10,24 @@ const TriggerContainer = styled.div`
 const ContentContainer = styled.div`
   position: absolute;
   display: inline-block;
-  background-color: var(--color-grey-100);
-  padding: 2rem;
+  ${({ $noBox }) =>
+    !$noBox &&
+    css`
+      background-color: var(--color-grey-100);
+      padding: 2rem;
+    `}
+  z-index: 100000;
 `;
 
-const PopoverContext = createContext();
+export const PopoverContext = createContext();
 
-function Popover({ children, placementX, placementY, triggerType }) {
+function Popover({
+  children,
+  placementX,
+  placementY,
+  triggerType,
+  noBox = false,
+}) {
   const [openId, setOpenId] = useState("");
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
@@ -83,6 +94,7 @@ function Popover({ children, placementX, placementY, triggerType }) {
         selected,
         setSelected,
         triggerType,
+        noBox,
       }}
     >
       {children}
@@ -163,6 +175,7 @@ function Content({ children, id }) {
     selected,
     setSelected,
     triggerType,
+    noBox,
   } = useContext(PopoverContext);
 
   function outsideClickHnadler() {
@@ -187,6 +200,7 @@ function Content({ children, id }) {
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}
+          $noBox={noBox}
         >
           {children}
           <div ref={setArrowElement} style={styles.arrow} />

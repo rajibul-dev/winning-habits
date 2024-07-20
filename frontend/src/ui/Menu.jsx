@@ -1,9 +1,7 @@
-import { createContext, useContext, useState } from "react";
+import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 import { HiEllipsisVertical } from "react-icons/hi2";
-import { createPortal } from "react-dom";
-import useOutsideClick from "../hooks/useOutsideClick.js";
-import useOnScrollHandler from "../hooks/useOnScrollHandler.js";
+import Popover, { PopoverContext } from "./Popover";
 
 const Menu = styled.div`
   display: flex;
@@ -31,18 +29,11 @@ const StyledToggle = styled.button`
 `;
 
 const StyledList = styled.ul`
-  position: fixed;
-
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
   border: var(--usual-layout-border);
   border-radius: var(--border-radius-md);
   overflow: hidden;
-
-  right: ${(props) => props.$position.x}px;
-  top: ${(props) => props.$position.y}px;
-
-  z-index: 99;
 `;
 
 const StyledButton = styled.button`
@@ -81,64 +72,34 @@ const StyledButton = styled.button`
   }
 `;
 
-const MenusContext = createContext();
-
 function Menus({ children }) {
-  const [openId, setOpenId] = useState("");
-  const [position, setPosition] = useState(null);
-
-  const close = () => setOpenId("");
-  const open = setOpenId;
-
   return (
-    <MenusContext.Provider
-      value={{ openId, close, open, position, setPosition }}
-    >
+    <Popover placementX="end" placementY="bottom" triggerType="click" noBox>
       {children}
-    </MenusContext.Provider>
+    </Popover>
   );
 }
 
-function Toggle({ id, type, children }) {
-  const { openId, close, open, setPosition } = useContext(MenusContext);
-
-  useOnScrollHandler({ condition: openId, handler: close });
-
-  function handleClick(e) {
-    e.stopPropagation();
-    const rect = e.target.closest("button").getBoundingClientRect();
-
-    setPosition({
-      x: window.innerWidth - rect.width - rect.x,
-      y: rect.y + rect.height + 8,
-    });
-
-    openId === "" || openId !== id ? open(id) : close();
-  }
-
+function Toggle({ id, children, type }) {
   return (
-    <StyledToggle onClick={handleClick}>
-      {type === "container" ? children : <HiEllipsisVertical />}
-    </StyledToggle>
+    <Popover.Trigger id={id}>
+      <StyledToggle>
+        {type === "container" ? children : <HiEllipsisVertical />}
+      </StyledToggle>
+    </Popover.Trigger>
   );
 }
 
 function List({ children, id }) {
-  const { openId, position, close } = useContext(MenusContext);
-  const ref = useOutsideClick(close, false);
-
-  if (openId !== id) return null;
-
-  return createPortal(
-    <StyledList ref={ref} $position={position}>
-      {children}
-    </StyledList>,
-    document.body,
+  return (
+    <Popover.Content id={id}>
+      <StyledList>{children}</StyledList>
+    </Popover.Content>
   );
 }
 
 function Button({ children, icon, onClick, isDanger = false }) {
-  const { close } = useContext(MenusContext);
+  const { close } = useContext(PopoverContext);
 
   function handleClick() {
     onClick?.();
