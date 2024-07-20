@@ -12,6 +12,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.2.2",
     "@tanstack/react-query": "^5.28.14",
     "@tanstack/react-query-devtools": "^5.25.0",
@@ -26,6 +27,7 @@
     "react-hook-form": "^7.51.1",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^5.0.1",
+    "react-popper": "^2.3.0",
     "react-router-dom": "^6.22.2",
     "styled-components": "^6.1.8"
   },
