@@ -6,7 +6,9 @@ import useOutsideClick from "../hooks/useOutsideClick.js";
 
 const TriggerContainer = styled.div`
   position: relative;
+  height: 100%;
 `;
+
 const ContentContainer = styled.div`
   position: absolute;
   display: inline-block;
@@ -15,7 +17,9 @@ const ContentContainer = styled.div`
     css`
       background-color: var(--color-grey-100);
       padding: 2rem;
+      border: var(--usual-layout-border);
     `}
+  box-shadow: var(--box-shadow-lg);
   z-index: 100000;
 `;
 
@@ -102,7 +106,7 @@ function Popover({
   );
 }
 
-function Trigger({ children, id, state }) {
+function Trigger({ children, id, state = undefined }) {
   const {
     openId,
     close,

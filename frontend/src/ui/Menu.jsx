@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import styled, { css } from "styled-components";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import Popover, { PopoverContext } from "./Popover";
@@ -81,6 +81,7 @@ function Menus({ children }) {
 }
 
 function Toggle({ id, children, type }) {
+  console.log(id);
   return (
     <Popover.Trigger id={id}>
       <StyledToggle>
@@ -91,6 +92,7 @@ function Toggle({ id, children, type }) {
 }
 
 function List({ children, id }) {
+  console.log(id);
   return (
     <Popover.Content id={id}>
       <StyledList>{children}</StyledList>

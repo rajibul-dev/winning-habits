@@ -34,7 +34,7 @@ export default function HabitMenuOptions({
 
   return (
     <Modal>
-      <Menus.Menu>
+      <Menus>
         <Menus.Toggle id={habitID} />
 
         <Menus.List id={habitID}>
@@ -83,7 +83,7 @@ export default function HabitMenuOptions({
             resourceName={`habit "${name}"`}
           />
         </Modal.Window>
-      </Menus.Menu>
+      </Menus>
     </Modal>
   );
 }

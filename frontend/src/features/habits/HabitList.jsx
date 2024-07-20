@@ -50,12 +50,10 @@ export default function HabitList({ show = "non-archived" }) {
     return <Empty resourceName={"habits"} />;
 
   return (
-    <Menus>
-      <StyledList>
-        {habitsToRender.map((habit) => (
-          <HabitListItem key={habit._id} habit={habit} />
-        ))}
-      </StyledList>
-    </Menus>
+    <StyledList>
+      {habitsToRender.map((habit) => (
+        <HabitListItem key={habit._id} habit={habit} />
+      ))}
+    </StyledList>
   );
 }
