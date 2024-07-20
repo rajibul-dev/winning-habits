@@ -14,7 +14,7 @@ import HabitActionButtons from "./HabitActionButtons.jsx";
 import HabitMenuOptions from "./HabitMenuOptions.jsx";
 import streakColor from "./streakColor.js";
 import HabitStatistics from "./HabitStatistics.jsx";
-import HabitCalender from "./HabitCalender.jsx";
+import HabitCalender from "./HabitCalendar.jsx";
 
 const FULL_POINTS = 1000;
 
