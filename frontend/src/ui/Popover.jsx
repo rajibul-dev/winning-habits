@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Portal from "./Portal.jsx";
 import { usePopper } from "react-popper";
+import useOutsideClick from "../hooks/useOutsideClick.js";
 
 const TriggerContainer = styled.div`
   position: relative;
@@ -15,11 +16,12 @@ const ContentContainer = styled.div`
 
 const PopoverContext = createContext();
 
-function Popover({ children, placementX, placementY }) {
+function Popover({ children, placementX, placementY, triggerType }) {
   const [openId, setOpenId] = useState("");
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
   const [arrowElement, setArrowElement] = useState(null);
+  const [selected, setSelected] = useState(false);
 
   let placementYPart;
   switch (placementY) {
@@ -60,6 +62,7 @@ function Popover({ children, placementX, placementY }) {
     placement: `${placementYPart}${placementXPart}`,
     modifiers: [
       { name: "arrow", options: { element: arrowElement, padding: 5 } },
+      { name: "offset", options: { offset: [0, 10] } },
     ],
   });
 
@@ -77,6 +80,9 @@ function Popover({ children, placementX, placementY }) {
         styles,
         attributes,
         setArrowElement,
+        selected,
+        setSelected,
+        triggerType,
       }}
     >
       {children}
@@ -84,14 +90,23 @@ function Popover({ children, placementX, placementY }) {
   );
 }
 
-function Trigger({ children, triggerType, id, state }) {
-  const { openId, close, open, setReferenceElement } =
-    useContext(PopoverContext);
-  const [selected, setSelected] = useState(false);
+function Trigger({ children, id, state }) {
+  const {
+    openId,
+    close,
+    open,
+    setReferenceElement,
+    selected,
+    setSelected,
+    triggerType,
+  } = useContext(PopoverContext);
 
-  function handleClick() {
+  function handleClick(e) {
+    e.stopPropagation();
+
     if (triggerType === "both" && !selected) {
       setSelected(true);
+      open(id);
       return;
     }
 
@@ -138,21 +153,45 @@ function Trigger({ children, triggerType, id, state }) {
 }
 
 function Content({ children, id }) {
-  const { openId, setPopperElement, styles, attributes, setArrowElement } =
-    useContext(PopoverContext);
+  const {
+    openId,
+    setPopperElement,
+    styles,
+    attributes,
+    setArrowElement,
+    close,
+    selected,
+    setSelected,
+    triggerType,
+  } = useContext(PopoverContext);
+
+  function outsideClickHnadler() {
+    close();
+    setSelected(false);
+  }
+
+  const outsideClickRef = useOutsideClick(outsideClickHnadler, false);
 
   if (openId !== id) return null;
 
   return (
     <Portal>
-      <ContentContainer
-        ref={setPopperElement}
-        style={styles.popper}
-        {...attributes.popper}
+      <div
+        ref={(node) => {
+          if (triggerType === "hover") return;
+          if (triggerType === "both" && !selected) return;
+          outsideClickRef.current = node;
+        }}
       >
-        {children}
-        <div ref={setArrowElement} style={styles.arrow} />
-      </ContentContainer>
+        <ContentContainer
+          ref={setPopperElement}
+          style={styles.popper}
+          {...attributes.popper}
+        >
+          {children}
+          <div ref={setArrowElement} style={styles.arrow} />
+        </ContentContainer>
+      </div>
     </Portal>
   );
 }
@@ -163,16 +202,16 @@ Popover.Content = Content;
 export default Popover;
 
 /*
-<Popover>
-  <Popover.Trigger triggerType='click' id='unique'>
-    <button>View details</button>
-    // the button inside will then get the onClick with clonecomponent method for children
-  </Poopover.Trigger>
-  <Popover.Content>
-    <div>Content</div>
+<Popover placementX="center" placementY="top" triggerType="hover">
+  <Popover.Trigger id="example">
+    <Button>Open</Button>
+  </Popover.Trigger>
+  <Popover.Content id="example">
+    This is right in the middle
   </Popover.Content>
 </Popover>
 
-// triggerType can be 'boolean' 'hover' 'click'
+// triggerType can be 'boolean', 'hover', and 'click'
+// placmentX can be 'top', 'bottom', 'left', 'right'
 // boolean means a boolean state basically
 */
