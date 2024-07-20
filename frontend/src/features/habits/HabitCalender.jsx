@@ -9,6 +9,8 @@ import {
   isLastDayOfMonth,
 } from "date-fns";
 
+const IS_FULL_ROUND = true;
+
 const sharedStylesYesCellParent = css`
   z-index: 2;
   color: white;
@@ -110,14 +112,19 @@ const StyledDayPicker = styled(DayPicker)`
   }
 
   & .left--right-edge {
-    //
     ${sharedStylesYesCellParent}
     &::after {
       ${({ $streakFireColor }) =>
         sharedStylesYesCellAfterPseudo($streakFireColor)}
 
-      border-top-left-radius: 50%;
-      border-bottom-left-radius: 50%;
+      ${!IS_FULL_ROUND
+        ? css`
+            border-top-left-radius: 50%;
+            border-bottom-left-radius: 50%;
+          `
+        : css`
+            border-radius: 50%;
+          `}
     }
   }
 
@@ -128,6 +135,14 @@ const StyledDayPicker = styled(DayPicker)`
         sharedStylesYesCellAfterPseudo($streakFireColor)}
 
       box-shadow: -5px 0 0 ${({ $streakFireColor }) => $streakFireColor};
+
+      // new
+      ${!IS_FULL_ROUND
+        ? css``
+        : css`
+            border-top-right-radius: 50%;
+            border-bottom-right-radius: 50%;
+          `}
     }
   }
 
@@ -137,8 +152,15 @@ const StyledDayPicker = styled(DayPicker)`
       ${({ $streakFireColor }) =>
         sharedStylesYesCellAfterPseudo($streakFireColor)}
 
-      border-top-right-radius: 50%;
-      border-bottom-right-radius: 50%;
+      // new
+      ${!IS_FULL_ROUND
+        ? css`
+            border-top-right-radius: 50%;
+            border-bottom-right-radius: 50%;
+          `
+        : css`
+            border-radius: 50%;
+          `}
     }
   }
 
@@ -149,6 +171,14 @@ const StyledDayPicker = styled(DayPicker)`
         sharedStylesYesCellAfterPseudo($streakFireColor)}
 
       box-shadow: 5px 0 0 ${({ $streakFireColor }) => $streakFireColor};
+
+      // new
+      ${!IS_FULL_ROUND
+        ? css``
+        : css`
+            border-top-left-radius: 50%;
+            border-bottom-left-radius: 50%;
+          `}
     }
   }
 
