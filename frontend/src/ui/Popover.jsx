@@ -1,27 +1,83 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import Portal from "./Portal.jsx";
+import { usePopper } from "react-popper";
 
 const TriggerContainer = styled.div`
   position: relative;
 `;
 const ContentContainer = styled.div`
   position: absolute;
-  right: ${({ $position }) => $position.x}px;
-  top: ${({ $position }) => $position.y}px;
+  display: inline-block;
+  background-color: var(--color-grey-100);
+  padding: 2rem;
 `;
 
 const PopoverContext = createContext();
 
-function Popover({ children }) {
+function Popover({ children, placementX, placementY }) {
   const [openId, setOpenId] = useState("");
-  const [position, setPosition] = useState(null);
+  const [referenceElement, setReferenceElement] = useState(null);
+  const [popperElement, setPopperElement] = useState(null);
+  const [arrowElement, setArrowElement] = useState(null);
+
+  let placementYPart;
+  switch (placementY) {
+    case "top":
+      placementYPart = "top";
+      break;
+    case "bottom":
+      placementYPart = "bottom";
+      break;
+    case "left":
+      placementYPart = "left";
+      break;
+    case "right":
+      placementYPart = "right";
+      break;
+    default:
+      placementYPart = "bottom";
+      break;
+  }
+
+  let placementXPart;
+  switch (placementX) {
+    case "center":
+      placementXPart = "";
+      break;
+    case "start":
+      placementXPart = "-start";
+      break;
+    case "end":
+      placementXPart = "-end";
+      break;
+    default:
+      placementXPart = "";
+      break;
+  }
+
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    placement: `${placementYPart}${placementXPart}`,
+    modifiers: [
+      { name: "arrow", options: { element: arrowElement, padding: 5 } },
+    ],
+  });
 
   const close = () => setOpenId("");
   const open = setOpenId;
 
   return (
     <PopoverContext.Provider
-      value={{ openId, close, open, position, setPosition }}
+      value={{
+        openId,
+        close,
+        open,
+        setReferenceElement,
+        setPopperElement,
+        styles,
+        attributes,
+        setArrowElement,
+      }}
     >
       {children}
     </PopoverContext.Provider>
@@ -29,30 +85,19 @@ function Popover({ children }) {
 }
 
 function Trigger({ children, triggerType, id, state }) {
-  const { openId, close, open, setPosition } = useContext(PopoverContext);
+  const { openId, close, open, setReferenceElement } =
+    useContext(PopoverContext);
 
   function handleClick(e) {
     if (openId === id) {
       close();
     } else {
       open(id);
-
-      const rect = e.target.closest("button").getBoundingClientRect();
-      setPosition({
-        x: window.innerWidth - rect.width - rect.x,
-        y: rect.y + rect.height + 8,
-      });
     }
   }
 
   const handleMouseEnter = (e) => {
     open(id);
-
-    const rect = e.target.closest("button").getBoundingClientRect();
-    setPosition({
-      x: window.innerWidth - rect.width - rect.x,
-      y: rect.y + rect.height + 8,
-    });
   };
 
   const handleMouseLeave = () => {
@@ -66,6 +111,7 @@ function Trigger({ children, triggerType, id, state }) {
   }, [state, triggerType, id, open, close]);
 
   const clonedChild = React.cloneElement(children, {
+    ref: setReferenceElement,
     onClick: triggerType === "click" ? handleClick : undefined,
     onMouseEnter: triggerType === "hover" ? handleMouseEnter : undefined,
     onMouseLeave: triggerType === "hover" ? handleMouseLeave : undefined,
@@ -75,11 +121,23 @@ function Trigger({ children, triggerType, id, state }) {
 }
 
 function Content({ children, id }) {
-  const { openId, position } = useContext(PopoverContext);
+  const { openId, setPopperElement, styles, attributes, setArrowElement } =
+    useContext(PopoverContext);
 
   if (openId !== id) return null;
 
-  return <ContentContainer $position={position}>{children}</ContentContainer>;
+  return (
+    <Portal>
+      <ContentContainer
+        ref={setPopperElement}
+        style={styles.popper}
+        {...attributes.popper}
+      >
+        {children}
+        <div ref={setArrowElement} style={styles.arrow} />
+      </ContentContainer>
+    </Portal>
+  );
 }
 
 Popover.Trigger = Trigger;
