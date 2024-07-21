@@ -217,7 +217,11 @@ const StyledDayPicker = styled(DayPicker)`
   }
 `;
 
-export default function HabitCalender({ dailyRecords, streakFireColor }) {
+export default function HabitCalender({
+  dailyRecords,
+  streakFireColor,
+  habitID,
+}) {
   const dailyRecordsFormatted = dailyRecords.map((record, index, records) => {
     const recordDate = new Date(record.date);
 
@@ -262,7 +266,13 @@ export default function HabitCalender({ dailyRecords, streakFireColor }) {
     <StyledDayPicker
       mode="single"
       components={{
-        DayContent: CustomDayComponent,
+        DayContent: ({ date }) => (
+          <CustomDayComponent
+            date={date}
+            dailyRecords={dailyRecords}
+            habitID={habitID}
+          />
+        ),
       }}
       modifiers={{
         yes: dailyRecordsFormatted

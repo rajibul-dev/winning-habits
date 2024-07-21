@@ -143,6 +143,7 @@ export default function SingleHabitFeature() {
           <HabitCalender
             streakFireColor={streakFireColor}
             dailyRecords={dailyRecords}
+            habitID={habitID}
           />
         </CalendarWrapper>
       </GridContainer>
