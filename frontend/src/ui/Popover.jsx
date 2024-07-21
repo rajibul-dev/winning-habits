@@ -23,6 +23,22 @@ const ContentContainer = styled.div`
   z-index: 100000;
 `;
 
+// for managing signle popover opens at one time
+const PopoverManagerContext = createContext();
+export function PopoverManagerProvider({ children }) {
+  const [openId, setOpenId] = useState(null);
+
+  const close = () => setOpenId("");
+  const open = setOpenId;
+
+  return (
+    <PopoverManagerContext.Provider value={{ openId, close, open }}>
+      {children}
+    </PopoverManagerContext.Provider>
+  );
+}
+export const usePopoverManager = () => useContext(PopoverManagerContext);
+
 export const PopoverContext = createContext();
 
 function Popover({
@@ -32,7 +48,7 @@ function Popover({
   triggerType,
   noBox = false,
 }) {
-  const [openId, setOpenId] = useState("");
+  const { openId, close, open } = usePopoverManager();
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
   const [arrowElement, setArrowElement] = useState(null);
@@ -80,9 +96,6 @@ function Popover({
       { name: "offset", options: { offset: [0, 10] } },
     ],
   });
-
-  const close = () => setOpenId("");
-  const open = setOpenId;
 
   return (
     <PopoverContext.Provider
@@ -150,7 +163,6 @@ function Trigger({ children, id, state = undefined }) {
   }, [state, triggerType, id, open, close]);
 
   const clonedChild = React.cloneElement(children, {
-    ref: setReferenceElement,
     onClick:
       triggerType === "click" || triggerType === "both"
         ? handleClick
@@ -165,7 +177,9 @@ function Trigger({ children, id, state = undefined }) {
         : undefined,
   });
 
-  return <TriggerContainer>{clonedChild}</TriggerContainer>;
+  return (
+    <TriggerContainer ref={setReferenceElement}>{clonedChild}</TriggerContainer>
+  );
 }
 
 function Content({ children, id }) {

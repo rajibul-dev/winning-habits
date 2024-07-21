@@ -55,7 +55,7 @@ function UserAvatarHeader() {
           />
         </StyledUserAvatar>
       </Menus.Toggle>
-      <Menus.List id="account dropdown">
+      <Menus.List style={{ zIndex: 100002 }} id="account dropdown">
         <Menus.Button
           onClick={() => navigate("/app/profile")}
           icon={<FaUser />}

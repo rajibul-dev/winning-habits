@@ -34,6 +34,8 @@ const StyledList = styled.ul`
   border: var(--usual-layout-border);
   border-radius: var(--border-radius-md);
   overflow: hidden;
+  position: relative;
+  z-index: 100000;
 `;
 
 const StyledButton = styled.button`
