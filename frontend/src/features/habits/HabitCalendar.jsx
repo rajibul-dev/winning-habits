@@ -8,6 +8,7 @@ import {
   isFirstDayOfMonth,
   isLastDayOfMonth,
 } from "date-fns";
+import CustomDayComponent from "./CustomDayComponent";
 
 const IS_FULL_ROUND = true;
 
@@ -51,6 +52,7 @@ const StyledDayPicker = styled(DayPicker)`
 
   & .rdp-day {
     overflow: visible;
+    display: inline-block;
   }
 
   & .rdp-day_selected,
@@ -241,6 +243,9 @@ export default function HabitCalender({ dailyRecords, streakFireColor }) {
       mode="single"
       selected={selected}
       onSelect={setSelected}
+      components={{
+        DayContent: CustomDayComponent,
+      }}
       modifiers={{
         yes: dailyRecordsFormatted
           .filter((record) => record.didIt === "yes")
