@@ -84,7 +84,6 @@ function Menus({ children }) {
 }
 
 function Toggle({ id, children, type }) {
-  console.log(id);
   return (
     <Popover.Trigger id={id}>
       <StyledToggle>
@@ -95,7 +94,6 @@ function Toggle({ id, children, type }) {
 }
 
 function List({ children, id }) {
-  console.log(id);
   return (
     <Popover.Content id={id}>
       <StyledList>{children}</StyledList>
