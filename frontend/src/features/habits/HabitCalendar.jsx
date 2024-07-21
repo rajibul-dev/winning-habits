@@ -70,6 +70,8 @@ const StyledDayPicker = styled(DayPicker)`
       border-radius: 100px;
       background-color: var(--color-grey-900);
       bottom: 25%;
+      left: 50%;
+      transform: translateX(-50%);
     }
     &.rdp-day_selected::before {
       background-color: #fff;
