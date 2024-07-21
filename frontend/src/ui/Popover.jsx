@@ -119,7 +119,7 @@ function Popover({
   );
 }
 
-function Trigger({ children, id, state = undefined }) {
+function Trigger({ children, id, state = undefined, ...props }) {
   const {
     openId,
     close,
@@ -178,7 +178,9 @@ function Trigger({ children, id, state = undefined }) {
   });
 
   return (
-    <TriggerContainer ref={setReferenceElement}>{clonedChild}</TriggerContainer>
+    <TriggerContainer ref={setReferenceElement} {...props}>
+      {clonedChild}
+    </TriggerContainer>
   );
 }
 

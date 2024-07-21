@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import styled, { css } from "styled-components";
@@ -53,11 +52,24 @@ const StyledDayPicker = styled(DayPicker)`
   & .rdp-day {
     overflow: visible;
     display: inline-block;
+    transition: all 0.2s;
   }
 
   & .rdp-day_selected,
   .rdp-day_selected:hover {
     color: #fff;
+  }
+
+  & .yes:hover {
+    color: var(--color-brand-200);
+    --rdp-background-color: none;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  & .yes span {
+    transition: all 0.1s;
+  }
+  & .yes:hover span {
+    transform: translateY(-1px);
   }
 
   & .rdp-day_today {
@@ -198,8 +210,6 @@ const StyledDayPicker = styled(DayPicker)`
 `;
 
 export default function HabitCalender({ dailyRecords, streakFireColor }) {
-  const [selected, setSelected] = useState();
-
   const dailyRecordsFormatted = dailyRecords.map((record, index, records) => {
     const recordDate = new Date(record.date);
 
@@ -243,8 +253,6 @@ export default function HabitCalender({ dailyRecords, streakFireColor }) {
   return (
     <StyledDayPicker
       mode="single"
-      selected={selected}
-      onSelect={setSelected}
       components={{
         DayContent: CustomDayComponent,
       }}
