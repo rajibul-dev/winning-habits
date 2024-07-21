@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import Portal from "./Portal.jsx";
 import { usePopper } from "react-popper";
 import useOutsideClick from "../hooks/useOutsideClick.js";
+import { popoverContentIndex } from "../styles/zIndexManager.js";
 
 const TriggerContainer = styled.div`
   position: relative;
@@ -20,7 +21,7 @@ const ContentContainer = styled.div`
       border: var(--usual-layout-border);
     `}
   box-shadow: var(--box-shadow-lg);
-  z-index: 100000;
+  z-index: ${popoverContentIndex};
 `;
 
 // for managing signle popover opens at one time

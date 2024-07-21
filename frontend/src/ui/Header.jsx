@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import UserAvatarHeader from "../features/authentication/UserAvatarHeader.jsx";
 import HeaderMenu from "./HeaderMenu.jsx";
+import { headerIndex } from "../styles/zIndexManager.js";
 
 const StyledHeader = styled.header`
   grid-area: header;
@@ -12,7 +13,7 @@ const StyledHeader = styled.header`
   gap: 2.4rem;
   align-items: center;
   justify-content: flex-end;
-  z-index: 100001;
+  z-index: ${headerIndex};
 `;
 
 export default function Header() {

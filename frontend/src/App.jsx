@@ -26,6 +26,7 @@ import Archive from "./pages/Archive";
 import Users from "./pages/Users.jsx";
 import Profile from "./pages/Profile";
 import { DarkModeProvider } from "./context/DarkModeContext";
+import { toastNotifierIndex } from "./styles/zIndexManager.js";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -135,6 +136,7 @@ export default function App() {
               padding: "16px 24px",
               backgroundColor: "var(--color-grey-0)",
               color: "var(--color-grey-700)",
+              zIndex: toastNotifierIndex,
             },
           }}
         />

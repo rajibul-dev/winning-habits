@@ -2,6 +2,7 @@ import { useContext } from "react";
 import styled, { css } from "styled-components";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import Popover, { PopoverContext } from "./Popover";
+import { generalMenuIndex } from "../styles/zIndexManager";
 
 const Menu = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ const StyledList = styled.ul`
   border-radius: var(--border-radius-md);
   overflow: hidden;
   position: relative;
-  z-index: 100000;
+  z-index: ${generalMenuIndex};
 `;
 
 const StyledButton = styled.button`

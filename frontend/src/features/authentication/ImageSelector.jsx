@@ -7,6 +7,7 @@ import Button from "../../ui/Button.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import useUpdateAvatar from "./useUpdateAvatar.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
+import { avatarRemoveSelectionXMarkIndex } from "../../styles/zIndexManager.js";
 
 const Container = styled.div`
   padding: 2.4rem 0;
@@ -70,7 +71,7 @@ const RemoveSelectionButton = styled.button`
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 10;
+  z-index: ${avatarRemoveSelectionXMarkIndex};
   transform: translate(50%, -50%);
 `;
 const UploadButton = styled(Button)`

@@ -4,6 +4,7 @@ import { HiXMark } from "react-icons/hi2";
 import { createPortal } from "react-dom";
 import { cloneElement, createContext, useContext, useState } from "react";
 import useOutsideClick from "../hooks/useOutsideClick.js";
+import { modalIndex } from "../styles/zIndexManager.js";
 
 const StyledModal = styled.div`
   display: inline-block;
@@ -34,7 +35,7 @@ const Overlay = styled.div`
   height: 100vh;
   background-color: var(--backdrop-color);
 
-  z-index: 1000;
+  z-index: ${modalIndex};
   transition: all 0.5s;
 `;
 

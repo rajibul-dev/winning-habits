@@ -7,6 +7,7 @@ import { FaUser } from "react-icons/fa";
 import useLogout from "./useLogout.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import { useNavigate } from "react-router-dom";
+import { headerMenuDropDownIndex } from "../../styles/zIndexManager.js";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -55,7 +56,10 @@ function UserAvatarHeader() {
           />
         </StyledUserAvatar>
       </Menus.Toggle>
-      <Menus.List style={{ zIndex: 100002 }} id="account dropdown">
+      <Menus.List
+        style={{ zIndex: headerMenuDropDownIndex }}
+        id="account dropdown"
+      >
         <Menus.Button
           onClick={() => navigate("/app/profile")}
           icon={<FaUser />}
