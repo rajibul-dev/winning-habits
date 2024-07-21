@@ -71,6 +71,13 @@ const StyledDayPicker = styled(DayPicker)`
   & .yes:hover span {
     transform: translateY(-1px);
   }
+  & .yes:hover.rdp-day_today {
+    &::before {
+      transform: translateY(-1.5px) translateX(-50%);
+      background-color: var(--color-brand-200);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+  }
 
   & .rdp-day_today {
     position: relative;
@@ -84,6 +91,7 @@ const StyledDayPicker = styled(DayPicker)`
       bottom: 25%;
       left: 50%;
       transform: translateX(-50%);
+      transition: all 0.2s;
     }
     &.rdp-day_selected::before {
       background-color: #fff;
