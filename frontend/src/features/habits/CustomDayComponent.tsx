@@ -1,4 +1,4 @@
-import Popover, { usePopoverManager } from "../../ui/Popover.jsx";
+import Popover from "../../ui/Popover.jsx";
 import styled, { css } from "styled-components";
 import { isSameDay, format } from "date-fns";
 import Heading from "../../ui/Heading.jsx";
@@ -16,7 +16,6 @@ interface CustomDayComponentProps {
   dailyRecords: Array<{
     date: string;
     didIt: "yes" | "no" | "unanswered";
-    _id: string;
   }>;
   habitID: any;
 }
@@ -102,25 +101,16 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
   const { updateAction, isUpdating } = useUpdateAction();
   const [updatingButton, setUpdatingButton] = useState<string | null>(null);
   const currentAnswer = currentRecordInstence?.didIt;
-  const { close } = usePopoverManager();
 
   function handleUpdateAnswer(updatedAnswer: string) {
     setUpdatingButton(updatedAnswer);
     // @ts-ignore
-    updateAction(
+    updateAction({
+      habitID,
       // @ts-ignore
-      {
-        habitID,
-        targetRecordID: currentRecordInstence?._id,
-        updatedAnswer,
-      },
-      {
-        onSettled: () => {
-          setUpdatingButton(null);
-          close();
-        },
-      },
-    );
+      targetRecordID: currentRecordInstence._id,
+      updatedAnswer,
+    });
   }
 
   return (
