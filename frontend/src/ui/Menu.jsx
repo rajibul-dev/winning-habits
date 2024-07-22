@@ -59,7 +59,7 @@ const StyledButton = styled.button`
   ${(props) =>
     props.$isDanger &&
     css`
-      color: var(--color-red-700);
+      color: var(--color-red-700-mod);
     `}
 
   & svg {
