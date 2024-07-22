@@ -15,6 +15,7 @@ export default function useUpdateAction() {
       queryClient.invalidateQueries({
         queryKey: ["habit", habitID],
       });
+      toast.success("Successfully updated answer!");
     },
   });
 

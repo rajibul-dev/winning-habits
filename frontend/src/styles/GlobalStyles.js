@@ -70,7 +70,7 @@ const GlobalStyles = createGlobalStyle`
     --color-red-100: #991b1b;
     --color-red-400: #b91c1c;
     --color-red-500: #ef4444;
-    --color-red-700: #f87171;
+    --color-red-700: #fee2e2;
     --color-red-800: #fee2e2;
 
     --backdrop-color: rgba(0, 0, 0, 0.3);

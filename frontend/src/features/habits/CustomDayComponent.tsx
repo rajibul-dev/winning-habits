@@ -1,9 +1,15 @@
 import Popover from "../../ui/Popover.jsx";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { isSameDay, format } from "date-fns";
 import Heading from "../../ui/Heading.jsx";
 import useSingleHabit from "./useSingleHabit.js";
 import Tag from "../../ui/Tag.jsx";
+import Button from "../../ui/Button.jsx";
+import useUpdateAction from "./useUpdateAction.js";
+import { useState } from "react";
+import SpinnerMini from "../../ui/SpinnerMini.jsx";
+
+const SHOULD_GRAY_OUT_NON_EXISTENT_RECORD_DATE = false;
 
 interface CustomDayComponentProps {
   date: any;
@@ -14,24 +20,63 @@ interface CustomDayComponentProps {
   habitID: any;
 }
 
+interface StyledDayProps {
+  $hasRecord: boolean;
+}
+
 export interface TagProps {
   type: "green" | "red" | "silver";
 }
 
 // @ts-ignore
-const StyledDay = styled.span`
+const StyledDay = styled.span<StyledDayProps>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+
+  ${({ $hasRecord }) =>
+    SHOULD_GRAY_OUT_NON_EXISTENT_RECORD_DATE &&
+    !$hasRecord &&
+    css`
+      color: var(--color-grey-500);
+    `}
+`;
+
+const UpdateAnswerContainerGrid = styled.div`
+  display: grid;
+  gap: 2rem;
 `;
 
 const HeadingRow = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+`;
+
+const ActionRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+`;
+
+const UpdateAnswerP = styled.p``;
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  justify-content: space-between;
+
+  & button {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
 `;
 
 const tagColorBasedOnAnswer: Record<string, "green" | "red" | "silver"> = {
@@ -53,6 +98,21 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
 
   const hasRecordForDate = Boolean(currentRecordInstence);
 
+  const { updateAction, isUpdating } = useUpdateAction();
+  const [updatingButton, setUpdatingButton] = useState<string | null>(null);
+  const currentAnswer = currentRecordInstence?.didIt;
+
+  function handleUpdateAnswer(updatedAnswer: string) {
+    setUpdatingButton(updatedAnswer);
+    // @ts-ignore
+    updateAction({
+      habitID,
+      // @ts-ignore
+      targetRecordID: currentRecordInstence._id,
+      updatedAnswer,
+    });
+  }
+
   return (
     <Popover
       placementX={"center" as string}
@@ -60,28 +120,77 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
       triggerType={"click" as string}
     >
       <Popover.Trigger id={date.getDate() as number}>
-        <StyledDay>{date.getDate()}</StyledDay>
+        <StyledDay $hasRecord={hasRecordForDate}>{date.getDate()}</StyledDay>
       </Popover.Trigger>
       <Popover.Content id={date.getDate() as number}>
         {hasRecordForDate ? (
-          <HeadingRow>
-            <Heading as="h3">
-              {name} on {format(date, "MMM dd, yyyy")}
-            </Heading>
-            <Tag
-              // @ts-ignore
-              type={
+          <UpdateAnswerContainerGrid>
+            <HeadingRow>
+              <Heading as="h3">
+                {name} on {format(date, "MMM dd, yyyy")}
+              </Heading>
+              <Tag
                 // @ts-ignore
-                tagColorBasedOnAnswer[
-                  currentRecordInstence?.didIt ?? "silver"
-                ] as "green" | "red" | "silver"
-              }
-            >
-              {currentRecordInstence?.didIt ?? ""}
-            </Tag>
-          </HeadingRow>
+                type={
+                  // @ts-ignore
+                  tagColorBasedOnAnswer[
+                    currentRecordInstence?.didIt ?? "silver"
+                  ] as "green" | "red" | "silver"
+                }
+              >
+                {currentRecordInstence?.didIt ?? ""}
+              </Tag>
+            </HeadingRow>
+            <ActionRow>
+              <UpdateAnswerP>Update your answer:</UpdateAnswerP>
+              <ButtonsWrapper>
+                <Button
+                  disabled={isUpdating || currentAnswer === "yes"}
+                  onClick={() => handleUpdateAnswer("yes")}
+                  // @ts-ignore
+                  size="medium"
+                >
+                  {updatingButton === "yes" && (
+                    <>
+                      <SpinnerMini />{" "}
+                    </>
+                  )}
+                  Yes
+                </Button>
+                <Button
+                  onClick={() => handleUpdateAnswer("unanswered")}
+                  // @ts-ignore
+                  size="medium"
+                  $variation="constGrey"
+                  disabled={isUpdating || currentAnswer === "unanswered"}
+                >
+                  {updatingButton === "unanswered" && (
+                    <>
+                      <SpinnerMini />{" "}
+                    </>
+                  )}
+                  Unanswered
+                </Button>
+
+                <Button
+                  onClick={() => handleUpdateAnswer("no")}
+                  // @ts-ignore
+                  size="medium"
+                  $variation="constRed"
+                  disabled={isUpdating || currentAnswer === "no"}
+                >
+                  {updatingButton === "no" && (
+                    <>
+                      <SpinnerMini />{" "}
+                    </>
+                  )}
+                  No
+                </Button>
+              </ButtonsWrapper>
+            </ActionRow>
+          </UpdateAnswerContainerGrid>
         ) : (
-          <></>
+          <p>You can't access this date</p>
         )}
       </Popover.Content>
     </Popover>

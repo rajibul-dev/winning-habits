@@ -93,6 +93,17 @@ const variations = {
       background-color: #e7e6e4;
     }
   `,
+  constRed: css`
+    color: #eee;
+    /* background-color: #ef4444; */
+    background-color: #e54747;
+    box-shadow: inset 0 -6px 0 #af4343;
+
+    &:hover {
+      color: #fff;
+      background-color: #f13e3e;
+    }
+  `,
 };
 
 const Button = styled.button`
