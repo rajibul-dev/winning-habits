@@ -215,6 +215,13 @@ const StyledDayPicker = styled(DayPicker)`
       border-radius: 50%;
     }
   }
+
+  & .no {
+    color: var(--color-red-700-mod);
+  }
+  & .no.rdp-day_today::before {
+    background-color: var(--color-red-700-mod);
+  }
 `;
 
 export default function HabitCalender({
@@ -326,6 +333,9 @@ export default function HabitCalender({
           .filter((record) => record.didIt === "yes")
           .filter((record) => record.position === "single")
           .map((record) => record.date),
+        no: dailyRecordsFormatted
+          .filter((record) => record.didIt === "no")
+          .map((record) => record.date),
       }}
       modifiersClassNames={{
         yes: "yes",
@@ -337,13 +347,14 @@ export default function HabitCalender({
         rightOnLeftEdge: "right--left-edge",
         middleOnLeftEdge: "middle--left-edge",
         single: "single",
+        no: "no",
       }}
       $streakFireColor={modifiedStreakFireColor}
     />
   );
 }
 
-// how many classes to generate?
+// how many classes to generate for yeses?
 // left
 // middle
 // right
