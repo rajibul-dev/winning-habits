@@ -142,6 +142,7 @@ export default function SingleHabitFeature() {
         <CalendarWrapper>
           <HabitCalender
             streakFireColor={streakFireColor}
+            streak={streak}
             dailyRecords={dailyRecords}
             habitID={habitID}
           />

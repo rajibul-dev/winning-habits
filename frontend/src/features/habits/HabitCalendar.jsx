@@ -221,7 +221,11 @@ export default function HabitCalender({
   dailyRecords,
   streakFireColor,
   habitID,
+  streak,
 }) {
+  const modifiedStreakFireColor =
+    streak === 0 ? "var(--color-lime-500)" : streakFireColor;
+
   const dailyRecordsFormatted = dailyRecords.map((record, index, records) => {
     const recordDate = new Date(record.date);
 
@@ -334,7 +338,7 @@ export default function HabitCalender({
         middleOnLeftEdge: "middle--left-edge",
         single: "single",
       }}
-      $streakFireColor={streakFireColor}
+      $streakFireColor={modifiedStreakFireColor}
     />
   );
 }
