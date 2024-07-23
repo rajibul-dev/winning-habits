@@ -33,7 +33,7 @@ const Weekdays = styled.span`
     ${({ $didIt }) =>
       $didIt === false &&
       css`
-        color: var(--color-red-700);
+        color: var(--color-red-700-mod);
       `}
   }
 `;

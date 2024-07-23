@@ -75,7 +75,7 @@ const UploadImageButton = styled(Button)`
 const RemoveButton = styled(InlineLink)`
   ${buttonWithIconStyles}
   font-size: var(--font-size-xsm);
-  color: var(--color-red-700);
+  color: var(--color-red-700-mod);
 
   &:hover {
     text-decoration: none;
