@@ -1,6 +1,6 @@
 import Popover, { usePopoverManager } from "../../ui/Popover.jsx";
 import styled, { css } from "styled-components";
-import { isSameDay, format } from "date-fns";
+import { isSameDay, format, isToday, add } from "date-fns";
 import Heading from "../../ui/Heading.jsx";
 import useSingleHabit from "./useSingleHabit.js";
 import Tag from "../../ui/Tag.jsx";
@@ -8,6 +8,7 @@ import Button from "../../ui/Button.jsx";
 import useUpdateAction from "./useUpdateAction.js";
 import { useState } from "react";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
+import useAddAction from "./useAddAction.js";
 
 const SHOULD_GRAY_OUT_NON_EXISTENT_RECORD_DATE = false;
 
@@ -98,6 +99,9 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
   const { name } = data.habit;
 
   const hasRecordForDate = Boolean(currentRecordInstence);
+  const isTodayInstenceBeforeAnyAnswer = isToday(date);
+
+  const { addDailyAction, isAnswering } = useAddAction();
 
   const { updateAction, isUpdating } = useUpdateAction();
   const [updatingButton, setUpdatingButton] = useState<string | null>(null);
@@ -114,6 +118,19 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
         targetRecordID: currentRecordInstence?._id,
         updatedAnswer,
       },
+      {
+        onSettled: () => {
+          setUpdatingButton(null);
+          close();
+        },
+      },
+    );
+  }
+  function handleAddAnswer(answer: string) {
+    setUpdatingButton(answer);
+    addDailyAction(
+      // @ts-ignore
+      { habitID, answer },
       {
         onSettled: () => {
           setUpdatingButton(null);
@@ -184,6 +201,56 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
 
                 <Button
                   onClick={() => handleUpdateAnswer("no")}
+                  // @ts-ignore
+                  size="medium"
+                  $variation="constRed"
+                  disabled={isUpdating || currentAnswer === "no"}
+                >
+                  {updatingButton === "no" && (
+                    <>
+                      <SpinnerMini />{" "}
+                    </>
+                  )}
+                  No
+                </Button>
+              </ButtonsWrapper>
+            </ActionRow>
+          </UpdateAnswerContainerGrid>
+        ) : isTodayInstenceBeforeAnyAnswer ? (
+          <UpdateAnswerContainerGrid>
+            <HeadingRow>
+              <Heading as="h3">{name} today?</Heading>
+              <Tag
+                // @ts-ignore
+                type={
+                  // @ts-ignore
+                  tagColorBasedOnAnswer[
+                    currentRecordInstence?.didIt ?? "silver"
+                  ] as "green" | "red" | "silver"
+                }
+              >
+                {currentRecordInstence?.didIt ?? ""}
+              </Tag>
+            </HeadingRow>
+            <ActionRow>
+              <UpdateAnswerP>Add your answer:</UpdateAnswerP>
+              <ButtonsWrapper>
+                <Button
+                  disabled={isUpdating || currentAnswer === "yes"}
+                  // @ts-ignore
+                  onClick={() => handleAddAnswer("yes")}
+                  // @ts-ignore
+                  size="medium"
+                >
+                  {updatingButton === "yes" && (
+                    <>
+                      <SpinnerMini />{" "}
+                    </>
+                  )}
+                  Yes
+                </Button>
+                <Button
+                  onClick={() => handleAddAnswer("no")}
                   // @ts-ignore
                   size="medium"
                   $variation="constRed"
