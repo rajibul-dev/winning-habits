@@ -9,6 +9,7 @@ const StyledProgressBar = styled.div`
   position: relative;
   border-radius: var(--border-radius-lg);
   width: 100%;
+  overflow: hidden;
 `;
 
 const ProgressValue = styled(motion.span)`
