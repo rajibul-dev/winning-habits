@@ -1,6 +1,6 @@
 import Popover, { usePopoverManager } from "../../ui/Popover.jsx";
 import styled, { css } from "styled-components";
-import { isSameDay, format, isToday, add } from "date-fns";
+import { isSameDay, format, isToday } from "date-fns";
 import Heading from "../../ui/Heading.jsx";
 import useSingleHabit from "./useSingleHabit.js";
 import Tag from "../../ui/Tag.jsx";
@@ -101,7 +101,7 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
   const hasRecordForDate = Boolean(currentRecordInstence);
   const isTodayInstenceBeforeAnyAnswer = isToday(date);
 
-  const { addDailyAction, isAnswering } = useAddAction();
+  const { addDailyAction } = useAddAction();
 
   const { updateAction, isUpdating } = useUpdateAction();
   const [updatingButton, setUpdatingButton] = useState<string | null>(null);
