@@ -89,7 +89,7 @@ export default function HabitListItem({ habit }) {
   function goToSingleHabitPage(e) {
     const importantClasses = ["habit-menu", "action-buttons", "menu", "modal"];
     if (!importantClasses.some((cls) => e.target.closest(`.${cls}`))) {
-      navigate(habitID);
+      navigate(`/app/habits/${habitID}`);
     }
   }
 
