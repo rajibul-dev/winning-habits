@@ -151,6 +151,7 @@ export default function HabitListItem({ habit }) {
           name={name}
           latestRecordID={latestRecordID}
           isArchived={isArchived}
+          isAchieved={isAchieved}
         />
       </StyledMenu>
 

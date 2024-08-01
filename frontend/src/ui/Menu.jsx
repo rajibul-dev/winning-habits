@@ -20,12 +20,30 @@ const StyledToggle = styled.button`
 
   &:hover {
     background-color: var(--color-grey-100);
+
+    ${({ $isAchieved }) =>
+      $isAchieved &&
+      css`
+        background-color: var(--achievement-gold-color--shine-2);
+
+        & svg {
+          color: var(--achievement-gold-color--shade);
+        }
+      `}
   }
 
   & svg {
     width: 2.4rem;
     height: 2.4rem;
     color: var(--color-grey-700);
+
+    ${({ $isAchieved }) =>
+      $isAchieved &&
+      css`
+        color: var(--achievement-gold-color--shine-3);
+        width: 3rem;
+        height: 3rem;
+      `}
   }
 `;
 
@@ -83,10 +101,10 @@ function Menus({ children }) {
   );
 }
 
-function Toggle({ id, children, type }) {
+function Toggle({ id, children, type, isAchieved }) {
   return (
     <Popover.Trigger id={id}>
-      <StyledToggle>
+      <StyledToggle $isAchieved={isAchieved}>
         {type === "container" ? children : <HiEllipsisVertical />}
       </StyledToggle>
     </Popover.Trigger>

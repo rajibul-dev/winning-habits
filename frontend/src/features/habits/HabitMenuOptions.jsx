@@ -15,6 +15,7 @@ export default function HabitMenuOptions({
   name,
   latestRecordID,
   isArchived,
+  isAchieved,
 }) {
   const { updateAction, isUpdating } = useUpdateAction();
   const { handleArchive, isPending: isArchiving } = useHandleArchive();
@@ -35,7 +36,7 @@ export default function HabitMenuOptions({
   return (
     <Modal>
       <Menus>
-        <Menus.Toggle id={habitID} />
+        <Menus.Toggle id={habitID} isAchieved={isAchieved} />
 
         <Menus.List id={habitID}>
           <Modal.Open opens="edit">

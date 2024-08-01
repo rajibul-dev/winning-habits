@@ -70,7 +70,7 @@ const CalendarWrapper = styled.div`
 `;
 
 export default function SingleHabitFeature() {
-  const { data, isLoading, error } = useSingleHabit();
+  const { data, isLoading, error, isAchieved } = useSingleHabit();
   const navigate = useNavigate();
 
   if (isLoading) return <Spinner />;
@@ -136,6 +136,7 @@ export default function SingleHabitFeature() {
             streak={streak}
             startValueNum={0}
             endValueNum={FULL_POINTS}
+            isAchieved={isAchieved}
           />
         </ProgressBarWrapper>
 
