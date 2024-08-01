@@ -78,12 +78,15 @@ export default function HabitListItem({ habit }) {
     _id: habitID,
     dailyRecords,
     isArchived,
+    habitStatus,
   } = habit;
   const latestRecord = dailyRecords[dailyRecords.length - 1] || null;
   const { didIt, _id: latestRecordID } = latestRecord || false;
   const isAnswered = didIt !== "unanswered" && didIt;
   const targetPoints = calculateTargetPoints(totalPoints);
   const barMinimumPoints = targetPoints - 100;
+  const isAchieved = habitStatus === "strong";
+
   const navigate = useNavigate();
 
   function goToSingleHabitPage(e) {
