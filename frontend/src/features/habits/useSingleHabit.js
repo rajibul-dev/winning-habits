@@ -11,5 +11,10 @@ export default function useSingleHabit() {
     retry: false,
   });
 
-  return { data, isLoading, error };
+  return {
+    data,
+    isLoading,
+    error,
+    isAchieved: data?.habit?.habitStatus === "strong" ?? false,
+  };
 }
