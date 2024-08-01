@@ -106,6 +106,14 @@ const GlobalStyles = createGlobalStyle`
     --color-orange-500-shadow: rgba(249, 116, 22, 0.4); /* 21-89 flair */
     --color-orange-500-shadow-2: rgba(249, 116, 22, 0.7); /* 21-89 flair */
 
+    /* ACHIEVEMENT COLORS */
+    --achievement-gold-color: #facc15;
+    --achievement-gold-color--bright: #f6d966;
+    --achievement-gold-color--shade: #e4911e;
+    --achievement-gold-color--shine: #ffeeab;
+    --achievement-text-color--dark: #18212f;
+    --achievement-text-color--light: #f9fafb;
+
     /* CONST REDS AND GREENS */
     --color-const-red-100: #fee2e2;
     --color-const-red-800: #991b1b;
