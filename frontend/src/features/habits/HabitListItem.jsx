@@ -42,6 +42,9 @@ const Name = styled.p`
   ${({ $isAchieved }) =>
     $isAchieved &&
     css`
+      font-size: var(--font-size-3xl);
+      color: var(--achievement-gold-color--shine-2);
+      text-shadow: var(--achievement-text-shadow--gold);
       font-weight: 800;
     `}
 `;
@@ -77,6 +80,22 @@ const ActionWrapper = styled.div`
   grid-row: 3 / 4;
   grid-column: -4 / -1;
   justify-self: end;
+`;
+
+const CompletedTextWrapper = styled.div`
+  grid-row: 3 / 4;
+  grid-column: 3 / -1;
+  justify-self: end;
+  background-color: var(--achievement-gold-color--shine);
+  padding: 0.5rem 2rem;
+  border-radius: 100px;
+
+  & p {
+    font-size: var(--font-size-2xl);
+    text-transform: uppercase;
+    color: var(--achievement-gold-color--shade);
+    font-weight: 800;
+  }
 `;
 
 function calculateTargetPoints(currentPoints, isAchieved) {
@@ -153,26 +172,34 @@ export default function HabitListItem({ habit }) {
         />
       </PointsWrapper>
 
-      <FireWrapper>
-        <StreakFire streak={streak} didIt={didIt} isAchieved={isAchieved} />
-      </FireWrapper>
+      {!isAchieved ? (
+        <>
+          <FireWrapper>
+            <StreakFire streak={streak} didIt={didIt} isAchieved={isAchieved} />
+          </FireWrapper>
 
-      <SevenDayViewWrapper>
-        <SevenDayActionView
-          dailyRecords={dailyRecords}
-          streak={streak}
-          isAchieved={isAchieved}
-        />
-      </SevenDayViewWrapper>
+          <SevenDayViewWrapper>
+            <SevenDayActionView
+              dailyRecords={dailyRecords}
+              streak={streak}
+              isAchieved={isAchieved}
+            />
+          </SevenDayViewWrapper>
 
-      <ActionWrapper>
-        <HabitActionButtons
-          habitID={habitID}
-          didIt={didIt}
-          isAnswered={isAnswered}
-          isAchieved={isAchieved}
-        />
-      </ActionWrapper>
+          <ActionWrapper>
+            <HabitActionButtons
+              habitID={habitID}
+              didIt={didIt}
+              isAnswered={isAnswered}
+              isAchieved={isAchieved}
+            />
+          </ActionWrapper>
+        </>
+      ) : (
+        <CompletedTextWrapper>
+          <p>🏆 Goal Completed</p>
+        </CompletedTextWrapper>
+      )}
     </StyledItem>
   );
 }
