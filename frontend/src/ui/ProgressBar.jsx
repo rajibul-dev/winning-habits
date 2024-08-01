@@ -27,6 +27,12 @@ const ProgressValue = styled(motion.span)`
         0 -7px 0 var(--color-orange-500-shadow),
         0 7px 0 var(--color-orange-500-shadow);
     `};
+
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      background-color: var(--achievement-gold-color--shine);
+    `}
 `;
 
 const valueNumStyles = css`
@@ -48,6 +54,12 @@ const StartValueNum = styled.span`
       `;
     }
   }}
+
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      color: var(--achievement-gold-color--shade);
+    `}
 `;
 const EndValueNum = styled.span`
   ${valueNumStyles}
@@ -60,6 +72,12 @@ const EndValueNum = styled.span`
       `;
     }
   }}
+
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      color: var(--achievement-gold-color--shade);
+    `}
 `;
 
 export default function ProgressBar({
@@ -67,6 +85,7 @@ export default function ProgressBar({
   streak,
   startValueNum,
   endValueNum,
+  isAchieved,
 }) {
   const { isDarkMode } = useDarkMode();
 
@@ -80,11 +99,22 @@ export default function ProgressBar({
           width: `${percentage}%`,
         }}
         streak={streak}
+        $isAchieved={isAchieved}
       />
-      <StartValueNum $percentage={percentage} $isDarkMode={isDarkMode}>
+
+      <StartValueNum
+        $isAchieved={isAchieved}
+        $percentage={percentage}
+        $isDarkMode={isDarkMode}
+      >
         {startValueNum}
       </StartValueNum>
-      <EndValueNum $percentage={percentage} $isDarkMode={isDarkMode}>
+
+      <EndValueNum
+        $isAchieved={isAchieved}
+        $percentage={percentage}
+        $isDarkMode={isDarkMode}
+      >
         {endValueNum}
       </EndValueNum>
     </StyledProgressBar>

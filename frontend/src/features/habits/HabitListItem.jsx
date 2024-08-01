@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import SevenDayActionView from "./SevenDayActionView.jsx";
 import HabitMenuOptions from "./HabitMenuOptions.jsx";
 import ProgressBar from "../../ui/ProgressBar.jsx";
@@ -18,6 +18,18 @@ const StyledItem = styled.li`
   padding: 3rem;
   border: 1px solid var(--color-grey-300);
   cursor: pointer;
+
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      background-image: linear-gradient(
+        to bottom right,
+        var(--achievement-gold-color--bright),
+        var(--achievement-gold-color--shade)
+      );
+      color: var(--achievement-text-color--dark);
+      border: 1px solid var(--color-grey-300);
+    `}
 `;
 
 const Name = styled.p`
@@ -26,6 +38,12 @@ const Name = styled.p`
 
   font-size: var(--font-size-2xl);
   font-weight: 600;
+
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      font-weight: 800;
+    `}
 `;
 
 const BarContainer = styled.div`
@@ -61,7 +79,10 @@ const ActionWrapper = styled.div`
   justify-self: end;
 `;
 
-function calculateTargetPoints(currentPoints) {
+function calculateTargetPoints(currentPoints, isAchieved) {
+  // TODO: hardcoded target points
+  if (isAchieved) return 1000;
+
   if (currentPoints < 100) {
     return 100;
   } else {
@@ -83,9 +104,13 @@ export default function HabitListItem({ habit }) {
   const latestRecord = dailyRecords[dailyRecords.length - 1] || null;
   const { didIt, _id: latestRecordID } = latestRecord || false;
   const isAnswered = didIt !== "unanswered" && didIt;
-  const targetPoints = calculateTargetPoints(totalPoints);
-  const barMinimumPoints = targetPoints - 100;
   const isAchieved = habitStatus === "strong";
+  const targetPoints = calculateTargetPoints(totalPoints, isAchieved);
+  const barMinimumPoints = !isAchieved ? targetPoints - 100 : 0;
+  const barPercentage = !isAchieved
+    ? ((totalPoints - barMinimumPoints) / (targetPoints - barMinimumPoints)) *
+      100
+    : 100;
 
   const navigate = useNavigate();
 
@@ -97,8 +122,8 @@ export default function HabitListItem({ habit }) {
   }
 
   return (
-    <StyledItem onClick={goToSingleHabitPage}>
-      <Name>{name}</Name>
+    <StyledItem $isAchieved={isAchieved} onClick={goToSingleHabitPage}>
+      <Name $isAchieved={isAchieved}>{name}</Name>
 
       <StyledMenu className="habit-menu">
         <HabitMenuOptions
@@ -112,14 +137,11 @@ export default function HabitListItem({ habit }) {
 
       <BarContainer>
         <ProgressBar
-          percentage={
-            ((totalPoints - barMinimumPoints) /
-              (targetPoints - barMinimumPoints)) *
-            100
-          }
+          percentage={barPercentage}
           streak={streak}
           startValueNum={barMinimumPoints}
           endValueNum={targetPoints}
+          isAchieved={isAchieved}
         />
       </BarContainer>
 
@@ -127,15 +149,20 @@ export default function HabitListItem({ habit }) {
         <NumericStatsMinimal
           label={`Point${totalPoints !== 1 ? "s" : ""}`}
           number={totalPoints}
+          isAchieved={isAchieved}
         />
       </PointsWrapper>
 
       <FireWrapper>
-        <StreakFire streak={streak} didIt={didIt} />
+        <StreakFire streak={streak} didIt={didIt} isAchieved={isAchieved} />
       </FireWrapper>
 
       <SevenDayViewWrapper>
-        <SevenDayActionView dailyRecords={dailyRecords} streak={streak} />
+        <SevenDayActionView
+          dailyRecords={dailyRecords}
+          streak={streak}
+          isAchieved={isAchieved}
+        />
       </SevenDayViewWrapper>
 
       <ActionWrapper>
@@ -143,6 +170,7 @@ export default function HabitListItem({ habit }) {
           habitID={habitID}
           didIt={didIt}
           isAnswered={isAnswered}
+          isAchieved={isAchieved}
         />
       </ActionWrapper>
     </StyledItem>
