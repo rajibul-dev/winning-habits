@@ -1,0 +1,10 @@
+/* This file's purpose is to use VS Code's color picker to get colors */
+
+:root {
+  --achievement-gold-color: #facc15;
+  --achievement-gold-color--bright: #f6d966;
+  --achievement-gold-color--shade: #e4911e;
+  --achievement-gold-color--shine-2: #ffeeab;
+  --achievement-gold-color--shine-3: #fffbe9;
+  --achievement-gold-shadow: rgba(107, 86, 1, 0.3);
+}
