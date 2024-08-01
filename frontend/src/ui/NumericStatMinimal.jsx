@@ -20,6 +20,7 @@ const StyledNumber = styled.span`
     $isAchieved &&
     css`
       color: var(--achievement-gold-color--shine);
+      text-shadow: var(--achievement-text-shadow--gold);
       font-weight: 700;
     `}
 `;
@@ -36,6 +37,7 @@ const Label = styled.span`
     $isAchieved &&
     css`
       color: var(--achievement-gold-color--shine);
+      text-shadow: var(--achievement-text-shadow--gold);
       font-weight: 900;
     `}
 `;
