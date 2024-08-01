@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,6 +15,13 @@ const StyledNumber = styled.span`
   line-height: 1;
   font-weight: 500;
   color: var(--color-grey-700);
+
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      color: var(--achievement-gold-color--shine);
+      font-weight: 700;
+    `}
 `;
 
 const Label = styled.span`
@@ -24,13 +31,20 @@ const Label = styled.span`
   font-weight: 800;
   color: var(--color-grey-600);
   letter-spacing: 0.5pt;
+
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      color: var(--achievement-gold-color--shine);
+      font-weight: 900;
+    `}
 `;
 
-export default function NumericStatsMinimal({ number, label }) {
+export default function NumericStatsMinimal({ number, label, isAchieved }) {
   return (
-    <Wrapper>
-      <StyledNumber>{number}</StyledNumber>
-      <Label>{label}</Label>
+    <Wrapper $isAchieved={isAchieved}>
+      <StyledNumber $isAchieved={isAchieved}>{number}</StyledNumber>
+      <Label $isAchieved={isAchieved}>{label}</Label>
     </Wrapper>
   );
 }
