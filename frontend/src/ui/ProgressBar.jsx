@@ -10,6 +10,12 @@ const StyledProgressBar = styled.div`
   border-radius: var(--border-radius-lg);
   width: 100%;
   overflow: hidden;
+
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      background-color: var(--achievement-gold-color--shine);
+    `}
 `;
 
 const ProgressValue = styled(motion.span)`
@@ -32,6 +38,7 @@ const ProgressValue = styled(motion.span)`
     $isAchieved &&
     css`
       background-color: var(--achievement-gold-color--shine);
+      box-shadow: none;
     `}
 `;
 
@@ -90,7 +97,7 @@ export default function ProgressBar({
   const { isDarkMode } = useDarkMode();
 
   return (
-    <StyledProgressBar>
+    <StyledProgressBar $isAchieved={isAchieved}>
       <ProgressValue
         initial={{
           width: 0,
