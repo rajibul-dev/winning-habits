@@ -113,9 +113,11 @@ const GlobalStyles = createGlobalStyle`
     --achievement-gold-color--shine: #ffeeab;
     --achievement-gold-color--shine-2: #fbf3d2;
     --achievement-gold-color--shine-3: #fffbe9;
+    --achievement-gold-dark: #7D4624;
     --achievement-text-color--dark: #18212f;
     --achievement-text-color--light: #f9fafb;
     --achievement-gold-color--shadow: rgba(107, 86, 1, 0.3);
+    --achievement-gold-color--shadow-2: rgba(255, 243, 188, 0.3);
     --achievement-text-shadow--gold: 0 1px 2px var(--achievement-gold-color--shadow);
 
     /* CONST REDS AND GREENS */

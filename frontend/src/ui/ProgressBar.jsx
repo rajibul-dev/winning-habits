@@ -9,12 +9,13 @@ const StyledProgressBar = styled.div`
   position: relative;
   border-radius: var(--border-radius-lg);
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
 
   ${({ $isAchieved }) =>
     $isAchieved &&
     css`
       background-color: var(--achievement-gold-color--shine);
+      box-shadow: none;
     `}
 `;
 
@@ -29,16 +30,14 @@ const ProgressValue = styled(motion.span)`
   ${({ streak }) =>
     streak >= 21 &&
     css`
-      box-shadow:
-        0 -7px 0 var(--color-orange-500-shadow),
-        0 7px 0 var(--color-orange-500-shadow);
+      box-shadow: 0 0 0 5px var(--color-orange-500-shadow);
     `};
 
   ${({ $isAchieved }) =>
     $isAchieved &&
     css`
       background-color: var(--achievement-gold-color--shine);
-      box-shadow: none;
+      box-shadow: 0 0 0 5px var(--achievement-gold-color--shadow-2);
     `}
 `;
 
@@ -97,7 +96,7 @@ export default function ProgressBar({
   const { isDarkMode } = useDarkMode();
 
   return (
-    <StyledProgressBar $isAchieved={isAchieved}>
+    <StyledProgressBar streak={streak} $isAchieved={isAchieved}>
       <ProgressValue
         initial={{
           width: 0,

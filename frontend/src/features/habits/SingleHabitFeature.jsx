@@ -63,6 +63,9 @@ const ActionButtonWrapper = styled.div`
 const ProgressBarWrapper = styled.div`
   grid-row: 3 /4;
   grid-column: 1 / span 4;
+  div {
+    overflow: hidden;
+  }
 `;
 
 const CalendarWrapper = styled.div`
