@@ -1,5 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 
+export const goldFlexText = `
+      color: var(--achievement-gold-color--shine-2);
+      text-shadow: var(--achievement-text-shadow--gold);
+      font-weight: 800;`;
+
 const GlobalStyles = createGlobalStyle`
 :root {
   &, &.light-mode {
@@ -119,6 +124,11 @@ const GlobalStyles = createGlobalStyle`
     --achievement-gold-color--shadow: rgba(107, 86, 1, 0.3);
     --achievement-gold-color--shadow-2: rgba(255, 243, 188, 0.3);
     --achievement-text-shadow--gold: 0 1px 2px var(--achievement-gold-color--shadow);
+    --achievement-gold-bar: linear-gradient(
+        to bottom right,
+        var(--achievement-gold-color--bright),
+        var(--achievement-gold-color--shade)
+      );
 
     /* CONST REDS AND GREENS */
     --color-const-red-100: #fee2e2;
