@@ -229,9 +229,14 @@ export default function HabitCalender({
   streakFireColor,
   habitID,
   streak,
+  isAchieved,
 }) {
-  const modifiedStreakFireColor =
+  let modifiedStreakFireColor =
     streak === 0 ? "var(--color-lime-500)" : streakFireColor;
+
+  if (isAchieved) {
+    modifiedStreakFireColor = `var(--achievement-gold-color--shine)`;
+  }
 
   const dailyRecordsFormatted = dailyRecords.map((record, index, records) => {
     const recordDate = new Date(record.date);
