@@ -1,4 +1,5 @@
 .env
+src/styles/color-playground.css
 
 # Logs
 logs
