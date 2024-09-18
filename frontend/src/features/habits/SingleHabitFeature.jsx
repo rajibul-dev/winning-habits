@@ -1,6 +1,6 @@
 import { IoArrowBack } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Button from "../../ui/Button.jsx";
 import Empty from "../../ui/Empty.jsx";
 import Heading from "../../ui/Heading.jsx";
@@ -65,11 +65,46 @@ const ProgressBarWrapper = styled.div`
   grid-column: 1 / span 4;
   div {
     overflow: hidden;
+    background-color: none;
+    background-image: var(--achievement-gold-bar);
+    box-shadow: 0 0 0 1px var(--achievement-gold-color--shine-2);
+
+    & div {
+      background-image: var(--achievement-gold-bar);
+    }
+    & span {
+      color: var(--achievement-gold-color--shine-2);
+    }
   }
 `;
 
 const CalendarWrapper = styled.div`
   grid-column: 1 / span 4;
+  & > div {
+    ${({ $isAchieved }) =>
+      $isAchieved &&
+      css`
+        border: 2px solid var(--achievement-gold-color--shine-2);
+        background-image: var(--achievement-gold-bar);
+
+        & span,
+        div {
+          color: var(--achievement-gold-color--shine-3);
+        }
+
+        & .rdp-day.yes div span {
+          color: var(--achievement-gold-color--shade);
+        }
+
+        & .rdp-day_today::before {
+          background-color: var(--achievement-gold-color--shine-3);
+        }
+
+        & .rdp-day_today.yes::before {
+          background-color: var(--achievement-gold-color--shade);
+        }
+      `}
+  }
 `;
 
 export default function SingleHabitFeature() {
@@ -122,6 +157,7 @@ export default function SingleHabitFeature() {
           streak={streak}
           streakFireColor={streakFireColor}
           totalPoints={totalPoints}
+          isAchieved={isAchieved}
         />
 
         <ActionButtonWrapper>
@@ -143,12 +179,13 @@ export default function SingleHabitFeature() {
           />
         </ProgressBarWrapper>
 
-        <CalendarWrapper>
+        <CalendarWrapper $isAchieved={isAchieved}>
           <HabitCalender
             streakFireColor={streakFireColor}
             streak={streak}
             dailyRecords={dailyRecords}
             habitID={habitID}
+            isAchieved={isAchieved}
           />
         </CalendarWrapper>
       </GridContainer>

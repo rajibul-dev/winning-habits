@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Row from "./Row.jsx";
 
 const Card = styled(Row)`
@@ -7,11 +7,20 @@ const Card = styled(Row)`
   justify-content: center;
   gap: 2rem;
   padding: 1.4rem 3rem;
+
+  ${({ $goldFlex }) =>
+    $goldFlex &&
+    css`
+      border: 1px solid var(--achievement-gold-color--shine-2);
+      background-image: var(--achievement-gold-bar);
+    `}
 `;
 const IconCol = styled.div`
   & svg {
     width: 4rem;
     height: 4rem;
+
+    ${({ $goldFlex }) => $goldFlex && css``}
   }
 `;
 const ValueCol = styled(Row)`
@@ -22,20 +31,32 @@ const Value = styled.p`
   font-size: var(--font-size-5xl);
   font-weight: 600;
   line-height: 1;
+
+  ${({ $goldFlex }) =>
+    $goldFlex &&
+    css`
+      color: var(--achievement-gold-color--shine-2);
+    `}
 `;
 const Label = styled.p`
   font-size: var(--font-size-base);
   font-weight: 600;
   color: var(--color-grey-500);
+
+  ${({ $goldFlex }) =>
+    $goldFlex &&
+    css`
+      color: var(--achievement-gold-color--shine);
+    `}
 `;
 
-export default function StatCard({ icon, value, label }) {
+export default function StatCard({ icon, value, label, goldFlex }) {
   return (
-    <Card type="horizontal">
-      <IconCol>{icon}</IconCol>
+    <Card type="horizontal" $goldFlex={goldFlex}>
+      <IconCol $goldFlex={goldFlex}>{icon}</IconCol>
       <ValueCol>
-        <Value>{value}</Value>
-        <Label>{label}</Label>
+        <Value $goldFlex={goldFlex}>{value}</Value>
+        <Label $goldFlex={goldFlex}>{label}</Label>
       </ValueCol>
     </Card>
   );

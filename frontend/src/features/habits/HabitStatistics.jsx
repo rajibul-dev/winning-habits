@@ -20,26 +20,43 @@ export default function HabitStatistics({
   isAnswered,
   streakFireColor,
   streak,
+  isAchieved,
 }) {
   return (
     <>
-      <PointsWrapper>
+      <PointsWrapper $isAchieved={isAchieved}>
         <StatCard
-          icon={<IoSparkles color="var(--color-yellow-400)" />}
+          icon={
+            <IoSparkles
+              color={
+                isAchieved
+                  ? "var(--achievement-gold-color--shine-2)"
+                  : `var(--color-yellow-400)`
+              }
+            />
+          }
           value={totalPoints}
           label="Points"
+          goldFlex={isAchieved}
         />
       </PointsWrapper>
 
-      <StreakWrapper>
+      <StreakWrapper $isAchieved={isAchieved}>
         <StatCard
           icon={
             <PiFireSimpleFill
-              color={isAnswered ? streakFireColor : `var(--color-grey-300)`}
+              color={
+                isAchieved
+                  ? "var(--achievement-gold-color--shine-2)"
+                  : isAnswered
+                    ? streakFireColor
+                    : `var(--color-grey-300)`
+              }
             />
           }
           value={streak}
           label="Day streak"
+          goldFlex={isAchieved}
         />
       </StreakWrapper>
     </>
