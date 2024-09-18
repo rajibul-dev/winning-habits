@@ -19,7 +19,7 @@ const StyledProgressBar = styled.div`
     `}
 `;
 
-const ProgressValue = styled(motion.span)`
+const ProgressValue = styled(motion.div)`
   display: inline-block;
   position: absolute;
   height: 100%;

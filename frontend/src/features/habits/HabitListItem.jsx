@@ -6,6 +6,7 @@ import NumericStatsMinimal from "../../ui/NumericStatMinimal.jsx";
 import HabitActionButtons from "./HabitActionButtons.jsx";
 import StreakFire from "./StreakFire.jsx";
 import { useNavigate } from "react-router-dom";
+import { goldFlexText } from "../../styles/GlobalStyles.js";
 
 const StyledItem = styled.li`
   display: grid;
@@ -22,11 +23,7 @@ const StyledItem = styled.li`
   ${({ $isAchieved }) =>
     $isAchieved &&
     css`
-      background-image: linear-gradient(
-        to bottom right,
-        var(--achievement-gold-color--bright),
-        var(--achievement-gold-color--shade)
-      );
+      background-image: var(--achievement-gold-bar);
       color: var(--achievement-text-color--dark);
       border: 1px solid var(--color-grey-300);
     `}
@@ -43,9 +40,7 @@ const Name = styled.p`
     $isAchieved &&
     css`
       font-size: var(--font-size-3xl);
-      color: var(--achievement-gold-color--shine-2);
-      text-shadow: var(--achievement-text-shadow--gold);
-      font-weight: 800;
+      ${goldFlexText}
     `}
 `;
 
