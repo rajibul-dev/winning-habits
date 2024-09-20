@@ -63,19 +63,24 @@ const ActionButtonWrapper = styled.div`
 const ProgressBarWrapper = styled.div`
   grid-row: 3 /4;
   grid-column: 1 / span 4;
-  div {
-    overflow: hidden;
-    background-color: none;
-    background-image: var(--achievement-gold-bar);
-    box-shadow: 0 0 0 1px var(--achievement-gold-color--shine-2);
 
-    & div {
-      background-image: var(--achievement-gold-bar);
-    }
-    & span {
-      color: var(--achievement-gold-color--shine-2);
-    }
-  }
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      div {
+        overflow: hidden;
+        background-color: none;
+        background-image: var(--achievement-gold-bar);
+        box-shadow: 0 0 0 1px var(--achievement-gold-color--shine-2);
+
+        & div {
+          background-image: var(--achievement-gold-bar);
+        }
+        & span {
+          color: var(--achievement-gold-color--shine-2);
+        }
+      }
+    `}
 `;
 
 const CalendarWrapper = styled.div`
