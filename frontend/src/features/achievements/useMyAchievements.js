@@ -11,5 +11,5 @@ export default function useMyAchievements() {
     queryKey: ["my-achievements"],
   });
 
-  return { myAchievements, isLoading, error };
+  return { myAchievements: myAchievements?.achievements, isLoading, error };
 }
