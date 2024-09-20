@@ -7,6 +7,7 @@ import apiErrorFormat from "../../api/apiErrorFormat.js";
 import { goldFlexText } from "../../styles/GlobalStyles.js";
 import { FaTrophy } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import BetterDesignSoon from "../../ui/BetterDesignSoon.jsx";
 
 const StyledList = styled.ul`
   display: grid;
@@ -74,16 +75,19 @@ export default function MyAchievements() {
     return <Empty resourceName={"achievements"} />;
 
   return (
-    <StyledList>
-      {myAchievements.map((item) => (
-        <StyledItem
-          key={item._id}
-          onClick={() => navigate(`/app/habits/${item.habit._id}`)}
-        >
-          <FaTrophy />
-          <span>{item.habit.name}</span>
-        </StyledItem>
-      ))}
-    </StyledList>
+    <>
+      <BetterDesignSoon />
+      <StyledList>
+        {myAchievements.map((item) => (
+          <StyledItem
+            key={item._id}
+            onClick={() => navigate(`/app/habits/${item.habit._id}`)}
+          >
+            <FaTrophy />
+            <span>{item.habit.name}</span>
+          </StyledItem>
+        ))}
+      </StyledList>
+    </>
   );
 }

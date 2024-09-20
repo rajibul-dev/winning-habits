@@ -136,7 +136,10 @@ const GlobalStyles = createGlobalStyle`
 
     --color-const-green-100: #dcfce7;
     --color-const-green-700: #15803d;
-    
+
+    /* INFO COLOR */
+    --info-bg-color: hwb(205 44% 11% / 0.3);
+
     /* BORDER RADIOUS */
     --border-radius-tiny: 3px;
     --border-radius-sm: 5px;
