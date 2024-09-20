@@ -94,6 +94,7 @@ export default function ProgressBar({
   isAchieved,
 }) {
   const { isDarkMode } = useDarkMode();
+  const cookedPercentage = percentage > 100 ? 100 : percentage;
 
   return (
     <StyledProgressBar streak={streak} $isAchieved={isAchieved}>
@@ -102,7 +103,7 @@ export default function ProgressBar({
           width: 0,
         }}
         animate={{
-          width: `${percentage}%`,
+          width: `${cookedPercentage}%`,
         }}
         streak={streak}
         $isAchieved={isAchieved}
@@ -110,7 +111,7 @@ export default function ProgressBar({
 
       <StartValueNum
         $isAchieved={isAchieved}
-        $percentage={percentage}
+        $percentage={cookedPercentage}
         $isDarkMode={isDarkMode}
       >
         {startValueNum}
@@ -118,7 +119,7 @@ export default function ProgressBar({
 
       <EndValueNum
         $isAchieved={isAchieved}
-        $percentage={percentage}
+        $percentage={cookedPercentage}
         $isDarkMode={isDarkMode}
       >
         {endValueNum}

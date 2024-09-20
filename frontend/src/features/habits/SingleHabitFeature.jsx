@@ -67,8 +67,7 @@ const ProgressBarWrapper = styled.div`
   ${({ $isAchieved }) =>
     $isAchieved &&
     css`
-      div {
-        overflow: hidden;
+      & div {
         background-color: none;
         background-image: var(--achievement-gold-bar);
         box-shadow: 0 0 0 1px var(--achievement-gold-color--shine-2);
@@ -93,8 +92,12 @@ const CalendarWrapper = styled.div`
         background-image: var(--achievement-gold-bar);
 
         & span,
-        div {
+        & div {
           color: var(--achievement-gold-color--shine-3);
+        }
+
+        & .rdp-button:hover {
+          background-color: var(--achievement-gold-color--shadow-2) !important;
         }
 
         & .rdp-day.yes div span {
@@ -174,13 +177,12 @@ export default function SingleHabitFeature() {
           />
         </ActionButtonWrapper>
 
-        <ProgressBarWrapper>
+        <ProgressBarWrapper $isAchieved={isAchieved}>
           <ProgressBar
             percentage={(totalPoints / FULL_POINTS) * 100}
             streak={streak}
             startValueNum={0}
             endValueNum={FULL_POINTS}
-            isAchieved={isAchieved}
           />
         </ProgressBarWrapper>
 
