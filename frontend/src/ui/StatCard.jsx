@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import Row from "./Row.jsx";
+import { goldFlexText } from "../styles/GlobalStyles.js";
 
 const Card = styled(Row)`
   border: 1px solid var(--color-grey-400);
