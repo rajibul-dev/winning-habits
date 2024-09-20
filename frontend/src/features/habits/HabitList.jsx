@@ -4,7 +4,6 @@ import Empty from "../../ui/Empty.jsx";
 import Spinner from "../../ui/Spinner.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import HabitListItem from "./HabitListItem.jsx";
-import Menus from "../../ui/Menu.jsx";
 import apiErrorFormat from "../../api/apiErrorFormat.js";
 
 const StyledList = styled.ul`
