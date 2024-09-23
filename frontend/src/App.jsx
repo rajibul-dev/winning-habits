@@ -104,7 +104,7 @@ export default function App() {
                   </ProtectedRoute>
                 }
               >
-                <Route index element=<Navigate to="habits" /> />
+                <Route index element={<Navigate to="habits" />} />
                 <Route path="habits" element={<Habits />} />
                 <Route path="habits/:habitID" element={<SingleHabit />} />
                 <Route path="achievements" element={<Achievements />} />
