@@ -1,9 +1,11 @@
 import { createGlobalStyle } from "styled-components";
 
 export const goldFlexText = `
-      color: var(--achievement-gold-color--shine-2);
-      text-shadow: var(--achievement-text-shadow--gold);
-      font-weight: 800;`;
+color: var(--achievement-gold-color--shine-2);
+text-shadow: var(--achievement-text-shadow--gold);
+font-weight: 800;`;
+
+export const pixelToEm = (px) => `${px / 16}em`;
 
 const GlobalStyles = createGlobalStyle`
 :root {
