@@ -111,9 +111,9 @@ function Toggle({ id, children, type, isAchieved }) {
   );
 }
 
-function List({ children, id }) {
+function List({ children, id, ...rest }) {
   return (
-    <Popover.Content id={id}>
+    <Popover.Content {...rest} id={id}>
       <StyledList>{children}</StyledList>
     </Popover.Content>
   );

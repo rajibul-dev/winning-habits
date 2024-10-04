@@ -8,6 +8,7 @@ import useLogout from "./useLogout.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import { useNavigate } from "react-router-dom";
 import { headerMenuDropDownIndex } from "../../styles/zIndexManager.js";
+import useViewportLessThan from "../../hooks/useViewportLessThan.js";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -38,6 +39,7 @@ function UserAvatarHeader() {
   const { name, avatar } = user;
   const { logout, isLoggingOut } = useLogout();
   const navigate = useNavigate();
+  const shouldHideUserName = useViewportLessThan(540);
 
   return (
     <Menus>
@@ -47,7 +49,7 @@ function UserAvatarHeader() {
             src={avatar || "default-user.jpg"}
             alt={`Avatar of ${name}`}
           />
-          <Name>{name}</Name>
+          {!shouldHideUserName && <Name>{name}</Name>}
           <TiArrowSortedDown
             color="var(--color-grey-500)"
             style={{
@@ -56,10 +58,7 @@ function UserAvatarHeader() {
           />
         </StyledUserAvatar>
       </Menus.Toggle>
-      <Menus.List
-        style={{ zIndex: headerMenuDropDownIndex }}
-        id="account dropdown"
-      >
+      <Menus.List isTopOfHeader={true} id="account dropdown">
         <Menus.Button
           onClick={() => navigate("/app/profile")}
           icon={<FaUser />}

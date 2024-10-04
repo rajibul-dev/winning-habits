@@ -3,7 +3,10 @@ import styled, { css } from "styled-components";
 import Portal from "./Portal.jsx";
 import { usePopper } from "react-popper";
 import useOutsideClick from "../hooks/useOutsideClick.js";
-import { popoverContentIndex } from "../styles/zIndexManager.js";
+import {
+  headerMenuDropDownIndex,
+  popoverContentIndex,
+} from "../styles/zIndexManager.js";
 
 const TriggerContainer = styled.div`
   position: relative;
@@ -22,6 +25,12 @@ const ContentContainer = styled.div`
     `}
   box-shadow: var(--box-shadow-lg);
   z-index: ${popoverContentIndex};
+
+  ${({ $isTopOfHeader }) =>
+    $isTopOfHeader &&
+    css`
+      z-index: ${headerMenuDropDownIndex};
+    `}
 `;
 
 // for managing signle popover opens at one time
@@ -185,7 +194,7 @@ function Trigger({ children, id, state = undefined, ...props }) {
   );
 }
 
-function Content({ children, id }) {
+function Content({ children, id, isTopOfHeader }) {
   const {
     openId,
     setPopperElement,
@@ -222,6 +231,7 @@ function Content({ children, id }) {
           style={styles.popper}
           {...attributes.popper}
           $noBox={noBox}
+          $isTopOfHeader={isTopOfHeader}
         >
           {children}
           <div ref={setArrowElement} style={styles.arrow} />
