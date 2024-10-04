@@ -1,6 +1,6 @@
 import useViewportLessThan from "./useViewportLessThan";
 
 export default function useIsMobile() {
-  const { isLessthanWidth } = useViewportLessThan(500);
+  const isLessthanWidth = useViewportLessThan(700);
   return isLessthanWidth;
 }

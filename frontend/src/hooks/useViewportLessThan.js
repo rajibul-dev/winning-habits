@@ -17,5 +17,5 @@ export default function useViewportLessThan(width) {
     };
   }, []);
 
-  return { isLessthanWidth };
+  return  isLessthanWidth ;
 }
