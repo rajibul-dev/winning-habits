@@ -11,10 +11,15 @@ async function handleGoogleLogin() {
   provider.setCustomParameters({ prompt: "select_account" });
   const resultsFromGoogle = await signInWithPopup(auth, provider);
 
+  const highResAvatar = resultsFromGoogle.user.photoURL.replace(
+    "s96-c",
+    "s512-c",
+  );
+
   const res = await apiClient.post("/api/v1/auth/google", {
     name: resultsFromGoogle.user.displayName,
     email: resultsFromGoogle.user.email,
-    avatar: resultsFromGoogle.user.photoURL,
+    avatar: highResAvatar,
   });
   return res.data;
 }
