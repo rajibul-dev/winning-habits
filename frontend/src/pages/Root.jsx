@@ -42,20 +42,15 @@ const HeroHeading = styled(Heading)`
   text-align: center;
   display: table;
   margin-inline: auto;
-  margin-top: 2rem;
+  margin-top: 6rem;
   margin-bottom: 3rem;
 
   @media (max-width: ${pixelToEm(634)}) {
-    margin-top: 6rem;
-    font-size: 3.6rem;
+    margin-top: 8rem;
   }
 
   @media (max-width: ${pixelToEm(477)}) {
-    font-size: 3rem;
-  }
-
-  @media (max-width: ${pixelToEm(375)}) {
-    font-size: 2.6rem;
+    font-size: 3.4rem;
   }
 `;
 

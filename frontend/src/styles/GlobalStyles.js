@@ -256,6 +256,27 @@ const GlobalStyles = createGlobalStyle`
     /* For dark mode */
     filter: grayscale(var(--image-grayscale)) opacity(var(--image-opacity));
   }
+
+  /* Scale shift */
+  @media (max-width: 68em) {
+    html {
+      font-size: 56.25%;
+    }
+  }
+
+  @media (max-width: 500px) {
+    html {
+      font-size: 50%;
+    }
+    :root {
+      --font-size-paragraph-primary: 1.86rem;
+    }
+  }
+  @media (max-width: 500px) {
+    .block {
+      padding: 7.2rem 0;
+    }
+  }
 `;
 
 export default GlobalStyles;
