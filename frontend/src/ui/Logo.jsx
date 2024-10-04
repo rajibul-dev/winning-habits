@@ -12,16 +12,18 @@ const StyledLogo = styled.div`
 
 const Img = styled.img`
   width: 18rem;
+
+  ${({ $styles }) => Boolean($styles) && $styles}
 `;
 
-export default function Logo() {
+export default function Logo({ styles }) {
   const navigate = useNavigate();
   const { isDarkMode } = useDarkMode();
   const src = isDarkMode ? LogoSVGDark : LogoSVG;
 
   return (
     <StyledLogo onClick={() => navigate("/")}>
-      <Img src={src} alt="winning habits logo" />
+      <Img src={src} alt="winning habits logo" $styles={styles} />
     </StyledLogo>
   );
 }

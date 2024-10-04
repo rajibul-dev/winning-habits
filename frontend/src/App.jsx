@@ -42,7 +42,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools
           position="bottom"
-          buttonPosition="bottom-left"
+          buttonPosition="top-right"
           initialIsOpen={false}
         />
         <GlobalStyles />

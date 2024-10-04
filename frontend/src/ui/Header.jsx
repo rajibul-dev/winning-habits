@@ -1,7 +1,9 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import UserAvatarHeader from "../features/authentication/UserAvatarHeader.jsx";
 import HeaderMenu from "./HeaderMenu.jsx";
 import { headerIndex } from "../styles/zIndexManager.js";
+import Logo from "./Logo.jsx";
+import { mobileSideSpacing } from "./AppLayout.jsx";
 
 const StyledHeader = styled.header`
   grid-area: header;
@@ -14,13 +16,28 @@ const StyledHeader = styled.header`
   align-items: center;
   justify-content: flex-end;
   z-index: ${headerIndex};
+
+  ${({ $isMobile }) =>
+    $isMobile &&
+    css`
+      justify-content: space-between;
+      padding-inline: ${mobileSideSpacing};
+    `}
 `;
 
-export default function Header() {
+const smallerLogoForMobileStyles = css`
+  width: 14rem;
+`;
+
+export default function Header({ isMobile }) {
   return (
-    <StyledHeader>
-      <HeaderMenu />
-      <UserAvatarHeader />
+    <StyledHeader $isMobile={isMobile}>
+      {isMobile && (
+        <Logo $isMobile={isMobile} styles={smallerLogoForMobileStyles} />
+      )}
+
+      <HeaderMenu isMobile={isMobile} />
+      <UserAvatarHeader isMobile={isMobile} />
     </StyledHeader>
   );
 }

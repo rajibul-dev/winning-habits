@@ -1,14 +1,28 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import DarkModeToggleBtn from "./DarkModeToggleBtn.jsx";
 
 const StyledHeaderMenu = styled.ul`
   display: flex;
   gap: 0.4rem;
+
+  ${({ $isMobile }) =>
+    $isMobile &&
+    css`
+      & button svg {
+        width: 4rem;
+        height: 4rem;
+      }
+
+      & + div {
+        height: auto;
+        transform: translateY(1px);
+      }
+    `}
 `;
 
-function HeaderMenu() {
+function HeaderMenu({ isMobile }) {
   return (
-    <StyledHeaderMenu>
+    <StyledHeaderMenu $isMobile={isMobile}>
       <DarkModeToggleBtn />
     </StyledHeaderMenu>
   );

@@ -7,7 +7,6 @@ import { FaUser } from "react-icons/fa";
 import useLogout from "./useLogout.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import { useNavigate } from "react-router-dom";
-import { headerMenuDropDownIndex } from "../../styles/zIndexManager.js";
 import useViewportLessThan from "../../hooks/useViewportLessThan.js";
 
 const StyledUserAvatar = styled.div`
