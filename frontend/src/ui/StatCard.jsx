@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import Row from "./Row.jsx";
-import { goldFlexText } from "../styles/GlobalStyles.js";
+import { pixelToEm } from "../styles/GlobalStyles.js";
 
 const Card = styled(Row)`
   border: 1px solid var(--color-grey-400);
@@ -22,6 +22,11 @@ const IconCol = styled.div`
     height: 4rem;
 
     ${({ $goldFlex }) => $goldFlex && css``}
+
+    @media (max-width: ${pixelToEm(430)}) {
+      width: 3rem;
+      height: 3rem;
+    }
   }
 `;
 const ValueCol = styled(Row)`
@@ -49,6 +54,11 @@ const Label = styled.p`
     css`
       color: var(--achievement-gold-color--shine);
     `}
+
+  @media (max-width: ${pixelToEm(430)}) {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+  }
 `;
 
 export default function StatCard({ icon, value, label, goldFlex }) {

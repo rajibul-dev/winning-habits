@@ -8,6 +8,7 @@ import {
   isLastDayOfMonth,
 } from "date-fns";
 import CustomDayComponent from "./CustomDayComponent";
+import { pixelToEm } from "../../styles/GlobalStyles";
 
 const IS_FULL_ROUND = true;
 
@@ -221,6 +222,18 @@ const StyledDayPicker = styled(DayPicker)`
   }
   & .no.rdp-day_today::before {
     background-color: var(--color-red-700-mod);
+  }
+
+  @media (max-width: ${pixelToEm(430)}) {
+    --rdp-cell-size: 4.6rem;
+    --rdp-caption-font-size: 1.8rem;
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: ${pixelToEm(355)}) {
+    --rdp-cell-size: 4.2rem;
+    --rdp-caption-font-size: 1.8rem;
+    font-size: 1.3rem;
   }
 `;
 

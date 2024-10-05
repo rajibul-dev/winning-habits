@@ -149,6 +149,8 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
       <Popover.Trigger id={date.getDate() as number}>
         <StyledDay $hasRecord={hasRecordForDate}>{date.getDate()}</StyledDay>
       </Popover.Trigger>
+
+      {/* @ts-ignore */}
       <Popover.Content id={date.getDate() as number}>
         {hasRecordForDate ? (
           <UpdateAnswerContainerGrid>

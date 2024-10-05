@@ -67,13 +67,20 @@ const Question = styled.p`
       display: none;
     `}
 
-  @media (max-width: ${pixelToEm(1200)}) and (min-width: ${pixelToEm(1100)}) {
-    font-size: 1.1rem;
-  }
-
-  @media (max-width: ${pixelToEm(430)}) {
-    font-size: 1.3rem;
-  }
+    
+    ${({ $variant }) => {
+    $variant !== "design-2" &&
+      css`
+        @media (max-width: ${pixelToEm(1200)}) and (min-width: ${pixelToEm(
+            1100,
+          )}) {
+          font-size: 1.1rem;
+        }
+        @media (max-width: ${pixelToEm(430)}) {
+          font-size: 1.3rem;
+        }
+      `;
+  }}
 `;
 
 const ButtonsRow = styled(Row)`
@@ -161,9 +168,14 @@ const Answer = styled.span`
     }
   }}
 
-  @media (max-width: ${pixelToEm(430)}) {
-    font-size: 1.5rem;
-  }
+  ${({ $variant }) => {
+    $variant !== "design-2" &&
+      css`
+        @media (max-width: ${pixelToEm(430)}) {
+          font-size: 1.5rem;
+        }
+      `;
+  }}
 `;
 
 const SpinnerMiniCenter = styled(SpinnerMini)`

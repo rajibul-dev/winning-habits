@@ -15,6 +15,7 @@ import HabitMenuOptions from "./HabitMenuOptions.jsx";
 import streakColor from "./streakColor.js";
 import HabitStatistics from "./HabitStatistics.jsx";
 import HabitCalender from "./HabitCalendar.jsx";
+import { pixelToEm } from "../../styles/GlobalStyles.js";
 
 const FULL_POINTS = 1000;
 
@@ -24,6 +25,11 @@ const GridContainer = styled.div`
   grid-template-rows: repeat(3, max-content);
   row-gap: 3rem;
   column-gap: 3rem;
+
+  @media (max-width: ${pixelToEm(900)}) {
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(4, auto);
+  }
 `;
 
 const GoBackLink = styled(Link)``;
@@ -58,6 +64,17 @@ const ActionButtonWrapper = styled.div`
   grid-column: 5 / -1;
   justify-self: stretch;
   align-self: stretch;
+
+  @media (max-width: ${pixelToEm(900)}) {
+    grid-row: 4 / 5;
+    grid-column: 1 / -1;
+    justify-self: center;
+
+    & > div {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+  }
 `;
 
 const ProgressBarWrapper = styled.div`
@@ -80,10 +97,24 @@ const ProgressBarWrapper = styled.div`
         }
       }
     `}
+
+  @media (max-width: ${pixelToEm(900)}) {
+    grid-column: 1 / -1;
+  }
 `;
 
 const CalendarWrapper = styled.div`
   grid-column: 1 / span 4;
+  justify-self: stretch;
+
+  @media (max-width: ${pixelToEm(430)}) {
+    justify-self: center;
+    & > div {
+      display: inline-block;
+      padding-inline: 3rem;
+    }
+  }
+
   & > div {
     ${({ $isAchieved }) =>
       $isAchieved &&
@@ -112,6 +143,10 @@ const CalendarWrapper = styled.div`
           background-color: var(--achievement-gold-color--shade);
         }
       `}
+  }
+
+  @media (max-width: ${pixelToEm(900)}) {
+    grid-column: 1 / -1;
   }
 `;
 

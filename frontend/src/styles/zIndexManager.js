@@ -13,5 +13,6 @@ export const toastNotifierIndex = placeOnTopOf(headerMenuDropDownIndex);
 
 export const generalMenuIndex = 20;
 export const popoverContentIndex = generalMenuIndex;
+export const bottomBarIndex = placeOnTopOf(popoverContentIndex);
 
 export const avatarRemoveSelectionXMarkIndex = 10;
