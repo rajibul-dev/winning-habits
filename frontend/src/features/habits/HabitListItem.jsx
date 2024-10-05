@@ -6,7 +6,7 @@ import NumericStatsMinimal from "../../ui/NumericStatMinimal.jsx";
 import HabitActionButtons from "./HabitActionButtons.jsx";
 import StreakFire from "./StreakFire.jsx";
 import { useNavigate } from "react-router-dom";
-import { goldFlexText } from "../../styles/GlobalStyles.js";
+import { goldFlexText, pixelToEm } from "../../styles/GlobalStyles.js";
 
 const StyledItem = styled.li`
   display: grid;
@@ -27,6 +27,22 @@ const StyledItem = styled.li`
       color: var(--achievement-text-color--dark);
       border: 1px solid var(--color-grey-300);
     `}
+
+  @media (max-width: ${pixelToEm(1100)}) {
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(4, auto);
+
+    ${({ $isAchieved }) =>
+      $isAchieved &&
+      css`
+        grid-template-rows: repeat(3, auto);
+      `}
+
+    @media (max-width: ${pixelToEm(430)}) {
+      padding-inline: 2rem;
+      row-gap: 3.2rem;
+    }
+  }
 `;
 
 const Name = styled.p`
@@ -35,6 +51,9 @@ const Name = styled.p`
 
   font-size: var(--font-size-2xl);
   font-weight: 600;
+  line-height: 1.3;
+  padding-top: 3px;
+  padding-bottom: 3px;
 
   ${({ $isAchieved }) =>
     $isAchieved &&
@@ -42,6 +61,11 @@ const Name = styled.p`
       font-size: var(--font-size-3xl);
       ${goldFlexText}
     `}
+
+  @media (max-width: ${pixelToEm(1100)}) {
+    grid-column: 1 / 3;
+    width: 93%;
+  }
 `;
 
 const BarContainer = styled.div`
@@ -54,27 +78,73 @@ const StyledMenu = styled.div`
   grid-column: -2 / -1;
   align-self: center;
   justify-self: end;
+
+  @media (max-width: ${pixelToEm(1100)}) {
+    grid-column: 2/3;
+  }
 `;
 
 const PointsWrapper = styled.div`
   grid-row: 3 / 4;
   grid-column: 1 / 2;
+
+  @media (max-width: ${pixelToEm(1100)}) {
+    grid-row: 4 / 5;
+  }
+
+  ${({ $isAchieved }) =>
+    $isAchieved &&
+    css`
+      @media (max-width: ${pixelToEm(1100)}) {
+        grid-column: 1 / 2;
+        grid-row: 3 / 4;
+        justify-self: start;
+      }
+    `}
 `;
 
 const FireWrapper = styled.div`
   grid-row: 3 / 4;
   grid-column: 3 / 4;
+  width: fit-content;
+
+  @media (max-width: ${pixelToEm(1300)}) {
+    grid-column: 2 / 3;
+  }
+
+  @media (max-width: ${pixelToEm(1100)}) {
+    grid-column: 1 / 2;
+  }
+
+  @media (max-width: ${pixelToEm(430)}) {
+    transform: translateY(0.5rem);
+  }
 `;
 
 const SevenDayViewWrapper = styled.div`
   grid-row: 3 / 4;
   grid-column: 4 / span 4;
+
+  @media (max-width: ${pixelToEm(1100)}) {
+    grid-column: 2 / 3;
+    justify-self: end;
+  }
 `;
 
 const ActionWrapper = styled.div`
   grid-row: 3 / 4;
   grid-column: -4 / -1;
   justify-self: end;
+
+  @media (max-width: ${pixelToEm(1100)}) {
+    grid-row: 4 / 5;
+    grid-column: 2 / 3;
+    justify-self: end;
+  }
+
+  @media (max-width: ${pixelToEm(430)}) {
+    padding-right: 2rem;
+  }
 `;
 
 const CompletedTextWrapper = styled.div`
@@ -85,11 +155,25 @@ const CompletedTextWrapper = styled.div`
   padding: 0.5rem 2rem;
   border-radius: 100px;
 
+  @media (max-width: ${pixelToEm(1100)}) {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    justify-self: end;
+  }
+
   & p {
     font-size: var(--font-size-2xl);
     text-transform: uppercase;
     color: var(--achievement-gold-color--shade);
     font-weight: 800;
+
+    @media (max-width: ${pixelToEm(1100)}) {
+      font-size: var(--font-size-base);
+    }
+
+    @media (max-width: ${pixelToEm(355)}) {
+      font-size: 1.1rem;
+    }
   }
 `;
 
@@ -160,7 +244,7 @@ export default function HabitListItem({ habit }) {
         />
       </BarContainer>
 
-      <PointsWrapper>
+      <PointsWrapper $isAchieved={isAchieved}>
         <NumericStatsMinimal
           label={`Point${totalPoints !== 1 ? "s" : ""}`}
           number={totalPoints}

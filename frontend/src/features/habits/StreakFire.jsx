@@ -1,6 +1,7 @@
 import { PiFireSimpleFill } from "react-icons/pi";
 import styled, { css } from "styled-components";
 import streakColor from "./streakColor.js";
+import { pixelToEm } from "../../styles/GlobalStyles.js";
 
 const Streak = styled.div`
   position: relative;
@@ -22,6 +23,16 @@ const Streak = styled.div`
         color: white;
         text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
       `}
+
+    @media (max-width: ${pixelToEm(1100)}) {
+      left: 5.5rem;
+    }
+
+    @media (max-width: ${pixelToEm(430)}) {
+      font-size: var(--font-size-2xl);
+      left: 4rem;
+      top: 52%;
+    }
   }
 
   & svg {
@@ -42,6 +53,10 @@ const Streak = styled.div`
       css`
         filter: drop-shadow(0 0 7px var(--color-orange-500-shadow-2));
       `}
+
+      @media (max-width: ${pixelToEm(430)}) {
+      font-size: 8rem;
+    }
   }
 `;
 

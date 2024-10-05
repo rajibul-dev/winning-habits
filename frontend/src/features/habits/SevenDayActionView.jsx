@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import streakColor from "./streakColor.js";
+import { pixelToEm } from "../../styles/GlobalStyles.js";
 
 const sharedStyles = css`
   display: flex;
@@ -7,6 +8,15 @@ const sharedStyles = css`
   align-items: center;
   padding: 1rem;
   line-height: 1;
+
+  @media (max-width: ${pixelToEm(430)}) {
+    /* padding-inline: 1rem; */
+    font-size: 1.2rem;
+    * {
+      max-width: 2ch;
+      padding: 0;
+    }
+  }
 `;
 
 const Wrapper = styled.div`

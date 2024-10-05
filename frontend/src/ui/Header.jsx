@@ -3,7 +3,7 @@ import UserAvatarHeader from "../features/authentication/UserAvatarHeader.jsx";
 import HeaderMenu from "./HeaderMenu.jsx";
 import { headerIndex } from "../styles/zIndexManager.js";
 import Logo from "./Logo.jsx";
-import { mobileSideSpacing } from "./AppLayout.jsx";
+import { pixelToEm } from "../styles/GlobalStyles.js";
 
 const StyledHeader = styled.header`
   grid-area: header;
@@ -21,8 +21,12 @@ const StyledHeader = styled.header`
     $isMobile &&
     css`
       justify-content: space-between;
-      padding-inline: ${mobileSideSpacing};
+      padding-inline: 3rem;
     `}
+
+  @media (max-width: ${pixelToEm(355)}) {
+    padding-inline: 1.5rem;
+  }
 `;
 
 const smallerLogoForMobileStyles = css`

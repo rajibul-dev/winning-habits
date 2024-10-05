@@ -6,6 +6,7 @@ import useUpdateAction from "./useUpdateAction.js";
 import useAddAction from "./useAddAction.js";
 import { capitalizeString } from "../../utils/capitalizeString.js";
 import { createContext, useContext } from "react";
+import { pixelToEm } from "../../styles/GlobalStyles.js";
 
 const VariantContext = createContext();
 
@@ -65,6 +66,14 @@ const Question = styled.p`
     css`
       display: none;
     `}
+
+  @media (max-width: ${pixelToEm(1200)}) and (min-width: ${pixelToEm(1100)}) {
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: ${pixelToEm(430)}) {
+    font-size: 1.3rem;
+  }
 `;
 
 const ButtonsRow = styled(Row)`
@@ -151,6 +160,10 @@ const Answer = styled.span`
           `;
     }
   }}
+
+  @media (max-width: ${pixelToEm(430)}) {
+    font-size: 1.5rem;
+  }
 `;
 
 const SpinnerMiniCenter = styled(SpinnerMini)`

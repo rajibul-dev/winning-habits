@@ -4,6 +4,7 @@ import Header from "./Header.jsx";
 import Sidebar from "./Sidebar.jsx";
 import useIsMobile from "../hooks/useIsMobile.js";
 import BottomBar from "./BottomBar.jsx";
+import { pixelToEm } from "../styles/GlobalStyles.js";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -20,7 +21,8 @@ const StyledAppLayout = styled.div`
     `}
 `;
 
-export const mobileSideSpacing = `3rem`;
+const mobileSideSpacing = `3rem`;
+const thinMobileSideSpacing = `2rem`;
 
 const Main = styled.main`
   grid-area: content;
@@ -33,6 +35,10 @@ const Main = styled.main`
     css`
       padding-inline: ${mobileSideSpacing};
     `}
+
+  @media (max-width: ${pixelToEm(355)}) {
+    padding-inline: ${thinMobileSideSpacing};
+  }
 `;
 
 const Container = styled.div`
