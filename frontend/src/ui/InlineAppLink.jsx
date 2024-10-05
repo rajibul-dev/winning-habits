@@ -13,7 +13,7 @@ const InlineLink = styled(Link)`
   ${(props) =>
     props.$usage === "pale-color" &&
     css`
-      color: var(--color-grey-400);
+      color: var(--color-grey-500);
     `}
 
   ${(props) =>
@@ -22,7 +22,7 @@ const InlineLink = styled(Link)`
       display: block;
       text-align: center;
       margin-top: 0.3rem;
-      color: var(--color-grey-400);
+      color: var(--color-grey-500);
     `}
 
   ${(props) =>

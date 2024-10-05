@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import Logo from "../ui/Logo";
 import Heading from "../ui/Heading";
 import Button from "../ui/Button";
-import DarkModeToggleBtn from "../ui/DarkModeToggleBtn";
+
 import { useNavigate } from "react-router-dom";
 import { pixelToEm } from "../styles/GlobalStyles";
+import NoAccountHeader from "../ui/NoAccountHeader";
 
 const Section = styled.div`
   padding: 6rem 0;
@@ -14,7 +14,7 @@ const HeaderSection = styled(Section)`
   padding: 3rem 0;
 `;
 
-const Container = styled.div`
+export const Container = styled.div`
   max-width: 130rem;
   margin-inline: auto;
   padding: 0 3rem;
@@ -75,12 +75,7 @@ export default function Root() {
 
   return (
     <>
-      <HeaderSection>
-        <Header>
-          <Logo />
-          <DarkModeToggleBtn />
-        </Header>
-      </HeaderSection>
+      <NoAccountHeader />
 
       <Section>
         <Container>

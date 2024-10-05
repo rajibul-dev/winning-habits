@@ -1,6 +1,7 @@
 import LoginForm from "../features/authentication/LoginForm";
 import styled, { css } from "styled-components";
 import Heading from "../ui/Heading.jsx";
+import NoAccountHeader from "../ui/NoAccountHeader";
 
 const verticalSpaceOnLessHeight = `6rem`;
 
@@ -14,6 +15,8 @@ export const LoginLayout = styled.main`
   padding: 20dvh 0;
   background-color: var(--color-grey-50);
   padding-inline: 2rem;
+
+  margin-top: -4rem;
 
   @media (max-height: 24em) {
     min-height: auto;
@@ -52,9 +55,12 @@ export const LoginLayout = styled.main`
 
 export default function Login() {
   return (
-    <LoginLayout $page="login">
-      <Heading as="h4">Login to your account</Heading>
-      <LoginForm />
-    </LoginLayout>
+    <>
+      <NoAccountHeader />
+      <LoginLayout $page="login">
+        <Heading as="h4">Login to your account</Heading>
+        <LoginForm />
+      </LoginLayout>
+    </>
   );
 }
