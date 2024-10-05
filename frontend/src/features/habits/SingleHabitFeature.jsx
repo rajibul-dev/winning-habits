@@ -74,6 +74,12 @@ const ActionButtonWrapper = styled.div`
       padding-top: 3rem;
       padding-bottom: 3rem;
     }
+
+    ${({ $isAchieved }) =>
+      $isAchieved &&
+      css`
+        grid-row: 5 / 6;
+      `}
   }
 `;
 
@@ -203,7 +209,7 @@ export default function SingleHabitFeature() {
           isAchieved={isAchieved}
         />
 
-        <ActionButtonWrapper>
+        <ActionButtonWrapper $isAchieved={isAchieved}>
           <HabitActionButtons
             habitID={habitID}
             didIt={didIt}
