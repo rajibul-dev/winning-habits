@@ -141,7 +141,12 @@ export default function ProfileEditForm() {
       </FormRowVerticalModified>
 
       <AvatarPortion>
-        <Avatar src={avatar || "default-user.jpg"} alt={`Avatar of ${name}`} />
+        <Avatar
+          src={avatar || "default-user.jpg"}
+          alt={`Avatar of ${name}`}
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
 
         <Modal>
           <Modal.Open opens="image-upload">
