@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { pixelToEm } from "../styles/GlobalStyles";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,7 +23,15 @@ const StyledNumber = styled.span`
       color: var(--achievement-gold-color--shine);
       text-shadow: var(--achievement-text-shadow--gold);
       font-weight: 700;
+
+      @media (max-width: ${pixelToEm(1100)}) {
+        font-size: var(--font-size-5xl);
+      }
     `}
+
+  @media (max-width: ${pixelToEm(430)}) {
+    font-size: var(--font-size-5xl);
+  }
 `;
 
 const Label = styled.span`
