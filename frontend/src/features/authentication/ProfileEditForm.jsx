@@ -16,6 +16,7 @@ import useUpdateUser from "./useUpdateUser.js";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import useRemoveAvatar from "./useRemoveAvatar.js";
 import ConfirmDelete from "../habits/ConfirmDelete.jsx";
+import { pixelToEm } from "../../styles/GlobalStyles.js";
 
 export const defaultImageURL =
   "https://res.cloudinary.com/drtmxi7rn/image/upload/t_no-padding/winning-habits-app/pfps/default-pfp-placeholder.jpg";
@@ -34,10 +35,17 @@ const StyledForm = styled.form`
   @media (max-width: 27em) {
     padding: 2.4rem 2rem;
   }
+
+  @media (max-width: ${pixelToEm(525)}) {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+  }
 `;
+
 const FormRowVerticalModified = styled(FormRowVertical)`
-  grid-row: span 2;
+  grid-row: span 1;
 `;
+
 const AvatarPortion = styled.div`
   display: flex;
   flex-direction: column;
@@ -47,6 +55,12 @@ const AvatarPortion = styled.div`
   align-self: center;
   grid-row: 1/4;
   grid-column: 2;
+
+  @media (max-width: ${pixelToEm(525)}) {
+    grid-row: 1 / 2;
+    grid-column: 1 / -1;
+    margin-bottom: 2rem;
+  }
 `;
 const Avatar = styled.img`
   display: block;
@@ -56,6 +70,10 @@ const Avatar = styled.img`
   object-position: center;
   border-radius: 50%;
   outline: 2px solid var(--color-grey-100);
+
+  @media (max-width: ${pixelToEm(525)}) {
+    grid-row: 1 / 2;
+  }
 `;
 const paddingBlock = 0.9;
 
