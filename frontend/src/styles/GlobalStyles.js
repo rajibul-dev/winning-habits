@@ -202,6 +202,11 @@ const GlobalStyles = createGlobalStyle`
     cursor: pointer;
   }
 
+  button {
+    border: none;
+    background-color: transparent;
+  }
+
   *:disabled {
     cursor: not-allowed;
   }
