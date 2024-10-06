@@ -277,6 +277,28 @@ const GlobalStyles = createGlobalStyle`
       padding: 7.2rem 0;
     }
   }
-`;
+
+  /* nice scrollbar */
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-grey-200);
+    border-radius: var(--border-radius-lg);
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-grey-300);
+  }
+  `;
 
 export default GlobalStyles;
