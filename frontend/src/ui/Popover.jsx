@@ -104,6 +104,10 @@ function Popover({
     modifiers: [
       { name: "arrow", options: { element: arrowElement, padding: 5 } },
       { name: "offset", options: { offset: [0, 10] } },
+      {
+        name: "preventOverflow",
+        options: { padding: 15 },
+      },
     ],
   });
 
@@ -141,6 +145,7 @@ function Trigger({ children, id, state = undefined, ...props }) {
   } = useContext(PopoverContext);
 
   function handleClick(e) {
+    e.preventDefault();
     e.stopPropagation();
 
     if (triggerType === "both" && !selected) {
