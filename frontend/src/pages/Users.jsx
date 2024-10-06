@@ -1,12 +1,11 @@
-import styled from "styled-components";
 import Heading from "../ui/Heading.jsx";
-
-const StyledUsers = styled.div``;
+import Info from "../ui/Info.jsx";
 
 export default function Users() {
   return (
-    <StyledUsers>
+    <>
       <Heading>Other users</Heading>
-    </StyledUsers>
+      <Info>This feature will come later.</Info>
+    </>
   );
 }
