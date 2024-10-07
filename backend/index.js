@@ -42,10 +42,6 @@ app.use(fileUpload({ useTempFiles: true }));
 app.use(morgan("dev"));
 app.use(cookieParser(process.env.JWT_SECRET));
 
-app.get("/", (req, res) => {
-  res.send(`<h1>Winning Habits API</h1>`);
-});
-
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/habits", habitRouter);
 app.use("/api/v1/achievements", achievementRouter);
