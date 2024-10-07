@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This is an app for building habits.",
   "scripts": {
+    "start": "node backend/index.js",
     "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Rajibul Islam",
