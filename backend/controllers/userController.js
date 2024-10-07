@@ -13,6 +13,11 @@ export async function getAllUsers(req, res) {
   res.status(StatusCodes.OK).json({ users, count: users.length });
 }
 
+export async function getAllUsersLength(req, res) {
+  const userCount = await User.countDocuments();
+  res.status(StatusCodes.OK).json({ count: userCount });
+}
+
 export async function getSingleUser(req, res) {
   let user;
   try {
@@ -70,7 +75,7 @@ export async function updateAvatar(req, res) {
     {
       use_filename: true,
       folder: `winning-habits-app/pfps/${req.user.userID}`,
-    },
+    }
   );
   fs.unlinkSync(req.files.image.tempFilePath);
 
@@ -83,7 +88,7 @@ export async function updateAvatar(req, res) {
     const filename = `winning-habits-app/${parts[parts.length - 1]}`;
     const filenameWithoutExtension = filename.substring(
       0,
-      filename.lastIndexOf("."),
+      filename.lastIndexOf(".")
     );
     await cloudinary.uploader.destroy(filenameWithoutExtension);
   }
@@ -113,7 +118,7 @@ export async function removeAvatar(req, res) {
     const filename = `winning-habits-app/${parts[parts.length - 1]}`;
     const filenameWithoutExtension = filename.substring(
       0,
-      filename.lastIndexOf("."),
+      filename.lastIndexOf(".")
     );
     await cloudinary.uploader.destroy(filenameWithoutExtension);
   }

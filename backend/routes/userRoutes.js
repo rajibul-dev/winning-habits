@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getAllUsers,
+  getAllUsersLength,
   getSingleUser,
   removeAvatar,
   showMe,
@@ -17,6 +18,7 @@ const router = Router();
 router
   .route("/")
   .get(authenticateUser, authorizePermissions("admin"), getAllUsers);
+router.route("/getAllUsersLength").get(authenticateUser, getAllUsersLength);
 router.route("/showMe").get(authenticateUser, showMe);
 router.route("/updateUser").patch(authenticateUser, updateUser);
 router.route("/updateAvatar").patch(authenticateUser, updateAvatar);
