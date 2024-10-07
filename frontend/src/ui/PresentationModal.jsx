@@ -2,6 +2,8 @@ import { createPortal } from "react-dom";
 import useOutsideClick from "../hooks/useOutsideClick";
 import styled from "styled-components";
 import { modalIndex } from "../styles/zIndexManager";
+import { useDispatch } from "react-redux";
+import { toggleMainGuide } from "../features/app-guide/guideSlice";
 
 const StyledModal = styled.div`
   display: inline-block;
@@ -62,7 +64,10 @@ const Button = styled.button`
 `;
 
 export default function PresentationModal({ children }) {
-  const ref = useOutsideClick(() => console.log("close the modal"));
+  const dispatch = useDispatch();
+  const ref = useOutsideClick(() => {
+    dispatch(toggleMainGuide());
+  });
 
   return createPortal(
     <Overlay>
