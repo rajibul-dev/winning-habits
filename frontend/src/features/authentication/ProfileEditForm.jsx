@@ -59,7 +59,7 @@ const AvatarPortion = styled.div`
   @media (max-width: ${pixelToEm(525)}) {
     grid-row: 1 / 2;
     grid-column: 1 / -1;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
   }
 `;
 const Avatar = styled.img`

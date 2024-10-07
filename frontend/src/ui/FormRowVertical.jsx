@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { pixelToEm } from "../styles/GlobalStyles";
 
 const StyledFormRow = styled.div`
   display: flex;
@@ -9,6 +10,9 @@ const StyledFormRow = styled.div`
 
 const Label = styled.label`
   font-weight: 500;
+  @media (max-width: ${pixelToEm(525)}) {
+    margin-bottom: 0.3rem;
+  }
 `;
 
 const Error = styled.span`
