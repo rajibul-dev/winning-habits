@@ -40,12 +40,16 @@ const Paragraph = styled.p`
     margin-bottom: 1rem;
   }
 
-  @media (min-width: ${pixelToEm(430)}) {
+  @media (min-width: ${pixelToEm(500)}) {
     padding-right: 2rem;
   }
 
   & strong {
     font-weight: 600;
+  }
+
+  @media (max-width: ${pixelToEm(500)}) {
+    font-size: 1.8rem;
   }
 `;
 
