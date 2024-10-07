@@ -319,6 +319,11 @@ const GlobalStyles = createGlobalStyle`
       display: none;
     }
   }
+
+  .no-scroll {
+    overflow: hidden;
+    height: 100vh; /* Prevents body height from being more than viewport */
+  }
  `;
 
 export default GlobalStyles;

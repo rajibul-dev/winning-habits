@@ -7,9 +7,9 @@ import BottomBar from "./BottomBar.jsx";
 import { pixelToEm } from "../styles/GlobalStyles.js";
 import { useSelector } from "react-redux";
 import { getIsShowingMainAppGuide } from "../features/app-guide/guideSlice.js";
-import Modal from "./Modal.jsx";
 import PresentationModal from "./PresentationModal.jsx";
 import MainAppGuide from "../features/app-guide/MainAppGuide.jsx";
+import { useEffect } from "react";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -60,7 +60,16 @@ export default function AppLayout() {
   const isMobile = useIsMobile();
 
   const isShowingMainAppGuide = useSelector(getIsShowingMainAppGuide);
-  // const isShowingMainAppGuide = true;
+
+  useEffect(() => {
+    const body = document.body;
+    body.classList.add("no-scroll");
+
+    // Cleanup on unmount
+    return () => {
+      body.classList.remove("no-scroll");
+    };
+  }, []);
 
   return (
     <>
