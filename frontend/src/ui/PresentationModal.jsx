@@ -14,10 +14,10 @@ const StyledModal = styled.div`
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
   transition: all 0.5s;
-  width: 48rem;
+  width: 53rem;
 
   @media (max-width: 32em) {
-    width: 85%;
+    width: 95%;
   }
 
   @media (max-height: 27em) {
