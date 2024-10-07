@@ -273,9 +273,6 @@ const GlobalStyles = createGlobalStyle`
     html {
       font-size: 50%;
     }
-    :root {
-      --font-size-paragraph-primary: 1.86rem;
-    }
   }
   @media (max-width: 500px) {
     .block {

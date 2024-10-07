@@ -32,7 +32,7 @@ const ModifiedH2 = styled(Heading)`
 `;
 
 const Paragraph = styled.p`
-  font-size: var(--font-size-paragraph-primary);
+  font-size: var(--font-size-base);
   line-height: 1.7;
   hyphens: none;
 

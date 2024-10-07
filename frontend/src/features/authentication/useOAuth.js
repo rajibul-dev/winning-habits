@@ -4,6 +4,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../../api/axiosConfig.js";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { toggleMainGuide } from "../app-guide/guideSlice.js";
+import { useDispatch } from "react-redux";
 
 async function handleGoogleLogin() {
   const auth = getAuth(app);
@@ -27,6 +29,7 @@ async function handleGoogleLogin() {
 export default function useOAuth() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     mutate: googleLogin,
@@ -39,6 +42,11 @@ export default function useOAuth() {
       queryClient.setQueryData(["user"], data.user);
       navigate("/app", { replace: true });
       toast.success(`Logged in successfully! Welcome ${data.user.name}!`);
+
+      if (!localStorage.getItem("firstLogin")) {
+        localStorage.setItem("firstLogin", true);
+        dispatch(toggleMainGuide());
+      }
     },
     onError: (error) => {
       toast.error(error.response.data.msg);
