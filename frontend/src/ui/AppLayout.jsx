@@ -5,6 +5,11 @@ import Sidebar from "./Sidebar.jsx";
 import useIsMobile from "../hooks/useIsMobile.js";
 import BottomBar from "./BottomBar.jsx";
 import { pixelToEm } from "../styles/GlobalStyles.js";
+import { useSelector } from "react-redux";
+import { getIsShowingMainAppGuide } from "../features/app-guide/guideSlice.js";
+import Modal from "./Modal.jsx";
+import PresentationModal from "./PresentationModal.jsx";
+import MainAppGuide from "../features/app-guide/MainAppGuide.jsx";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -53,19 +58,30 @@ const Container = styled.div`
 export default function AppLayout() {
   const isMobile = useIsMobile();
 
+  const isShowingMainAppGuide = useSelector(getIsShowingMainAppGuide);
+  // const isShowingMainAppGuide = true;
+
   return (
-    <StyledAppLayout $isMobile={isMobile}>
-      <Header isMobile={isMobile} />
+    <>
+      {isShowingMainAppGuide && (
+        <PresentationModal>
+          <MainAppGuide />
+        </PresentationModal>
+      )}
 
-      {!isMobile && <Sidebar />}
+      <StyledAppLayout $isMobile={isMobile}>
+        <Header isMobile={isMobile} />
 
-      <Main $isMobile={isMobile}>
-        <Container>
-          <Outlet />
-        </Container>
-      </Main>
+        {!isMobile && <Sidebar />}
 
-      {isMobile && <BottomBar />}
-    </StyledAppLayout>
+        <Main $isMobile={isMobile}>
+          <Container>
+            <Outlet />
+          </Container>
+        </Main>
+
+        {isMobile && <BottomBar />}
+      </StyledAppLayout>
+    </>
   );
 }

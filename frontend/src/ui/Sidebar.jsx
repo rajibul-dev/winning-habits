@@ -13,6 +13,8 @@ const StyledSidebar = styled.aside`
   flex-direction: column;
   gap: 10rem;
   overflow: auto;
+  overflow-x: hidden;
+  justify-content: space-between;
 
   ${HideScrollbarButStillScroll}
 `;

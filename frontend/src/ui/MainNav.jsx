@@ -1,9 +1,12 @@
 import { NavLink } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { HiOutlineUsers } from "react-icons/hi2";
 import { VscChecklist } from "react-icons/vsc";
 import { PiArchive, PiTrophy } from "react-icons/pi";
 import { BiUser } from "react-icons/bi";
+import { FaInfo } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { toggleMainGuide } from "../features/app-guide/guideSlice";
 
 const NavList = styled.ul`
   display: flex;
@@ -11,7 +14,7 @@ const NavList = styled.ul`
   gap: 0.8rem;
 `;
 
-const StyledNavLink = styled(NavLink)`
+const sharedLinkStyles = css`
   &:link,
   &:visited {
     display: flex;
@@ -50,42 +53,67 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
+const StyledNavLink = styled(NavLink)`
+  ${sharedLinkStyles}
+`;
+const StyledButtonRather = styled.a`
+  ${sharedLinkStyles}
+  justify-self: end;
+`;
+
 function MainNav() {
+  const dispatch = useDispatch();
+
   return (
-    <nav>
-      <NavList>
-        <li>
-          <StyledNavLink to="habits">
-            <VscChecklist />
-            <span>Habits</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="achievements">
-            <PiTrophy />
-            <span>Achievements</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="archive">
-            <PiArchive />
-            <span>Archive</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="users">
-            <HiOutlineUsers />
-            <span>Other users</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="profile">
-            <BiUser />
-            <span>Profile</span>
-          </StyledNavLink>
-        </li>
-      </NavList>
-    </nav>
+    <>
+      <nav>
+        <NavList>
+          <li>
+            <StyledNavLink to="habits">
+              <VscChecklist />
+              <span>Habits</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="achievements">
+              <PiTrophy />
+              <span>Achievements</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="archive">
+              <PiArchive />
+              <span>Archive</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="users">
+              <HiOutlineUsers />
+              <span>Other users</span>
+            </StyledNavLink>
+          </li>
+          <li>
+            <StyledNavLink to="profile">
+              <BiUser />
+              <span>Profile</span>
+            </StyledNavLink>
+          </li>
+        </NavList>
+      </nav>
+
+      <div>
+        <StyledButtonRather
+          onClick={(e) => {
+            e.preventDefault();
+            dispatch(toggleMainGuide());
+          }}
+          href=""
+        >
+          <FaInfo />
+          <span>App Guide</span>
+        </StyledButtonRather>
+      </div>
+    </>
   );
 }
 
