@@ -6,6 +6,10 @@ import { HiOutlineUsers } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
 import Popover, { usePopoverManager } from "./Popover";
+import { BiUser } from "react-icons/bi";
+import { FaInfo } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { toggleMainGuide } from "../features/app-guide/guideSlice";
 
 const StyledBottomBar = styled.ul`
   display: flex;
@@ -99,10 +103,12 @@ const frontNavItems = [
 const restNavItems = [
   { label: "Archive", icon: <PiArchive />, path: "archive" },
   { label: "Other users", icon: <HiOutlineUsers />, path: "users" },
+  { label: "Profile", icon: <BiUser />, path: "profile" },
 ];
 
 export default function BottomBar() {
   const { close } = usePopoverManager();
+  const dispatch = useDispatch();
 
   return (
     <StyledBottomBar>
@@ -137,6 +143,16 @@ export default function BottomBar() {
                   </StyledNavLink>
                 </RestListItem>
               ))}
+              <NavButtonRather
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(toggleMainGuide());
+                }}
+                href=""
+              >
+                <FaInfo />
+                <Label>App Guide</Label>
+              </NavButtonRather>
             </RestList>
           </Popover.Content>
         </Popover>
