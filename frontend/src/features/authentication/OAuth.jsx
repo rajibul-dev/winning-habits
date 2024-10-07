@@ -19,6 +19,8 @@ export default function OAuth() {
         alignItems: "center",
         justifyContent: "center",
         gap: ".8rem",
+        paddingTop: "1.8rem",
+        paddingBottom: "1.8rem",
       }}
       type="button"
       $variation="secondary"

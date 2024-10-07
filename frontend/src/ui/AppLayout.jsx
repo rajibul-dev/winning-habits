@@ -16,6 +16,7 @@ const StyledAppLayout = styled.div`
   height: 100dvh;
   grid-template-columns: 26rem 1fr;
   grid-template-rows: auto 1fr;
+  overflow: hidden;
 
   grid-template-areas: "sidebar header" "sidebar content";
 

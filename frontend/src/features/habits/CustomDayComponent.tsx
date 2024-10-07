@@ -9,6 +9,7 @@ import useUpdateAction from "./useUpdateAction.js";
 import { useState } from "react";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import useAddAction from "./useAddAction.js";
+import { pixelToEm } from "../../styles/GlobalStyles.js";
 
 const SHOULD_GRAY_OUT_NON_EXISTENT_RECORD_DATE = false;
 
@@ -50,6 +51,10 @@ const StyledDay = styled.span<StyledDayProps>`
 const UpdateAnswerContainerGrid = styled.div`
   display: grid;
   gap: 2rem;
+
+  @media (max-width: ${pixelToEm(500)}) {
+    padding: 1.2rem;
+  }
 `;
 
 const HeadingRow = styled.div`
@@ -64,13 +69,22 @@ const ActionRow = styled.div`
   gap: 1.6rem;
 `;
 
-const UpdateAnswerP = styled.p``;
+const UpdateAnswerP = styled.p`
+  margin-bottom: 0.6rem;
+  @media (max-width: ${pixelToEm(500)}) {
+    font-size: var(--font-size-base);
+  }
+`;
 
 const ButtonsWrapper = styled.div`
   display: flex;
   gap: 1rem;
   align-items: stretch;
   justify-content: space-between;
+
+  @media (max-width: ${pixelToEm(500)}) {
+    gap: 1.2rem;
+  }
 
   & button {
     flex-grow: 1;

@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { pixelToEm } from "../styles/GlobalStyles";
 
 const sizes = {
   small: css`
@@ -8,6 +9,12 @@ const sizes = {
     font-weight: 600;
     text-align: center;
     box-shadow: none;
+
+    @media (max-width: ${pixelToEm(500)}) {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      font-size: var(--font-size-sm);
+    }
   `,
   medium: css`
     font-size: var(--font-size-sm);
@@ -25,6 +32,10 @@ const sizes = {
     padding-bottom: ${({ $variation }) =>
       $variation === "primary" ? css`1.7rem` : css`1.3rem`};
     font-weight: 700;
+
+    @media (max-width: ${pixelToEm(500)}) {
+      font-size: var(--font-size-lg);
+    }
   `,
   large: css`
     font-size: var(--font-size-lg);

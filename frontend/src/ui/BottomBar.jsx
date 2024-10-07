@@ -41,8 +41,8 @@ const sharedNavStylesBase = css`
 
 const sharedMenuStyleIcon = css`
   & svg {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 3.2rem;
+    height: 3.2rem;
     color: var(--color-grey-400);
     transition: all 0.3s;
   }

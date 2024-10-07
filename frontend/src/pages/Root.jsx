@@ -60,13 +60,9 @@ const HeroButton = styled(Button)`
   padding-inline: 6rem;
 
   @media (max-width: ${pixelToEm(477)}) {
-    font-size: 1.6rem;
+    font-size: 2rem;
     display: block;
     width: 100%;
-  }
-
-  @media (max-width: ${pixelToEm(375)}) {
-    font-size: 1.6rem;
   }
 `;
 

@@ -68,7 +68,7 @@ export default function LoginForm() {
         </FormRowVertical>
 
         <FormRowVertical>
-          <Button disabled={isLogining}>
+          <Button size="large" disabled={isLogining}>
             {!isLogining ? "Login" : <SpinnerMini />}
           </Button>
         </FormRowVertical>

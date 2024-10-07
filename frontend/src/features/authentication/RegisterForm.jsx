@@ -114,7 +114,7 @@ export default function RegisterForm() {
               />
             </FormRowVertical>
             <FormRowVertical>
-              <Button disabled={isRegistering}>
+              <Button size="large" disabled={isRegistering}>
                 {!isRegistering ? "Register" : <SpinnerMini />}
               </Button>
             </FormRowVertical>

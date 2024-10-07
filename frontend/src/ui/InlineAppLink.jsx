@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { pixelToEm } from "../styles/GlobalStyles";
 
 const InlineLink = styled(Link)`
   font: inherit;
@@ -23,6 +24,10 @@ const InlineLink = styled(Link)`
       text-align: center;
       margin-top: 0.3rem;
       color: var(--color-grey-500);
+
+      @media (max-width: ${pixelToEm(500)}) {
+        font-size: var(--font-size-base);
+      }
     `}
 
   ${(props) =>
@@ -35,6 +40,10 @@ const InlineLink = styled(Link)`
   &:disabled, &:disabled:hover {
     color: var(--color-grey-400);
     text-decoration: none;
+  }
+
+  @media (max-width: ${pixelToEm(500)}) {
+    font-size: var(--font-size-base);
   }
 `;
 

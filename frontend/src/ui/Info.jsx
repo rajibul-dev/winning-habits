@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   padding: 2rem 3rem;
 `;
 const Text = styled.p`
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-base);
 `;
 
 export default function Info({ children }) {

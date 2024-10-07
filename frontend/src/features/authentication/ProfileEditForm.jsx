@@ -17,6 +17,7 @@ import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import useRemoveAvatar from "./useRemoveAvatar.js";
 import ConfirmDelete from "../habits/ConfirmDelete.jsx";
 import { pixelToEm } from "../../styles/GlobalStyles.js";
+import useIsMobile from "../../hooks/useIsMobile.js";
 
 export const defaultImageURL =
   "https://res.cloudinary.com/drtmxi7rn/image/upload/t_no-padding/winning-habits-app/pfps/default-pfp-placeholder.jpg";
@@ -89,6 +90,11 @@ const UploadImageButton = styled(Button)`
     width: 1.6rem;
     height: 1.6rem;
   }
+
+  @media (max-width: ${pixelToEm(500)}) {
+    padding-top: 1.1rem;
+    padding-bottom: 1.1rem;
+  }
 `;
 const RemoveButton = styled(InlineLink)`
   ${buttonWithIconStyles}
@@ -120,6 +126,7 @@ export default function ProfileEditForm() {
   const { updateUser, isUpdating } = useUpdateUser();
   const { removeAvatar, isRemoving } = useRemoveAvatar();
   const isDefaultAvatar = avatar === defaultImageURL;
+  const isMobile = useIsMobile();
 
   function onSubmit(data) {
     if (data.name === name) return;
@@ -193,7 +200,7 @@ export default function ProfileEditForm() {
         />
       </FormRowVerticalModified>
 
-      <SubmitButton disabled={isUpdating}>
+      <SubmitButton size={isMobile ? "large" : "medium"} disabled={isUpdating}>
         {!isUpdating ? "Save changes" : <SpinnerMini />}
       </SubmitButton>
     </StyledForm>

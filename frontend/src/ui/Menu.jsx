@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import Popover, { PopoverContext } from "./Popover";
 import { generalMenuIndex } from "../styles/zIndexManager";
+import { pixelToEm } from "../styles/GlobalStyles";
 
 const Menu = styled.div`
   display: flex;
@@ -90,6 +91,12 @@ const StyledButton = styled.button`
         color: var(--color-red-600);
       `}
     transition: all 0.3s;
+  }
+
+  @media (max-width: ${pixelToEm(500)}) {
+    padding-top: 1.8rem;
+    padding-bottom: 1.8rem;
+    font-size: 1.8rem;
   }
 `;
 

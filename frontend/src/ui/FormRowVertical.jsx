@@ -12,6 +12,7 @@ const Label = styled.label`
   font-weight: 500;
   @media (max-width: ${pixelToEm(525)}) {
     margin-bottom: 0.3rem;
+    font-size: 1.6rem;
   }
 `;
 

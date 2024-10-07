@@ -301,6 +301,24 @@ const GlobalStyles = createGlobalStyle`
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-grey-300);
   }
-  `;
+
+  @media (max-width: ${pixelToEm(500)}) {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+     display: none;
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      display: none;
+    }
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      display: none;
+    }
+  }
+ `;
 
 export default GlobalStyles;

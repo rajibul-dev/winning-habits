@@ -225,15 +225,15 @@ const StyledDayPicker = styled(DayPicker)`
   }
 
   @media (max-width: ${pixelToEm(430)}) {
-    --rdp-cell-size: 4.6rem;
+    --rdp-cell-size: 4.8rem;
     --rdp-caption-font-size: 1.8rem;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
   }
 
-  @media (max-width: ${pixelToEm(355)}) {
-    --rdp-cell-size: 4.2rem;
+  @media (max-width: ${pixelToEm(360)}) {
+    --rdp-cell-size: 4.4rem;
     --rdp-caption-font-size: 1.8rem;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
 `;
 
