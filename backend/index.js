@@ -5,6 +5,7 @@ import "./scheduleJobs/dailyHabitSchemaManager.js";
 
 import express from "express";
 import cors from "cors";
+import path from "path";
 const app = express();
 
 import fileUpload from "express-fileupload";
@@ -28,11 +29,13 @@ import habitRouter from "./routes/habitRoutes.js";
 import achievementRouter from "./routes/achievementRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 
+const __dirname = path.resolve();
+
 app.use(
   cors({
     origin: process.env.FRONTEND_ORIGIN,
     credentials: true,
-  }),
+  })
 );
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true }));
@@ -47,6 +50,12 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/habits", habitRouter);
 app.use("/api/v1/achievements", achievementRouter);
 app.use("/api/v1/users", userRouter);
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
+);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
