@@ -1,7 +1,8 @@
 import { config } from "dotenv";
 config();
 import "express-async-errors";
-import "./scheduleJobs/dailyHabitSchemaManager.js";
+// import "./scheduleJobs/dailyHabitSchemaManager.js";
+// not doing it this way for now
 
 import express from "express";
 import cors from "cors";
