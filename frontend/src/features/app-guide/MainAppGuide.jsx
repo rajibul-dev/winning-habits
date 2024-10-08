@@ -72,9 +72,14 @@ export default function MainAppGuide() {
           The app's purpose is to help you build habits around the good things
           you want to improve. Start by creating a new habit; each day, you'll
           get a prompt asking whether you completed your task, with 'yes' and
-          'no' buttons. 'Yes' will add points and update your streak! How many
-          points? It adds your current streak number as points. 'No' will reset
-          the streak to 0, but your total points remain the same.
+          'no' buttons. Pressing 'yes' will add points and update your streak!
+          How many points? Your current streak number is added to your existing
+          points. For example, if today is your first 'yes,' you’ll get 1 point;
+          if you press 'yes' again tomorrow, your points will be updated to the
+          total of your current streak (which is now 2) plus your existing
+          points (let's say you had 1 point before), resulting in a total of 3
+          points. So don't worry if you see a jump in points—it's just the app
+          accurately tracking your progress!
         </Paragraph>
         <Paragraph>
           And don’t worry—this isn’t like Duolingo, where you need to visit the
