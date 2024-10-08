@@ -30,6 +30,8 @@ router
   .route("/getAllHabits")
   .get(authenticateUser, authorizePermissions("admin"), getAllHabits);
 
+router.route("/habitSchemaManager").post(habitSchemaManager);
+
 router
   .route("/:id")
   .get(authenticateUser, getSingleHabit)
@@ -44,7 +46,5 @@ router
 router.route("/:id/reset").put(authenticateUser, resetHabitProgress);
 
 router.route("/:id/archive").post(authenticateUser, handleArchive);
-
-router.route("/habitSchemaManager").post(habitSchemaManager);
 
 export default router;
