@@ -125,7 +125,7 @@ export default function App() {
           }}
           toastOptions={{
             success: {
-              duration: 4000,
+              duration: 1000,
             },
             error: {
               duration: 10000,
