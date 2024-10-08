@@ -62,6 +62,10 @@ export default function AppLayout() {
   const isShowingMainAppGuide = useSelector(getIsShowingMainAppGuide);
 
   useEffect(() => {
+    // Scroll to the top so that weird layout issues doesn't happen
+    window.scrollTo(0, 0);
+
+    // disable scrolling the body because that's not supposed to be scrolled
     const body = document.body;
     body.classList.add("no-scroll");
 
