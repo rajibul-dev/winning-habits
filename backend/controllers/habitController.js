@@ -205,7 +205,7 @@ async function getHabitById(habitID) {
   return habit;
 }
 
-export async function habitSchemaManager() {
+export async function habitSchemaManager(req, res) {
   console.log("Running Habit Schema management function on every 12am!");
   // Fetch all habits from the database
   const habits = await Habit.find();
@@ -247,6 +247,12 @@ export async function habitSchemaManager() {
 
   // Wait for all updates to complete
   await Promise.all(updatePromises);
+
+  res
+    .status(StatusCodes.OK)
+    .json({
+      msg: `Successfully ran the Habit Schema Manager that is supposed to run in 12 am each day!`,
+    });
 }
 
 // Helper function to check if a date is yesterday
