@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Habit from "../models/HabitModel.js";
 import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
+import { nextDay, nextDay, nextDay } from "date-fns";
 
 export async function createHabit(req, res) {
   req.body.user = req.user.userID;
@@ -231,11 +232,7 @@ export async function habitSchemaManager(req, res) {
     const latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
 
     // Check if yesterday's entry was 'unanswered'
-    if (
-      latestRecord &&
-      isYesterday(new Date(latestRecord.date)) &&
-      latestRecord.didIt === "unanswered"
-    ) {
+    if (latestRecord && latestRecord.didIt === "unanswered") {
       // Handle the case where yesterday's entry was 'unanswered'
       habit.streak = 0;
       await habit.save();
@@ -250,14 +247,10 @@ export async function habitSchemaManager(req, res) {
     const latestRecordDate =
       new Date(habit.dailyRecords[habit.dailyRecords.length - 1].date) || null;
 
-    const nextDay =
-      new Date(latestRecordDate.setDate(latestRecordDate.getDate() + 1)) ||
-      null;
-
     habit.dailyRecords.push({
       didIt: "unanswered",
       points: 0,
-      date: nextDay || Date.now(),
+      date: nextDay(latestRecordDate) || Date.now(),
     });
     await habit.save();
   });
@@ -268,15 +261,4 @@ export async function habitSchemaManager(req, res) {
   res.status(StatusCodes.OK).json({
     msg: `Successfully ran the Habit Schema Manager that is supposed to run in 12 am each day!`,
   });
-}
-
-// Helper function to check if a date is yesterday
-function isYesterday(date) {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  return (
-    date.getDate() === yesterday.getDate() &&
-    date.getMonth() === yesterday.getMonth() &&
-    date.getFullYear() === yesterday.getFullYear()
-  );
 }

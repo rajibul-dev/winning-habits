@@ -21,11 +21,7 @@ const dailyHabitSchemaManager = scheduler.scheduleJob(
       const latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
 
       // Check if yesterday's entry was 'unanswered'
-      if (
-        latestRecord &&
-        isYesterday(new Date(latestRecord.date)) &&
-        latestRecord.didIt === "unanswered"
-      ) {
+      if (latestRecord && latestRecord.didIt === "unanswered") {
         // Handle the case where yesterday's entry was 'unanswered'
         habit.streak = 0;
         await habit.save();
@@ -47,18 +43,7 @@ const dailyHabitSchemaManager = scheduler.scheduleJob(
 
     // Wait for all updates to complete
     await Promise.all(updatePromises);
-  },
+  }
 );
 
-// Helper function to check if a date is yesterday
-function isYesterday(date) {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  return (
-    date.getDate() === yesterday.getDate() &&
-    date.getMonth() === yesterday.getMonth() &&
-    date.getFullYear() === yesterday.getFullYear()
-  );
-}
-
-export { isYesterday, dailyHabitSchemaManager };
+export { dailyHabitSchemaManager };
