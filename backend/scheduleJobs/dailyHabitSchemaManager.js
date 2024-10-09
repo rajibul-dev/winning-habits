@@ -1,5 +1,6 @@
 import scheduler from "node-schedule";
 import Habit from "../models/HabitModel.js";
+import { addDays } from "date-fns";
 
 const dailyHabitSchemaManager = scheduler.scheduleJob(
   "0 0 * * *",
@@ -33,10 +34,14 @@ const dailyHabitSchemaManager = scheduler.scheduleJob(
 
     // push an 'unanswered' instence in the dailyRecords field for all of the habits
     const updatePromises = habits.map(async (habit) => {
+      const latestRecordDate =
+        new Date(habit.dailyRecords[habit.dailyRecords.length - 1].date) ||
+        null;
+
       habit.dailyRecords.push({
         didIt: "unanswered",
         points: 0,
-        date: Date.now(),
+        date: addDays(latestRecordDate, 1) || Date.now(),
       });
       await habit.save();
     });
