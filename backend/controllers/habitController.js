@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Habit from "../models/HabitModel.js";
 import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
-import { nextDay } from "date-fns";
+import { addDays } from "date-fns";
 
 export async function createHabit(req, res) {
   req.body.user = req.user.userID;
@@ -250,7 +250,7 @@ export async function habitSchemaManager(req, res) {
     habit.dailyRecords.push({
       didIt: "unanswered",
       points: 0,
-      date: nextDay(latestRecordDate) || Date.now(),
+      date: addDays(latestRecordDate, 1) || Date.now(),
     });
     await habit.save();
   });
