@@ -245,7 +245,9 @@ export async function habitSchemaManager(req, res) {
   // push an 'unanswered' instence in the dailyRecords field for all of the habits
   const updatePromises = habits.map(async (habit) => {
     const latestRecordDate =
-      new Date(habit.dailyRecords[habit.dailyRecords.length - 1].date) || null;
+      new Date(
+        habit.dailyRecords[habit.dailyRecords.length - 1]?.date ?? null
+      ) || null;
 
     habit.dailyRecords.push({
       didIt: "unanswered",
