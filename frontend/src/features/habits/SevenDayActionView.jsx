@@ -118,7 +118,9 @@ const Dates = styled.span`
           }
         `
       : $didIt === false
-        ? css``
+        ? css`
+            color: var(--color-red-700-mod);
+          `
         : css``}
 `;
 
@@ -126,8 +128,10 @@ export function prepareLastSevenDayView(dailyRecords) {
   const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
   const result = [];
 
+  const latestRecordDate = new Date(dailyRecords[dailyRecords.length - 1].date);
+
   // Get today's date and normalize to the start of the day
-  const today = new Date();
+  const today = latestRecordDate || new Date();
   today.setHours(0, 0, 0, 0);
 
   // Create a map of dates to their corresponding dailyRecords

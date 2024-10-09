@@ -40,11 +40,11 @@ export default function App() {
   return (
     <DarkModeProvider>
       <QueryClientProvider client={queryClient}>
-        {/* <ReactQueryDevtools
+        <ReactQueryDevtools
           position="bottom"
           buttonPosition="top-right"
           initialIsOpen={false}
-        /> */}
+        />
         <GlobalStyles />
         <BrowserRouter>
           <Suspense

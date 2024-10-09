@@ -237,10 +237,17 @@ export async function habitSchemaManager(req, res) {
 
   // push an 'unanswered' instence in the dailyRecords field for all of the habits
   const updatePromises = habits.map(async (habit) => {
+    const latestRecordDate =
+      new Date(habit.dailyRecords[habit.dailyRecords.length - 1].date) || null;
+
+    const nextDay =
+      new Date(latestRecordDate.setDate(latestRecordDate.getDate() + 1)) ||
+      null;
+
     habit.dailyRecords.push({
       didIt: "unanswered",
       points: 0,
-      date: Date.now(),
+      date: nextDay || Date.now(),
     });
     await habit.save();
   });
@@ -248,11 +255,9 @@ export async function habitSchemaManager(req, res) {
   // Wait for all updates to complete
   await Promise.all(updatePromises);
 
-  res
-    .status(StatusCodes.OK)
-    .json({
-      msg: `Successfully ran the Habit Schema Manager that is supposed to run in 12 am each day!`,
-    });
+  res.status(StatusCodes.OK).json({
+    msg: `Successfully ran the Habit Schema Manager that is supposed to run in 12 am each day!`,
+  });
 }
 
 // Helper function to check if a date is yesterday
