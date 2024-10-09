@@ -17,6 +17,7 @@ import {
   updateCustomDateAction,
   handleArchive,
   habitSchemaManager,
+  habitSchemaManagerRemoveExtraDates,
 } from "../controllers/habitController.js";
 
 const router = Router();
@@ -30,7 +31,10 @@ router
   .route("/getAllHabits")
   .get(authenticateUser, authorizePermissions("admin"), getAllHabits);
 
-router.route("/habitSchemaManager").post(habitSchemaManager);
+router
+  .route("/habitSchemaManager")
+  .post(habitSchemaManager)
+  .delete(habitSchemaManagerRemoveExtraDates);
 
 router
   .route("/:id")

@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Habit from "../models/HabitModel.js";
 import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
-import { addDays } from "date-fns";
+import { addDays, isAfter, isToday } from "date-fns";
 
 export async function createHabit(req, res) {
   req.body.user = req.user.userID;
@@ -102,6 +102,14 @@ export async function addDailyAction(req, res) {
   });
 }
 
+async function habitRecordLogicSortAndCalculate(habit) {
+  await habit.sortDailyActionsArray(habit.dailyRecords);
+  const { streak, totalPoints } = await habit.calculateStreakAndPoints(habit);
+  habit.streak = streak;
+  habit.totalPoints = totalPoints;
+  await habit.save();
+}
+
 export async function updateCustomDateAction(req, res) {
   const { id: habitID } = req.params;
   const { targetRecordID, updatedAnswer } = req.body;
@@ -142,11 +150,8 @@ export async function updateCustomDateAction(req, res) {
         `"${targetRecord.didIt}" is an unsupported answer`
       );
   }
-  await habit.sortDailyActionsArray(habit.dailyRecords);
-  const { streak, totalPoints } = await habit.calculateStreakAndPoints(habit);
-  habit.streak = streak;
-  habit.totalPoints = totalPoints;
-  await habit.save();
+
+  habitRecordLogicSortAndCalculate(habit);
 
   res.status(StatusCodes.OK).json({
     name: habit.name,
@@ -262,5 +267,60 @@ export async function habitSchemaManager(req, res) {
 
   res.status(StatusCodes.OK).json({
     msg: `Successfully ran the Habit Schema Manager that is supposed to run in 12 am each day!`,
+  });
+}
+
+export async function habitSchemaManagerRemoveExtraDates(req, res) {
+  // Check if the API key is present and correct
+  const apiKey = req.headers["x-api-key"];
+  const MY_API_KEY = process.env.MY_API_KEY;
+
+  if (apiKey !== MY_API_KEY) {
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ msg: `You are unauthorized to do this` });
+  }
+
+  console.log("Running Habit Schema manager for removing extra date function!");
+  // Fetch all habits from the database
+  const habits = await Habit.find();
+
+  if (!habits || habits.length === 0) {
+    console.log("Closing Habit Schema scheduler");
+    return;
+  }
+
+  const checkPromises = habits.map(async (habit) => {
+    while (
+      isAfter(
+        new Date(habit.dailyRecords[habit.dailyRecords.length - 1]?.date),
+        new Date()
+      )
+    ) {
+      habit.dailyRecords.pop();
+      await habit.save();
+    }
+
+    if (
+      !isToday(
+        new Date(habit.dailyRecords[habit.dailyRecords.length - 1]?.date)
+      )
+    ) {
+      habit.dailyRecords.push({
+        didIt: "unanswered",
+        points: 0,
+        date: Date.now(),
+      });
+      await habit.save();
+    }
+
+    habitRecordLogicSortAndCalculate(habit);
+  });
+
+  // Wait for all checks to complete
+  await Promise.all(checkPromises);
+
+  res.status(StatusCodes.OK).json({
+    msg: `Successfully prettified every habit by removing wrong forward dates!`,
   });
 }
