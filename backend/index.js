@@ -48,6 +48,11 @@ app.use("/api/v1/habits", habitRouter);
 app.use("/api/v1/achievements", achievementRouter);
 app.use("/api/v1/users", userRouter);
 
+app.get("/keep-alive", (req, res) => {
+  console.log("Keep-alive ping received!");
+  res.status(200).send("I'm awake!");
+});
+
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 app.get("*", (req, res) =>
