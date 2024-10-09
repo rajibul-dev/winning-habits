@@ -86,7 +86,7 @@ HabitSchema.pre("save", async function (next) {
   next();
 });
 
-// Handlers for when user updates daily actions
+// Handlers for when user updates a custom date from the daily actions calendar
 HabitSchema.methods.sortDailyActionsArray = function (dailyRecords) {
   let cumulativeYesPointsForRecord = 1;
 
@@ -97,30 +97,27 @@ HabitSchema.methods.sortDailyActionsArray = function (dailyRecords) {
       console.log("Starting sort operation, getting portion indexes");
 
       // Get the unsorted portion's start index
-      const unsortedPortionStartIndex = index + 1;
-      console.log("Target index start: ", unsortedPortionStartIndex);
+      const unsortedPortionHead = index + 1;
+      console.log("Target index start: ", unsortedPortionHead);
 
       // Get the unsorted portion's end index
-      const unsortedPortionEndIndex = findUnsortedPortionEndIndex(
+      const unsortedPortionTail = findUnsortedPortionEndIndex(
         dailyRecords,
-        unsortedPortionStartIndex
+        unsortedPortionHead
       );
-      console.log("Target index end: ", unsortedPortionEndIndex);
+      console.log("Target index end: ", unsortedPortionTail);
 
       // Manipulate the properties of each item in the unsorted portion
-      if (unsortedPortionStartIndex !== unsortedPortionEndIndex) {
+      if (unsortedPortionHead !== unsortedPortionTail) {
         console.log("Starting manipulation...");
         let changedPoint = 1;
-        for (
-          let i = unsortedPortionStartIndex;
-          i < unsortedPortionEndIndex;
-          i++
-        ) {
+        for (let i = unsortedPortionHead; i < unsortedPortionTail; i++) {
           // in here, all of the following records will have yeses as their answer
           const record = dailyRecords[i];
           record.points = changedPoint;
           console.log("Manipulation complete!");
 
+          // cumulative yes point for the next 'yes'
           changedPoint++;
         }
       } else {
