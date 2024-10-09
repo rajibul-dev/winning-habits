@@ -206,6 +206,16 @@ async function getHabitById(habitID) {
 }
 
 export async function habitSchemaManager(req, res) {
+  // Check if the API key is present and correct
+  const apiKey = req.headers["x-api-key"];
+  const MY_API_KEY = process.env.MY_API_KEY || "SECRET_API_KEY";
+
+  if (apiKey !== MY_API_KEY) {
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ msg: `You are unauthorized to do this` });
+  }
+
   console.log("Running Habit Schema management function on every 12am!");
   // Fetch all habits from the database
   const habits = await Habit.find();
