@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Habit from "../models/HabitModel.js";
 import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
+import { nextDay } from "date-fns";
 
 export async function createHabit(req, res) {
   req.body.user = req.user.userID;
