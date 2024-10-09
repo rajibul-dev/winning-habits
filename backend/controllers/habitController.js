@@ -2,7 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import Habit from "../models/HabitModel.js";
 import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
-import { nextDay, nextDay, nextDay } from "date-fns";
 
 export async function createHabit(req, res) {
   req.body.user = req.user.userID;
@@ -209,7 +208,7 @@ async function getHabitById(habitID) {
 export async function habitSchemaManager(req, res) {
   // Check if the API key is present and correct
   const apiKey = req.headers["x-api-key"];
-  const MY_API_KEY = process.env.MY_API_KEY || "SECRET_API_KEY";
+  const MY_API_KEY = process.env.MY_API_KEY;
 
   if (apiKey !== MY_API_KEY) {
     return res
