@@ -38,7 +38,7 @@ const HabitSchema = new Schema(
       default: "normal",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 // Handle relational value updates based on changes to the dailyRecords field
@@ -88,11 +88,11 @@ HabitSchema.pre("save", async function (next) {
 
 // Handlers for when user updates daily actions
 HabitSchema.methods.sortDailyActionsArray = function (dailyRecords) {
-  let yesCount = 1;
+  let cumulativeYesPointsForRecord = 1;
 
   dailyRecords.forEach((currentRecord, index) => {
     if (currentRecord.didIt === "no" || currentRecord.didIt === "unanswered") {
-      yesCount = 1;
+      cumulativeYesPointsForRecord = 1;
 
       console.log("Starting sort operation, getting portion indexes");
 
@@ -103,7 +103,7 @@ HabitSchema.methods.sortDailyActionsArray = function (dailyRecords) {
       // Get the unsorted portion's end index
       const unsortedPortionEndIndex = findUnsortedPortionEndIndex(
         dailyRecords,
-        unsortedPortionStartIndex,
+        unsortedPortionStartIndex
       );
       console.log("Target index end: ", unsortedPortionEndIndex);
 
@@ -113,7 +113,7 @@ HabitSchema.methods.sortDailyActionsArray = function (dailyRecords) {
         let changedPoint = 1;
         for (
           let i = unsortedPortionStartIndex;
-          i <= unsortedPortionEndIndex;
+          i < unsortedPortionEndIndex;
           i++
         ) {
           // in here, all of the following records will have yeses as their answer
@@ -127,8 +127,8 @@ HabitSchema.methods.sortDailyActionsArray = function (dailyRecords) {
         console.log("Same indexes, closing instence");
       }
     } else {
-      currentRecord.points = yesCount;
-      yesCount++;
+      currentRecord.points = cumulativeYesPointsForRecord;
+      cumulativeYesPointsForRecord++;
     }
   });
 };
@@ -153,7 +153,7 @@ HabitSchema.methods.calculateStreakAndPoints = async function (habit) {
       if (isLatest && item.didIt === "unanswered") return streakSoFar;
       return item.points;
     },
-    0,
+    0
   );
 
   const totalPoints = habit.dailyRecords.reduce((totalPointsSoFar, item) => {
@@ -173,7 +173,7 @@ async function handleAchievementLogic(habit) {
     await Achievement.findOneAndUpdate(
       { user: habit.user, habit: habit._id },
       { $setOnInsert: { user: habit.user, habit: habit._id } },
-      { upsert: true },
+      { upsert: true }
     );
   } catch (error) {
     return console.error("Error creating achievement:", error.message);
@@ -185,7 +185,7 @@ async function handleAchievementLogic(habit) {
 async function checkAndRemoveFromAchievements(habit) {
   if (!habit.user || !habit._id) {
     return console.error(
-      "User or habit information missing for achievement check",
+      "User or habit information missing for achievement check"
     );
   }
 
@@ -197,7 +197,7 @@ async function checkAndRemoveFromAchievements(habit) {
   } catch (error) {
     return console.error(
       "Error checking and removing from achievements:",
-      error.message,
+      error.message
     );
   }
 
