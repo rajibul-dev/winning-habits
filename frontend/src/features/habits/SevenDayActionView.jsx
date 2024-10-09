@@ -128,7 +128,9 @@ export function prepareLastSevenDayView(dailyRecords) {
   const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
   const result = [];
 
-  const latestRecordDate = new Date(dailyRecords[dailyRecords.length - 1].date);
+  const latestRecordDate = new Date(
+    dailyRecords[dailyRecords.length - 1]?.date ?? null,
+  );
 
   // Get today's date and normalize to the start of the day
   const today = latestRecordDate || new Date();
