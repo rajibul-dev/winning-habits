@@ -64,6 +64,14 @@ export async function deleteHabit(req, res) {
   res.status(StatusCodes.OK).json({ msg: `Habit removed successfully!` });
 }
 
+async function habitRecordLogicSortAndCalculateAndSave(habit) {
+  await habit.sortDailyActionsArray(habit.dailyRecords);
+  const { streak, totalPoints } = await habit.calculateStreakAndPoints(habit);
+  habit.streak = streak;
+  habit.totalPoints = totalPoints;
+  await habit.save();
+}
+
 export async function addDailyAction(req, res) {
   const { id: habitID } = req.params;
   const { answer } = req.body;
@@ -93,6 +101,8 @@ export async function addDailyAction(req, res) {
     await habit.save();
   }
 
+  await habitRecordLogicSortAndCalculateAndSave(habit);
+
   res.status(StatusCodes.OK).json({
     name: habit.name,
     habitID: habit._id,
@@ -100,14 +110,6 @@ export async function addDailyAction(req, res) {
     totalPoints: habit.totalPoints,
     streak: habit.streak,
   });
-}
-
-async function habitRecordLogicSortAndCalculate(habit) {
-  await habit.sortDailyActionsArray(habit.dailyRecords);
-  const { streak, totalPoints } = await habit.calculateStreakAndPoints(habit);
-  habit.streak = streak;
-  habit.totalPoints = totalPoints;
-  await habit.save();
 }
 
 export async function updateCustomDateAction(req, res) {
@@ -151,7 +153,7 @@ export async function updateCustomDateAction(req, res) {
       );
   }
 
-  habitRecordLogicSortAndCalculate(habit);
+  await habitRecordLogicSortAndCalculateAndSave(habit);
 
   res.status(StatusCodes.OK).json({
     name: habit.name,
@@ -314,7 +316,7 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
       await habit.save();
     }
 
-    habitRecordLogicSortAndCalculate(habit);
+    await habitRecordLogicSortAndCalculateAndSave(habit);
   });
 
   // Wait for all checks to complete

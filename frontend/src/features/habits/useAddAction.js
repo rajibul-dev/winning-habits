@@ -18,6 +18,7 @@ export default function useAddAction() {
       queryClient.invalidateQueries({
         queryKey: ["habit", habitID],
       });
+      toast.success(`Successfully answered!`);
     },
   });
 
