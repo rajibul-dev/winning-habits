@@ -9,7 +9,13 @@ const StyledProgressBar = styled.div`
   position: relative;
   border-radius: var(--border-radius-lg);
   width: 100%;
-  overflow: visible;
+  overflow: hidden;
+
+  ${({ streak }) =>
+    streak >= 21 &&
+    css`
+      overflow: visible;
+    `};
 
   ${({ $isAchieved }) =>
     $isAchieved &&
