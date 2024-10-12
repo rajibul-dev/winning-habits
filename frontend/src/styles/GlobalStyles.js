@@ -252,7 +252,7 @@ const GlobalStyles = createGlobalStyle`
   h5,
   h6 {
     overflow-wrap: break-word;
-    hyphens: auto;
+    hyphens: none;
   }
 
   img {
