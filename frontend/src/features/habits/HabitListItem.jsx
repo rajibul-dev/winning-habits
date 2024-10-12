@@ -19,6 +19,7 @@ const StyledItem = styled.li`
   padding: 3rem;
   border: 1px solid var(--color-grey-300);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 
   ${({ $isAchieved }) =>
     $isAchieved &&
