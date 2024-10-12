@@ -5,11 +5,17 @@ import Spinner from "../../ui/Spinner.jsx";
 import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx";
 import HabitListItem from "./HabitListItem.jsx";
 import apiErrorFormat from "../../api/apiErrorFormat.js";
+import { pixelToEm } from "../../styles/GlobalStyles.js";
 
 const StyledList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 3rem;
+
+  padding-bottom: 9rem;
+  @media (max-width: ${pixelToEm(700)}) {
+    padding-bottom: 7rem;
+  }
 `;
 
 export default function HabitList({ show = "non-archived" }) {

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import styled, { css } from "styled-components";
 import { useDarkMode } from "../context/DarkModeContext.jsx";
 import streakColor from "../features/habits/streakColor.js";
+import { progressBarValueIndex } from "../styles/zIndexManager.js";
 
 const StyledProgressBar = styled.div`
   height: 2rem;
@@ -48,7 +49,7 @@ const ProgressValue = styled(motion.div)`
 `;
 
 const valueNumStyles = css`
-  z-index: 2;
+  z-index: ${progressBarValueIndex};
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

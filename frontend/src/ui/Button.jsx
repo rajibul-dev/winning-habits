@@ -25,6 +25,10 @@ const sizes = {
         /* offset-x | offset-y | blur-radius | color */
         text-shadow: 0 1.5px 0 var(--color-brand-800);
         letter-spacing: 0.03pt;
+
+        & svg {
+          filter: drop-shadow(0 1.5px 0 var(--color-brand-800));
+        }
       `}
 
     padding-inline: 1.6rem;
@@ -46,6 +50,10 @@ const sizes = {
         /* offset-x | offset-y | blur-radius | color */
         text-shadow: 0 1.5px 0 var(--color-brand-800);
         letter-spacing: 0.03pt;
+
+        & svg {
+          filter: drop-shadow(0 1.5px 0 var(--color-brand-800));
+        }
       `}
 
     padding-inline: 2.4rem;
