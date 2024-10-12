@@ -51,9 +51,11 @@ const StyledDay = styled.span<StyledDayProps>`
 const UpdateAnswerContainerGrid = styled.div`
   display: grid;
   gap: 2rem;
+  max-width: 40rem;
 
   @media (max-width: ${pixelToEm(500)}) {
     padding: 1.2rem;
+    max-width: 35rem;
   }
 `;
 
