@@ -53,8 +53,8 @@ const Name = styled.p`
   font-size: var(--font-size-2xl);
   font-weight: 600;
   line-height: 1.6;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  /* padding-top: 3px; */
+  /* padding-bottom: 3px; */
 
   ${({ $isAchieved }) =>
     $isAchieved &&

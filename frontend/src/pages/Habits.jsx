@@ -18,7 +18,7 @@ const FixedBottomRightButton = styled(Button)`
   right: 6rem;
   padding-top: 2rem;
   padding-bottom: 2.3rem;
-  filter: drop-shadow(var(--shadow-lg));
+  filter: drop-shadow(var(--shadow-md));
   border-radius: 14px;
 
   & svg {
