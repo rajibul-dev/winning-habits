@@ -129,11 +129,11 @@ export function prepareLastSevenDayView(dailyRecords) {
   const result = [];
 
   const latestRecordDate = new Date(
-    dailyRecords[dailyRecords.length - 1]?.date ?? null,
+    dailyRecords[dailyRecords.length - 1]?.date ?? Date.now(),
   );
 
   // Get today's date and normalize to the start of the day
-  const today = latestRecordDate || new Date();
+  const today = latestRecordDate;
   today.setHours(0, 0, 0, 0);
 
   // Create a map of dates to their corresponding dailyRecords
