@@ -82,10 +82,10 @@ export default function MainAppGuide() {
           accurately tracking your progress!
         </Paragraph>
         <Paragraph>
-          And don’t worry—this isn’t like Duolingo, where you need to visit the
-          app every day to update it (the streak) on time. You can set your
-          'yeses' and 'nos' from the calendar, and it will calculate the exact
-          points you deserve.
+          And don’t worry—you don't need to visit the app every day to update
+          your progress on time. You can set your 'yeses' and 'nos' from the
+          calendar for any (valid) day, and it will update and calculate the
+          exact points you deserve.
         </Paragraph>
         <Paragraph>
           The goal is to reach 1,000 points. By then, the app will assume you've
