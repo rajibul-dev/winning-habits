@@ -12,7 +12,7 @@ const UserSchema = new Schema(
       required: [true, "Name is a mandatory field"],
       trim: true,
       minlength: 2,
-      maxlength: 40,
+      maxlength: [40, "Your name must be within 40 letters"],
     },
     email: {
       unique: true,
@@ -52,7 +52,7 @@ const UserSchema = new Schema(
       default: defaultImageURL,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 UserSchema.pre("save", async function () {

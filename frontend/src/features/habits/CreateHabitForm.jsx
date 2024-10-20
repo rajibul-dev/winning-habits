@@ -31,6 +31,7 @@ export default function CreateHabitForm({ onCloseModal }) {
     <Form type="modal" onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRowVertical label="Habit name">
         <Input
+          maxLength={100}
           type="text"
           autoFocus
           {...register("habit", {

@@ -6,6 +6,7 @@ const HabitSchema = new Schema(
     name: {
       type: String,
       required: [true, "You need to provide a habit name"],
+      maxLength: [100, "Habit name must be within 100 letters"],
     },
     dailyRecords: [
       {
