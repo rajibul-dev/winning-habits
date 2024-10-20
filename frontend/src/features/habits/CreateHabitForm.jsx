@@ -12,7 +12,7 @@ export default function CreateHabitForm({ onCloseModal }) {
   const { createHabit, isCreating, isCreated } = useCreateHabit();
 
   function onSubmit(data) {
-    createHabit({ name: data.habit });
+    createHabit({ name: data.habit.trim() });
   }
   function onError(errors) {
     console.log(errors);

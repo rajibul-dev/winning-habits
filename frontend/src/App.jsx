@@ -128,7 +128,7 @@ export default function App() {
               duration: 1000,
             },
             error: {
-              duration: 10000,
+              duration: 8000,
             },
             style: {
               fontSize: "16px",

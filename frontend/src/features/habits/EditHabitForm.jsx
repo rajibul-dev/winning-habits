@@ -17,7 +17,7 @@ export default function EditHabitForm({ onCloseModal, habitID, name }) {
 
   function onSubmit(data) {
     if (data.habit === name) return onCloseModal();
-    updateHabit({ id: habitID, name: data.habit });
+    updateHabit({ id: habitID, name: data.habit.trim() });
   }
   function onError(errors) {
     console.log(errors);

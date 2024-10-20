@@ -130,7 +130,7 @@ export default function ProfileEditForm() {
 
   function onSubmit(data) {
     if (data.name === name) return;
-    updateUser(data.name);
+    updateUser(data.name.trim());
   }
 
   if (isLoading) return <Spinner />;
@@ -144,7 +144,7 @@ export default function ProfileEditForm() {
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <FormRowVerticalModified label="Your name">
-        <Input id="name" {...register("name")} />
+        <Input minLength={2} maxLength={40} id="name" {...register("name")} />
       </FormRowVerticalModified>
 
       <AvatarPortion>
