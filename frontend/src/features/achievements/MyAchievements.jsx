@@ -71,8 +71,7 @@ export default function MyAchievements() {
       </PageLevelNotificationToast>
     );
 
-  if (myAchievements?.length === 0)
-    return <Empty resourceName={"achievements"} />;
+  if (myAchievements?.length === 0) return <p>You have no achievements yet</p>;
 
   return (
     <>
