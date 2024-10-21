@@ -341,86 +341,64 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
 }
 
 export async function habitSchemaManagerFixOneDayBehind(req, res) {
-  // Check if the API key is present and correct
   const apiKey = req.headers["x-api-key"];
   const MY_API_KEY = process.env.MY_API_KEY;
 
+  // API key verification
   if (apiKey !== MY_API_KEY) {
     return res
       .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: `You are unauthorized to do this` });
+      .json({ msg: "You are unauthorized to do this" });
   }
 
-  console.log("Running Habit Schema manager to fix one day behind habits!");
-
-  // Fetch all habits from the database
+  // Fetch habits from the database
   const habits = await Habit.find();
-
-  if (!habits || habits.length === 0) {
-    console.log("No habits found to fix");
+  if (!habits.length) {
     return res.status(StatusCodes.NOT_FOUND).json({ msg: "No habits found." });
   }
 
+  const IST_OFFSET = 5.5 * 60 * 60 * 1000; // IST offset (UTC+5:30)
+
   const fixPromises = habits.map(async (habit) => {
     const lastRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
-    console.log(`Processing habit: ${habit.name}`);
-    console.log(
-      `Last record date: ${lastRecord ? lastRecord.date : "No records"}`
-    );
 
-    if (lastRecord) {
-      // Convert lastRecord date to IST (UTC+5:30)
-      const lastDate = new Date(lastRecord.date);
-      // Normalize to IST
-      const lastDateIST = new Date(lastDate.getTime() + 5.5 * 60 * 60 * 1000);
-      console.log(`Last record parsed date (IST): ${lastDateIST}`);
-
-      // Get today's date in IST
-      const today = new Date();
-      const todayIST = new Date(today.getTime() + 5.5 * 60 * 60 * 1000); // Adjust for IST
-      todayIST.setHours(0, 0, 0, 0); // Set to start of the day
-      console.log(`Today's date (IST): ${todayIST}`);
-
-      // Check if the last record is not today in IST
-      if (!isToday(lastDateIST)) {
-        console.log("Last record is not today.");
-
-        // Check if the last record was from yesterday in IST
-        const yesterdayIST = addDays(todayIST, -1);
-        if (isSameDay(lastDateIST, yesterdayIST)) {
-          // Add a new record for today
-          habit.dailyRecords.push({
-            didIt: "unanswered",
-            points: 0,
-            date: Date.now(),
-          });
-
-          try {
-            await habit.save();
-            console.log(`Updated habit: ${habit.name} to today's date.`);
-          } catch (error) {
-            console.error(
-              "Error saving habit after fixing one day behind:",
-              error
-            );
-          }
-        } else {
-          console.log("Last record is not from yesterday.");
-        }
-      } else {
-        console.log("Last record is already today.");
-      }
-    } else {
-      console.log("No records found for this habit.");
+    if (!lastRecord) {
+      // If no records exist, create one for today
+      habit.dailyRecords.push({
+        didIt: "unanswered",
+        points: 0,
+        date: Date.now(),
+      });
+      await habit.save();
+      return;
     }
 
-    await habitRecordLogicSortAndCalculateAndSave(habit);
+    // Get last record date in IST
+    const lastDateIST = new Date(lastRecord.date).getTime() + IST_OFFSET;
+    const lastDate = new Date(lastDateIST);
+
+    // Get today's date in IST
+    const todayIST = new Date(Date.now() + IST_OFFSET);
+    todayIST.setHours(0, 0, 0, 0); // Start of today
+
+    // Check if the last record is from today
+    if (lastDate.toDateString() === todayIST.toDateString()) {
+      return; // No action needed
+    }
+
+    // Add a new record for today
+    habit.dailyRecords.push({
+      didIt: "unanswered",
+      points: 0,
+      date: Date.now(),
+    });
+
+    await habit.save();
   });
 
   // Wait for all fixes to complete
   await Promise.all(fixPromises);
-
-  res.status(StatusCodes.OK).json({
-    msg: `Successfully fixed one day behind habits!`,
-  });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Successfully fixed one day behind habits!" });
 }
