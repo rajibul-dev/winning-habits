@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Habit from "../models/HabitModel.js";
 import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
-import { addDays, isAfter, isToday } from "date-fns";
+import { addDays, isAfter, isSameDay, isToday } from "date-fns";
 
 export async function createHabit(req, res) {
   req.body.user = req.user.userID;
@@ -337,5 +337,67 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
 
   res.status(StatusCodes.OK).json({
     msg: `Successfully prettified every habit by removing wrong forward dates!`,
+  });
+}
+
+export async function habitSchemaManagerFixOneDayBehind(req, res) {
+  // Check if the API key is present and correct
+  const apiKey = req.headers["x-api-key"];
+  const MY_API_KEY = process.env.MY_API_KEY;
+
+  if (apiKey !== MY_API_KEY) {
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ msg: `You are unauthorized to do this` });
+  }
+
+  console.log("Running Habit Schema manager to fix one day behind habits!");
+
+  // Fetch all habits from the database
+  const habits = await Habit.find();
+
+  if (!habits || habits.length === 0) {
+    console.log("No habits found to fix");
+    return res.status(StatusCodes.NOT_FOUND).json({ msg: "No habits found." });
+  }
+
+  const fixPromises = habits.map(async (habit) => {
+    const lastRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
+
+    if (lastRecord && !isToday(new Date(lastRecord.date))) {
+      const lastDate = new Date(lastRecord.date);
+
+      // Check if the last record was from yesterday
+      if (isSameDay(lastDate, addDays(new Date(), -1))) {
+        // Remove the last record if it's from yesterday
+        habit.dailyRecords.pop();
+
+        // Add a new record for today
+        habit.dailyRecords.push({
+          didIt: "unanswered",
+          points: 0,
+          date: Date.now(),
+        });
+
+        try {
+          await habit.save();
+          console.log(`Updated habit: ${habit.name} by fixing one day behind.`);
+        } catch (error) {
+          console.error(
+            "Error saving habit after fixing one day behind:",
+            error
+          );
+        }
+      }
+    }
+
+    await habitRecordLogicSortAndCalculateAndSave(habit);
+  });
+
+  // Wait for all fixes to complete
+  await Promise.all(fixPromises);
+
+  res.status(StatusCodes.OK).json({
+    msg: `Successfully fixed one day behind habits!`,
   });
 }

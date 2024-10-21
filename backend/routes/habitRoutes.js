@@ -18,6 +18,7 @@ import {
   handleArchive,
   habitSchemaManager,
   habitSchemaManagerRemoveExtraDates,
+  habitSchemaManagerFixOneDayBehind,
 } from "../controllers/habitController.js";
 
 const router = Router();
@@ -34,7 +35,8 @@ router
 router
   .route("/habitSchemaManager")
   .post(habitSchemaManager)
-  .delete(habitSchemaManagerRemoveExtraDates);
+  .delete(habitSchemaManagerRemoveExtraDates)
+  .patch(habitSchemaManagerFixOneDayBehind);
 
 router
   .route("/:id")
