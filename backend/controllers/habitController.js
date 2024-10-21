@@ -363,32 +363,49 @@ export async function habitSchemaManagerFixOneDayBehind(req, res) {
 
   const fixPromises = habits.map(async (habit) => {
     const lastRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
+    console.log(`Processing habit: ${habit.name}`);
+    console.log(
+      `Last record date: ${lastRecord ? lastRecord.date : "No records"}`
+    );
 
-    if (lastRecord && !isToday(new Date(lastRecord.date))) {
+    if (lastRecord) {
       const lastDate = new Date(lastRecord.date);
+      console.log(`Last record parsed date: ${lastDate}`);
 
-      // Check if the last record was from yesterday
-      if (isSameDay(lastDate, addDays(new Date(), -1))) {
-        // Remove the last record if it's from yesterday
-        habit.dailyRecords.pop();
+      // Check if the last record is not today
+      if (!isToday(lastDate)) {
+        console.log("Last record is not today.");
 
-        // Add a new record for today
-        habit.dailyRecords.push({
-          didIt: "unanswered",
-          points: 0,
-          date: Date.now(),
-        });
+        // Check if the last record was from yesterday
+        if (isSameDay(lastDate, addDays(new Date(), -1))) {
+          console.log("Last record is from yesterday. Fixing...");
 
-        try {
-          await habit.save();
-          console.log(`Updated habit: ${habit.name} by fixing one day behind.`);
-        } catch (error) {
-          console.error(
-            "Error saving habit after fixing one day behind:",
-            error
-          );
+          // Remove the last record if it's from yesterday
+          habit.dailyRecords.pop();
+          // Add a new record for today
+          habit.dailyRecords.push({
+            didIt: "unanswered",
+            points: 0,
+            date: Date.now(),
+          });
+
+          try {
+            await habit.save();
+            console.log(`Updated habit: ${habit.name} to today's date.`);
+          } catch (error) {
+            console.error(
+              "Error saving habit after fixing one day behind:",
+              error
+            );
+          }
+        } else {
+          console.log("Last record is not from yesterday.");
         }
+      } else {
+        console.log("Last record is already today.");
       }
+    } else {
+      console.log("No records found for this habit.");
     }
 
     await habitRecordLogicSortAndCalculateAndSave(habit);
