@@ -369,15 +369,34 @@ export async function habitSchemaManagerFixOneDayBehind(req, res) {
     );
 
     if (lastRecord) {
+      // Convert lastRecord date to UTC
       const lastDate = new Date(lastRecord.date);
-      console.log(`Last record parsed date: ${lastDate}`);
+      const lastDateUTC = new Date(
+        Date.UTC(
+          lastDate.getUTCFullYear(),
+          lastDate.getUTCMonth(),
+          lastDate.getUTCDate(),
+          lastDate.getUTCHours(),
+          lastDate.getUTCMinutes(),
+          lastDate.getUTCSeconds()
+        )
+      );
+      console.log(`Last record parsed date (UTC): ${lastDateUTC}`);
 
-      // Check if the last record is not today
-      if (!isToday(lastDate)) {
+      // Check if the last record is not today in UTC
+      const todayUTC = new Date(
+        Date.UTC(
+          new Date().getUTCFullYear(),
+          new Date().getUTCMonth(),
+          new Date().getUTCDate()
+        )
+      );
+
+      if (!isToday(lastDateUTC)) {
         console.log("Last record is not today.");
 
         // Check if the last record was from yesterday
-        if (isSameDay(lastDate, addDays(new Date(), -1))) {
+        if (isSameDay(lastDateUTC, addDays(todayUTC, -1))) {
           console.log("Last record is from yesterday. Fixing...");
 
           // Remove the last record if it's from yesterday
