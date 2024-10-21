@@ -371,12 +371,15 @@ export async function habitSchemaManagerFixOneDayBehind(req, res) {
     if (lastRecord) {
       // Convert lastRecord date to IST (UTC+5:30)
       const lastDate = new Date(lastRecord.date);
-      const lastDateIST = new Date(lastDate.getTime() + 5.5 * 60 * 60 * 1000); // Adjust for IST
+      // Normalize to IST
+      const lastDateIST = new Date(lastDate.getTime() + 5.5 * 60 * 60 * 1000);
       console.log(`Last record parsed date (IST): ${lastDateIST}`);
 
       // Get today's date in IST
-      const todayIST = new Date(new Date().getTime() + 5.5 * 60 * 60 * 1000); // Adjust for IST
-      todayIST.setHours(0, 0, 0, 0); // Set to start of day
+      const today = new Date();
+      const todayIST = new Date(today.getTime() + 5.5 * 60 * 60 * 1000); // Adjust for IST
+      todayIST.setHours(0, 0, 0, 0); // Set to start of the day
+      console.log(`Today's date (IST): ${todayIST}`);
 
       // Check if the last record is not today in IST
       if (!isToday(lastDateIST)) {
