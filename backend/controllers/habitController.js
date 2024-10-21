@@ -294,26 +294,39 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
 
   const checkPromises = habits.map(async (habit) => {
     while (
+      habit.dailyRecords.length > 0 &&
       isAfter(
         new Date(habit.dailyRecords[habit.dailyRecords.length - 1]?.date),
         new Date()
       )
     ) {
       habit.dailyRecords.pop();
-      await habit.save();
+      try {
+        await habit.save();
+      } catch (error) {
+        console.error("Error saving habit after popping:", error);
+      }
     }
 
-    if (
-      !isToday(
-        new Date(habit.dailyRecords[habit.dailyRecords.length - 1]?.date)
-      )
-    ) {
+    const lastRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
+
+    // Check if today's record already exists
+    const todayRecordExists = habit.dailyRecords.some((record) =>
+      isToday(new Date(record.date))
+    );
+
+    // If there’s no last record or last record isn't today, add a new one
+    if (!lastRecord || !todayRecordExists) {
       habit.dailyRecords.push({
         didIt: "unanswered",
         points: 0,
         date: Date.now(),
       });
-      await habit.save();
+      try {
+        await habit.save();
+      } catch (error) {
+        console.error("Error saving habit after popping:", error);
+      }
     }
 
     await habitRecordLogicSortAndCalculateAndSave(habit);
