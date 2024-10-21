@@ -388,10 +388,6 @@ export async function habitSchemaManagerFixOneDayBehind(req, res) {
         // Check if the last record was from yesterday in IST
         const yesterdayIST = addDays(todayIST, -1);
         if (isSameDay(lastDateIST, yesterdayIST)) {
-          console.log("Last record is from yesterday. Fixing...");
-
-          // Remove the last record if it's from yesterday
-          habit.dailyRecords.pop();
           // Add a new record for today
           habit.dailyRecords.push({
             didIt: "unanswered",
