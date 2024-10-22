@@ -45,14 +45,18 @@ export default function HabitList({ show = "non-archived" }) {
   }
 
   if (isFetchingUserHabits) return <Spinner />;
+
   if (error)
     return (
       <PageLevelNotificationToast type="error">
         {apiErrorFormat(error)}
       </PageLevelNotificationToast>
     );
-  if (!data?.count || habitsToRender.length === 0)
+
+  if (!data?.count || (habitsToRender.length === 0 && show !== "archived"))
     return <Empty resourceName={"habits"} />;
+  else if (!data?.count || (habitsToRender.length === 0 && show === "archived"))
+    return <p>You don't have any archived habits</p>;
 
   return (
     <StyledList>
