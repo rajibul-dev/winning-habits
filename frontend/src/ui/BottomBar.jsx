@@ -7,9 +7,10 @@ import { NavLink } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
 import Popover, { usePopoverManager } from "./Popover";
 import { BiUser } from "react-icons/bi";
-import { FaInfo } from "react-icons/fa";
+// import { FaInfo } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { toggleMainGuide } from "../features/app-guide/guideSlice";
+import { RxReader } from "react-icons/rx";
 
 const StyledBottomBar = styled.ul`
   display: flex;
@@ -150,7 +151,7 @@ export default function BottomBar() {
                 }}
                 href=""
               >
-                <FaInfo />
+                <RxReader />
                 <Label>App Guide</Label>
               </NavButtonRather>
             </RestList>

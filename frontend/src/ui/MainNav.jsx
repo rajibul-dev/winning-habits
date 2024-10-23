@@ -4,7 +4,8 @@ import { HiOutlineUsers } from "react-icons/hi2";
 import { VscChecklist } from "react-icons/vsc";
 import { PiArchive, PiTrophy } from "react-icons/pi";
 import { BiUser } from "react-icons/bi";
-import { FaInfo } from "react-icons/fa";
+// import { FaInfo } from "react-icons/fa";
+import { RxReader } from "react-icons/rx";
 import { useDispatch } from "react-redux";
 import { toggleMainGuide } from "../features/app-guide/guideSlice";
 
@@ -114,7 +115,7 @@ function MainNav() {
           }}
           href=""
         >
-          <FaInfo />
+          <RxReader />
           <span>App Guide</span>
         </StyledButtonRather>
       </NavBottomPortionWrapper>
