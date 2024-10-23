@@ -59,6 +59,11 @@ const StyledNavLink = styled(NavLink)`
 const StyledButtonRather = styled.a`
   ${sharedLinkStyles}
   justify-self: end;
+  width: 100%;
+`;
+
+const NavBottomPortionWrapper = styled.div`
+  width: 100%;
 `;
 
 function MainNav() {
@@ -101,7 +106,7 @@ function MainNav() {
         </NavList>
       </nav>
 
-      <div>
+      <NavBottomPortionWrapper>
         <StyledButtonRather
           onClick={(e) => {
             e.preventDefault();
@@ -112,7 +117,7 @@ function MainNav() {
           <FaInfo />
           <span>App Guide</span>
         </StyledButtonRather>
-      </div>
+      </NavBottomPortionWrapper>
     </>
   );
 }
