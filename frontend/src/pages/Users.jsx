@@ -11,7 +11,7 @@ export default function Users() {
     if (!error && !isLoading) {
       setFancyText(
         <>
-          For now just know that{" "}
+          For now, just know that{" "}
           <strong style={{ fontWeight: 600 }}>{data.count} users</strong> are
           using this app in total.
         </>,
