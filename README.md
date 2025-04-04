@@ -59,19 +59,15 @@ This app was built as a portfolio-quality project and proof-of-concept. While no
 
 ---
 
-### 📸 Screenshots (Add These Later)
+### 📸 Screenshots
 
-> _(You can capture and drop in 2-3 images here from the live app)_
->
-> ```
-> ![Homepage](./screenshots/homepage.png)
-> ![Calendar View](./screenshots/calendar.png)
-> ![Profile Page](./screenshots/profile-page.png)
-> ![Light mode showcase - 1](./screenshots/lightmode-showcase-1.png)
-> ![Light mode showcase - 2](./screenshots/lightmode-showcase-2.png)
-> ![Light mode showcase - 3](./screenshots/lightmode-showcase-3.png)
-> ![Light mode showcase - 4](./screenshots/lightmode-showcase-4.png)
-> ```
+- [Homepage](./screenshots/homepage.png)
+- [Calendar View](./screenshots/calendar.png)
+- [Profile Page](./screenshots/profile-page.png)
+- [Light mode showcase - 1](./screenshots/lightmode-showcase-1.png)
+- [Light mode showcase - 2](./screenshots/lightmode-showcase-2.png)
+- [Light mode showcase - 3](./screenshots/lightmode-showcase-3.png)
+- [Light mode showcase - 4](./screenshots/lightmode-showcase-4.png)
 
 ---
 
