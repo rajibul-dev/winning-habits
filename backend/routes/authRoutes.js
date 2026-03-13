@@ -15,13 +15,13 @@ import { authenticateUser } from "../middlewares/authentiation.js";
 const router = Router();
 
 router.post("/register", register);
-router.post("/verify-email", verifyEmail);
-router.post("/request-new-verification-email", requestNewVerificationEmail);
 router.post("/login", login);
-router.get("/logout", authenticateUser, logout);
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", resetPassword);
-router.post("/change-password", authenticateUser, changePassword);
-router.post("/google", google);
+router.post("/logout", authenticateUser, logout);
+router.post("/oauth/google", google);
+router.post("/email/verify", verifyEmail);
+router.post("/email/resend-verification", requestNewVerificationEmail);
+router.post("/password/forgot", forgotPassword);
+router.post("/password/reset", resetPassword);
+router.patch("/password", authenticateUser, changePassword);
 
 export default router;

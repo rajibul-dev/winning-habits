@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { app } from "../../utils/firebase.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import apiClient from "../../api/axiosConfig.js";
+import { loginWithGoogle } from "../../api/apiAuth.js";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { toggleMainGuide } from "../app-guide/guideSlice.js";
@@ -18,12 +18,11 @@ async function handleGoogleLogin() {
     "s512-c",
   );
 
-  const res = await apiClient.post("/api/v1/auth/google", {
+  return loginWithGoogle({
     name: resultsFromGoogle.user.displayName,
     email: resultsFromGoogle.user.email,
     avatar: highResAvatar,
   });
-  return res.data;
 }
 
 export default function useOAuth() {

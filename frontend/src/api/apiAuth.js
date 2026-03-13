@@ -1,8 +1,10 @@
 import apiClient from "./axiosConfig";
 import { endpointV1 } from "./axiosConfig.js";
 
+const authEndpoint = `${endpointV1}/auth`;
+
 export async function register({ name, email, password }) {
-  const res = await apiClient.post(`${endpointV1}/auth/register`, {
+  const res = await apiClient.post(`${authEndpoint}/register`, {
     name,
     email,
     password,
@@ -11,7 +13,7 @@ export async function register({ name, email, password }) {
 }
 
 export async function verifyEmail({ verificationToken, email }) {
-  const res = await apiClient.post(`${endpointV1}/auth/verify-email`, {
+  const res = await apiClient.post(`${authEndpoint}/email/verify`, {
     email,
     verificationToken,
   });
@@ -19,40 +21,43 @@ export async function verifyEmail({ verificationToken, email }) {
 }
 
 export async function login({ email, password }) {
-  const res = await apiClient.post(`${endpointV1}/auth/login`, {
+  const res = await apiClient.post(`${authEndpoint}/login`, {
     email,
     password,
   });
   return res.data;
 }
 
-export async function getCurrentUser() {
-  const res = await apiClient.get(`${endpointV1}/users/showMe`);
+export async function logout() {
+  const res = await apiClient.post(`${authEndpoint}/logout`);
   return res.data;
 }
 
-export async function logout() {
-  const res = await apiClient.get(`${endpointV1}/auth/logout`);
+export async function loginWithGoogle({ name, email, avatar }) {
+  const res = await apiClient.post(`${authEndpoint}/oauth/google`, {
+    name,
+    email,
+    avatar,
+  });
   return res.data;
 }
 
 export async function requestNewVerificationEmail(email) {
-  const res = await apiClient.post(
-    `${endpointV1}/auth/request-new-verification-email`,
-    { email },
-  );
+  const res = await apiClient.post(`${authEndpoint}/email/resend-verification`, {
+    email,
+  });
   return res.data;
 }
 
 export async function forgotPassword(email) {
-  const res = await apiClient.post(`${endpointV1}/auth/forgot-password`, {
+  const res = await apiClient.post(`${authEndpoint}/password/forgot`, {
     email,
   });
   return res.data;
 }
 
 export async function resetPassword({ email, token, password }) {
-  const res = await apiClient.post(`${endpointV1}/auth/reset-password`, {
+  const res = await apiClient.post(`${authEndpoint}/password/reset`, {
     email,
     token,
     password,
@@ -61,39 +66,9 @@ export async function resetPassword({ email, token, password }) {
 }
 
 export async function changePassword({ currentPassword, newPassword }) {
-  const res = await apiClient.post(`${endpointV1}/auth/change-password`, {
+  const res = await apiClient.patch(`${authEndpoint}/password`, {
     currentPassword,
     newPassword,
   });
-  return res.data;
-}
-
-export async function updateUser(name) {
-  const res = await apiClient.patch(`${endpointV1}/users/updateUser`, {
-    name,
-  });
-  return res.data;
-}
-
-export async function updateAvatar(imageFile) {
-  const formData = new FormData();
-  formData.append("image", imageFile);
-  formData.append("upload_preset", "friendsbook");
-
-  const res = await apiClient.patch(
-    `${endpointV1}/users/updateAvatar`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    },
-  );
-
-  return res.data;
-}
-
-export async function removeAvatar() {
-  const res = await apiClient.delete(`${endpointV1}/users/removeAvatar`);
   return res.data;
 }

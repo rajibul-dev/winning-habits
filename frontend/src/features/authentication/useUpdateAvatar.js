@@ -1,5 +1,5 @@
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { updateAvatar as apiUpdateAvatar } from "../../api/apiAuth.js";
+import { updateCurrentUserAvatar as apiUpdateCurrentUserAvatar } from "../../api/apiUsers.js";
 import toast from "react-hot-toast";
 import apiErrorFormat from "../../api/apiErrorFormat.js";
 
@@ -10,7 +10,7 @@ export default function useUpdateAvatar() {
     isPending: isUpdatingAvatar,
     isSuccess: isUpdatedAvatar,
   } = useMutation({
-    mutationFn: (imageFile) => apiUpdateAvatar(imageFile),
+    mutationFn: (imageFile) => apiUpdateCurrentUserAvatar(imageFile),
     onSuccess: () => {
       toast.success(`Successfully uploaded image!`);
       queryClient.invalidateQueries({

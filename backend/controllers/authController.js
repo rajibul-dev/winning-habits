@@ -7,7 +7,7 @@ import createTokenUser from "../utils/jwt/createTokenUser.js";
 
 import User from "../models/UserModel.js";
 import Token from "../models/TokenModel.js";
-import { attachCookiesToResponse } from "../utils/jwt/jwt.js";
+import { attachCookiesToResponse, clearCookiesFromResponse } from "../utils/jwt/jwt.js";
 import sendPasswordResetLink from "../utils/nodeMailer/sendPasswordResetLink.js";
 import createHash from "../utils/createHash.js";
 
@@ -312,7 +312,7 @@ export async function resetPassword(req, res) {
 export async function changePassword(req, res) {
   const { currentPassword, newPassword } = req.body;
 
-  const user = await User.findOne({ user: req.user.userID });
+  const user = await User.findOne({ _id: req.user.userID });
 
   // compare currentPassword
   const currentPasswordCurrect = await user.comparePassword(currentPassword);
@@ -423,3 +423,6 @@ export async function google(req, res) {
     });
   }
 }
+
+
+

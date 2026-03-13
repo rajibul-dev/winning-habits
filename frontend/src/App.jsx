@@ -27,7 +27,7 @@ import Users from "./pages/Users.jsx";
 import Profile from "./pages/Profile";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import { toastNotifierIndex } from "./styles/zIndexManager.js";
-import DevTimePanel from "./ui/DevTimePanel.jsx";
+// import DevTimePanel from "./ui/DevTimePanel.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -142,7 +142,7 @@ export default function App() {
           }}
         />
 
-        <DevTimePanel />
+        {/* <DevTimePanel /> */}
       </QueryClientProvider>
     </DarkModeProvider>
   );

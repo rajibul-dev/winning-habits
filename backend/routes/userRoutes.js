@@ -1,13 +1,14 @@
 import { Router } from "express";
 import {
   getAllUsers,
-  getAllUsersLength,
-  getSingleUser,
-  removeAvatar,
-  showMe,
-  updateAvatar,
-  updateUser,
-  deleteUser,
+  getUserCount,
+  getUserById,
+  getCurrentUser,
+  updateCurrentUser,
+  updateCurrentUserAvatar,
+  deleteCurrentUserAvatar,
+  deleteCurrentUser,
+  deleteUserById,
 } from "../controllers/userController.js";
 import {
   authenticateUser,
@@ -19,14 +20,19 @@ const router = Router();
 router
   .route("/")
   .get(authenticateUser, authorizePermissions("admin"), getAllUsers);
-router.route("/getAllUsersLength").get(authenticateUser, getAllUsersLength);
-router.route("/showMe").get(authenticateUser, showMe);
-router.route("/updateUser").patch(authenticateUser, updateUser);
-router.route("/updateAvatar").patch(authenticateUser, updateAvatar);
-router.route("/removeAvatar").delete(authenticateUser, removeAvatar);
+router.route("/count").get(authenticateUser, getUserCount);
+router
+  .route("/me")
+  .get(authenticateUser, getCurrentUser)
+  .patch(authenticateUser, updateCurrentUser)
+  .delete(authenticateUser, deleteCurrentUser);
+router
+  .route("/me/avatar")
+  .patch(authenticateUser, updateCurrentUserAvatar)
+  .delete(authenticateUser, deleteCurrentUserAvatar);
 router
   .route("/:id")
-  .get(authenticateUser, getSingleUser)
-  .delete(authenticateUser, authorizePermissions("admin"), deleteUser);
+  .get(authenticateUser, getUserById)
+  .delete(authenticateUser, authorizePermissions("admin"), deleteUserById);
 
 export default router;

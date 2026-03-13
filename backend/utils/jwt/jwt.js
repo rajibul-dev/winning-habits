@@ -31,3 +31,21 @@ export function attachCookiesToResponse({ res, user, refreshToken }) {
     expires: new Date(Date.now() + oneEightyDays),
   });
 }
+
+export function clearCookiesFromResponse(res) {
+  const expiredAt = new Date(Date.now());
+
+  res.cookie("accessToken", "logout", {
+    httpOnly: true,
+    signed: true,
+    secure: process.env.NODE_ENV === "production",
+    expires: expiredAt,
+  });
+
+  res.cookie("refreshToken", "logout", {
+    httpOnly: true,
+    signed: true,
+    secure: process.env.NODE_ENV === "production",
+    expires: expiredAt,
+  });
+}

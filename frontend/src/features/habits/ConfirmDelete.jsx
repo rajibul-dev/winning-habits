@@ -32,6 +32,12 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
       action = `Remove avatar`;
       break;
 
+    case "account":
+      heading = `Delete account`;
+      para = `Are you sure you want to permanently delete your account? Your habits, achievements, avatar, and active sessions will be removed and cannot be restored.`;
+      action = `Delete account`;
+      break;
+
     default:
       heading = `Delete ${resourceName}`;
       para = `Are you sure you want to delete this ${resourceName} permanently?`;
