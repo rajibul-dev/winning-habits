@@ -36,7 +36,7 @@ app.use(
   cors({
     origin: process.env.FRONTEND_ORIGIN,
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true }));
@@ -56,7 +56,7 @@ app.get("/keep-alive", (req, res) => {
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html")),
 );
 
 app.use(notFoundMiddleware);
@@ -68,7 +68,7 @@ const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL);
     app.listen(port, () => {
-      console.log(`Server is listening to prot ${port}...`);
+      console.log(`✅ Server is running on port ${port}...`);
     });
   } catch (error) {
     console.log(error);

@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Habit from "../models/HabitModel.js";
 import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
-import { addDays, isAfter, isSameDay, isToday } from "date-fns";
+import { addDays, isAfter, isSameDay, isToday, startOfDay } from "date-fns";
 
 export async function createHabit(req, res) {
   req.body.user = req.user.userID;
@@ -124,10 +124,10 @@ export async function updateCustomDateAction(req, res) {
   let targetRecordIndex;
   try {
     targetRecord = habit.dailyRecords.find(
-      (record) => record._id.toString() === targetRecordID
+      (record) => record._id.toString() === targetRecordID,
     );
     targetRecordIndex = habit.dailyRecords.findIndex(
-      (record) => record._id.toString() === targetRecordID
+      (record) => record._id.toString() === targetRecordID,
     );
   } catch (error) {
     throw new BadRequestError(`No record with id: ${targetRecordID}`);
@@ -149,7 +149,7 @@ export async function updateCustomDateAction(req, res) {
 
     default:
       throw new BadRequestError(
-        `"${targetRecord.didIt}" is an unsupported answer`
+        `"${targetRecord.didIt}" is an unsupported answer`,
       );
   }
 
@@ -214,62 +214,67 @@ async function getHabitById(habitID) {
 }
 
 export async function habitSchemaManager(req, res) {
-  // Check if the API key is present and correct
   const apiKey = req.headers["x-api-key"];
   const MY_API_KEY = process.env.MY_API_KEY;
 
   if (apiKey !== MY_API_KEY) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: `You are unauthorized to do this` });
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      msg: "You are unauthorized to do this",
+    });
   }
 
-  console.log("Running Habit Schema management function on every 12am!");
-  // Fetch all habits from the database
-  const habits = await Habit.find();
+  const userID = req.params.userID;
+  const habits = await Habit.find({ user: userID });
 
-  if (!habits || habits.length === 0) {
+  if (!habits?.length) {
     console.log("Closing Habit Schema scheduler");
-    return;
+    return res.status(StatusCodes.OK).json({ msg: "No habits to update" });
   }
 
-  // check if yesterday was 'unanswered' in all the habit instences
-  const checkPromises = habits.map(async (habit) => {
-    // Get the latest entry in dailyRecords, (which is yesterday in this case)
-    const latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
+  const today = startOfDay(new Date());
 
-    // Check if yesterday's entry was 'unanswered'
-    if (latestRecord && latestRecord.didIt === "unanswered") {
-      // Handle the case where yesterday's entry was 'unanswered'
-      habit.streak = 0;
-      await habit.save();
+  const checkPromises = habits.map(async (habit) => {
+    const records = habit.dailyRecords;
+    const lastRecord = records[records.length - 1];
+
+    // Check if today's record exists
+    const todayExists = records.some((record) =>
+      isToday(new Date(record.date)),
+    );
+
+    if (!todayExists) {
+      records.push({
+        didIt: "unanswered",
+        points: 0,
+        date: today.getTime(),
+      });
     }
+
+    // Fill missing days
+    if (lastRecord) {
+      let lastDate = startOfDay(new Date(lastRecord.date));
+
+      while (true) {
+        const nextDay = addDays(lastDate, 1);
+
+        if (nextDay >= today) break;
+
+        records.push({
+          didIt: "unanswered",
+          points: 0,
+          date: nextDay.getTime(),
+        });
+
+        lastDate = nextDay;
+      }
+    }
+
+    await habitRecordLogicSortAndCalculateAndSave(habit);
   });
 
-  // Wait for all checks to complete
   await Promise.all(checkPromises);
 
-  // push an 'unanswered' instence in the dailyRecords field for all of the habits
-  const updatePromises = habits.map(async (habit) => {
-    const latestRecordDate =
-      new Date(
-        habit.dailyRecords[habit.dailyRecords.length - 1]?.date ?? null
-      ) || null;
-
-    habit.dailyRecords.push({
-      didIt: "unanswered",
-      points: 0,
-      date: addDays(latestRecordDate, 1) || Date.now(),
-    });
-    await habit.save();
-  });
-
-  // Wait for all updates to complete
-  await Promise.all(updatePromises);
-
-  res.status(StatusCodes.OK).json({
-    msg: `Successfully ran the Habit Schema Manager that is supposed to run in 12 am each day!`,
-  });
+  return res.status(StatusCodes.OK).json({ msg: "Habit schema updated" });
 }
 
 export async function habitSchemaManagerRemoveExtraDates(req, res) {
@@ -297,7 +302,7 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
       habit.dailyRecords.length > 0 &&
       isAfter(
         new Date(habit.dailyRecords[habit.dailyRecords.length - 1]?.date),
-        new Date()
+        new Date(),
       )
     ) {
       habit.dailyRecords.pop();
@@ -312,7 +317,7 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
 
     // Check if today's record already exists
     const todayRecordExists = habit.dailyRecords.some((record) =>
-      isToday(new Date(record.date))
+      isToday(new Date(record.date)),
     );
 
     // If there’s no last record or last record isn't today, add a new one
@@ -338,67 +343,4 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
   res.status(StatusCodes.OK).json({
     msg: `Successfully prettified every habit by removing wrong forward dates!`,
   });
-}
-
-export async function habitSchemaManagerFixOneDayBehind(req, res) {
-  const apiKey = req.headers["x-api-key"];
-  const MY_API_KEY = process.env.MY_API_KEY;
-
-  // API key verification
-  if (apiKey !== MY_API_KEY) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: "You are unauthorized to do this" });
-  }
-
-  // Fetch habits from the database
-  const habits = await Habit.find();
-  if (!habits.length) {
-    return res.status(StatusCodes.NOT_FOUND).json({ msg: "No habits found." });
-  }
-
-  const IST_OFFSET = 5.5 * 60 * 60 * 1000; // IST offset (UTC+5:30)
-
-  const fixPromises = habits.map(async (habit) => {
-    const lastRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
-
-    if (!lastRecord) {
-      // If no records exist, create one for today
-      habit.dailyRecords.push({
-        didIt: "unanswered",
-        points: 0,
-        date: Date.now(),
-      });
-      await habit.save();
-      return;
-    }
-
-    // Get last record date in IST
-    const lastDateIST = new Date(lastRecord.date).getTime() + IST_OFFSET;
-    const lastDate = new Date(lastDateIST);
-
-    // Get today's date in IST
-    const todayIST = new Date(Date.now() + IST_OFFSET);
-    todayIST.setHours(0, 0, 0, 0); // Start of today
-
-    // Check if the last record is from today
-    if (lastDate.toDateString() === todayIST.toDateString()) {
-      return; // No action needed
-    }
-
-    // Add a new record for today
-    habit.dailyRecords.push({
-      didIt: "unanswered",
-      points: 0,
-      date: Date.now(),
-    });
-
-    await habit.save();
-  });
-
-  // Wait for all fixes to complete
-  await Promise.all(fixPromises);
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: "Successfully fixed one day behind habits!" });
 }

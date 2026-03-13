@@ -18,7 +18,6 @@ import {
   handleArchive,
   habitSchemaManager,
   habitSchemaManagerRemoveExtraDates,
-  habitSchemaManagerFixOneDayBehind,
 } from "../controllers/habitController.js";
 
 const router = Router();
@@ -32,11 +31,11 @@ router
   .route("/getAllHabits")
   .get(authenticateUser, authorizePermissions("admin"), getAllHabits);
 
+router.route("/habitSchemaManager").delete(habitSchemaManagerRemoveExtraDates);
+
 router
-  .route("/habitSchemaManager")
-  .post(habitSchemaManager)
-  .delete(habitSchemaManagerRemoveExtraDates)
-  .patch(habitSchemaManagerFixOneDayBehind);
+  .route("/habitSchemaManager/:userID")
+  .post(authenticateUser, habitSchemaManager);
 
 router
   .route("/:id")
