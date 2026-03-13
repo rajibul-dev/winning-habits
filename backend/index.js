@@ -30,6 +30,8 @@ import habitRouter from "./routes/habitRoutes.js";
 import achievementRouter from "./routes/achievementRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 
+import devRouter from "./dev/devRoutes.js";
+
 const __dirname = path.resolve();
 
 app.use(
@@ -47,6 +49,8 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/habits", habitRouter);
 app.use("/api/v1/achievements", achievementRouter);
 app.use("/api/v1/users", userRouter);
+
+app.use("/dev", devRouter);
 
 app.get("/keep-alive", (req, res) => {
   console.log("Keep-alive ping received!");

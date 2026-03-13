@@ -3,6 +3,7 @@ import Habit from "../models/HabitModel.js";
 import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
 import { addDays, isAfter, isSameDay, isToday, startOfDay } from "date-fns";
+import { getNow } from "../utils/getNow.js";
 
 export async function createHabit(req, res) {
   req.body.user = req.user.userID;
@@ -85,7 +86,7 @@ export async function addDailyAction(req, res) {
     const newRecord = {
       didIt: answer,
       points: 1,
-      date: Date.now(),
+      date: getNow().getTime(),
     };
 
     habit.dailyRecords.push(newRecord);
@@ -231,14 +232,15 @@ export async function habitSchemaManager(req, res) {
     return res.status(StatusCodes.OK).json({ msg: "No habits to update" });
   }
 
-  const today = startOfDay(new Date());
+  const today = startOfDay(getNow());
 
   const checkPromises = habits.map(async (habit) => {
     const records = habit.dailyRecords;
     const lastRecord = records[records.length - 1];
 
     // Check if today's record exists
-    const todayExists = lastRecord && isToday(new Date(lastRecord.date));
+    const todayExists =
+      lastRecord && isSameDay(new Date(lastRecord.date), getNow());
 
     if (!todayExists) {
       records.push({
@@ -300,7 +302,7 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
       habit.dailyRecords.length > 0 &&
       isAfter(
         new Date(habit.dailyRecords[habit.dailyRecords.length - 1]?.date),
-        new Date(),
+        getNow(),
       )
     ) {
       habit.dailyRecords.pop();
@@ -315,7 +317,7 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
 
     // Check if today's record already exists
     const todayRecordExists = habit.dailyRecords.some((record) =>
-      isToday(new Date(record.date)),
+      isSameDay(new Date(record.date), getNow()),
     );
 
     // If there’s no last record or last record isn't today, add a new one
@@ -323,7 +325,7 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
       habit.dailyRecords.push({
         didIt: "unanswered",
         points: 0,
-        date: Date.now(),
+        date: getNow().getTime(),
       });
       try {
         await habit.save();
