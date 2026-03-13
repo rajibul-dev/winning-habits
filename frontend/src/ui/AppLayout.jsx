@@ -10,6 +10,7 @@ import { getIsShowingMainAppGuide } from "../features/app-guide/guideSlice.js";
 import PresentationModal from "./PresentationModal.jsx";
 import MainAppGuide from "../features/app-guide/MainAppGuide.jsx";
 import { useEffect } from "react";
+import useHabitSchemaManager from "../features/habits/useHabitSchemaManager.js";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -60,6 +61,12 @@ export default function AppLayout() {
   const isMobile = useIsMobile();
 
   const isShowingMainAppGuide = useSelector(getIsShowingMainAppGuide);
+
+  const { runSchemaManager } = useHabitSchemaManager();
+
+  useEffect(() => {
+    runSchemaManager();
+  }, [runSchemaManager]);
 
   useEffect(() => {
     // Scroll to the top so that weird layout issues doesn't happen

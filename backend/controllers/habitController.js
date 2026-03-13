@@ -223,7 +223,7 @@ export async function habitSchemaManager(req, res) {
     });
   }
 
-  const userID = req.params.userID;
+  const userID = req.user.userID;
   const habits = await Habit.find({ user: userID });
 
   if (!habits?.length) {
@@ -238,9 +238,7 @@ export async function habitSchemaManager(req, res) {
     const lastRecord = records[records.length - 1];
 
     // Check if today's record exists
-    const todayExists = records.some((record) =>
-      isToday(new Date(record.date)),
-    );
+    const todayExists = lastRecord && isToday(new Date(lastRecord.date));
 
     if (!todayExists) {
       records.push({
@@ -274,7 +272,7 @@ export async function habitSchemaManager(req, res) {
 
   await Promise.all(checkPromises);
 
-  return res.status(StatusCodes.OK).json({ msg: "Habit schema updated" });
+  return res.status(StatusCodes.OK).json({ msg: "Ran habit schema manager" });
 }
 
 export async function habitSchemaManagerRemoveExtraDates(req, res) {

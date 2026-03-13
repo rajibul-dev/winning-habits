@@ -31,11 +31,10 @@ router
   .route("/getAllHabits")
   .get(authenticateUser, authorizePermissions("admin"), getAllHabits);
 
-router.route("/habitSchemaManager").delete(habitSchemaManagerRemoveExtraDates);
-
 router
-  .route("/habitSchemaManager/:userID")
-  .post(authenticateUser, habitSchemaManager);
+  .route("/habitSchemaManager")
+  .post(authenticateUser, habitSchemaManager)
+  .delete(habitSchemaManagerRemoveExtraDates);
 
 router
   .route("/:id")

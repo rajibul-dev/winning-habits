@@ -62,3 +62,17 @@ export async function handleArchive({ id, isArchive }) {
   });
   return res.data;
 }
+
+export async function runHabitSchemaManager() {
+  const res = await apiClient.post(
+    `${endpointV1}/habits/habitSchemaManager`,
+    {},
+    {
+      headers: {
+        "x-api-key": import.meta.env.VITE_SCHEMA_MANAGER_KEY,
+      },
+    }
+  );
+
+  return res.data;
+}
