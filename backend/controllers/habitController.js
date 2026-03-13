@@ -66,10 +66,10 @@ export async function deleteHabit(req, res) {
 }
 
 async function habitRecordLogicSortAndCalculateAndSave(habit) {
-  await habit.sortDailyActionsArray(habit.dailyRecords);
-  const { streak, totalPoints } = await habit.calculateStreakAndPoints(habit);
-  habit.streak = streak;
-  habit.totalPoints = totalPoints;
+  habit.dailyRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  habit.recalculateHabit();
+
   await habit.save();
 }
 
@@ -85,7 +85,6 @@ export async function addDailyAction(req, res) {
   if (habit.dailyRecords.length === 0) {
     const newRecord = {
       didIt: answer,
-      points: 1,
       date: getNow().getTime(),
     };
 
@@ -236,13 +235,15 @@ export async function habitSchemaManager(req, res) {
 
   const checkPromises = habits.map(async (habit) => {
     const records = habit.dailyRecords;
+
+    // helper: check if record already exists for a date
+    const recordExistsForDate = (targetDate) =>
+      records.some((record) => isSameDay(new Date(record.date), targetDate));
+
     const lastRecord = records[records.length - 1];
 
-    // Check if today's record exists
-    const todayExists =
-      lastRecord && isSameDay(new Date(lastRecord.date), getNow());
-
-    if (!todayExists) {
+    // insert today's record if missing
+    if (!recordExistsForDate(today)) {
       records.push({
         didIt: "unanswered",
         points: 0,
@@ -250,7 +251,7 @@ export async function habitSchemaManager(req, res) {
       });
     }
 
-    // Fill missing days
+    // fill missing days
     if (lastRecord) {
       let lastDate = startOfDay(new Date(lastRecord.date));
 
@@ -259,11 +260,13 @@ export async function habitSchemaManager(req, res) {
 
         if (nextDay >= today) break;
 
-        records.push({
-          didIt: "unanswered",
-          points: 0,
-          date: nextDay.getTime(),
-        });
+        if (!recordExistsForDate(nextDay)) {
+          records.push({
+            didIt: "unanswered",
+            points: 0,
+            date: nextDay.getTime(),
+          });
+        }
 
         lastDate = nextDay;
       }

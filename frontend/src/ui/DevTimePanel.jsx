@@ -5,7 +5,7 @@ import apiClient from "../api/axiosConfig";
 const Panel = styled.div`
   position: fixed;
   bottom: 20px;
-  left: 150px;
+  left: 300px;
   background: black;
   color: white;
   padding: 14px;
@@ -48,10 +48,14 @@ export default function DevTimePanel() {
 
   const call = async (endpoint) => {
     await apiClient.post(`/dev/time/${endpoint}`);
+    // reload the page to reflect the new time
+    window.location.reload();
   };
 
   const setTime = async () => {
     await apiClient.post(`/dev/time/set-time`, { date });
+    // reload the page to reflect the new time
+    window.location.reload();
   };
 
   return (
@@ -59,6 +63,7 @@ export default function DevTimePanel() {
       <div>Dev Time Controls</div>
 
       <Row>
+        {/* lyf don go backward, what was I thinking */}
         {/* <button onClick={() => call("previous-day")}>-1 day</button> */}
         <Button onClick={() => call("next-day")}>+1 day</Button>
       </Row>

@@ -39,40 +39,8 @@ const HabitSchema = new Schema(
       default: "normal",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-
-// Handle relational value updates based on changes to the dailyRecords field
-HabitSchema.pre("save", async function (next) {
-  if (!this.isModified("dailyRecords")) return next();
-
-  // don't run the daily action logic but do set the "custom status" false
-  if (this.isCustomRecordUpdate) {
-    this.isCustomRecordUpdate = false;
-    return next();
-  }
-
-  const latestRecord = this.dailyRecords[this.dailyRecords.length - 1];
-  if (!latestRecord) return next();
-
-  switch (latestRecord.didIt) {
-    case "yes":
-      this.streak = (this.streak || 0) + 1;
-      latestRecord.points = this.streak;
-      this.totalPoints = (this.totalPoints || 0) + latestRecord.points;
-      break;
-
-    case "no":
-      this.streak = 0;
-      latestRecord.points = 0;
-      break;
-
-    case "unanswered":
-      break;
-  }
-
-  next();
-});
 
 HabitSchema.pre("save", async function (next) {
   if (!this.isModified("totalPoints")) return next();
@@ -87,78 +55,41 @@ HabitSchema.pre("save", async function (next) {
   next();
 });
 
-// Handlers for when user updates a custom date from the daily actions calendar
-HabitSchema.methods.sortDailyActionsArray = function (dailyRecords) {
-  let cumulativeYesPointsForRecord = 1;
+HabitSchema.methods.recalculateHabit = function () {
+  let streak = 0;
+  let totalPoints = 0;
 
-  dailyRecords.forEach((currentRecord, index) => {
-    if (currentRecord.didIt === "no" || currentRecord.didIt === "unanswered") {
-      cumulativeYesPointsForRecord = 1;
+  const lastIndex = this.dailyRecords.length - 1;
 
-      console.log("Starting sort operation, getting portion indexes");
+  for (let i = 0; i < this.dailyRecords.length; i++) {
+    const record = this.dailyRecords[i];
 
-      // Get the unsorted portion's start index
-      const unsortedPortionHead = index + 1;
-      console.log("Target index start: ", unsortedPortionHead);
-
-      // Get the unsorted portion's end index
-      const unsortedPortionTail = findUnsortedPortionEndIndex(
-        dailyRecords,
-        unsortedPortionHead
-      );
-      console.log("Target index end: ", unsortedPortionTail);
-
-      // Manipulate the properties of each item in the unsorted portion
-      if (unsortedPortionHead !== unsortedPortionTail) {
-        console.log("Starting manipulation...");
-        let changedPoint = 1;
-        for (let i = unsortedPortionHead; i < unsortedPortionTail; i++) {
-          // in here, all of the following records will have yeses as their answer
-          const record = dailyRecords[i];
-          record.points = changedPoint;
-          console.log("Manipulation complete!");
-
-          // cumulative yes point for the next 'yes'
-          changedPoint++;
-        }
-      } else {
-        console.log("Same indexes, closing instence");
-      }
-    } else {
-      currentRecord.points = cumulativeYesPointsForRecord;
-      cumulativeYesPointsForRecord++;
+    if (record.didIt === "yes") {
+      streak += 1;
+      record.points = streak;
+      totalPoints += record.points;
+      continue;
     }
-  });
-};
 
-function findUnsortedPortionEndIndex(dailyRecords, startIndex) {
-  for (let i = startIndex; i < dailyRecords.length; i++) {
-    const record = dailyRecords[i];
-    if (record.didIt === "no" || record.didIt === "unanswered") {
-      return i;
+    if (record.didIt === "no") {
+      streak = 0;
+      record.points = 0;
+      continue;
+    }
+
+    // unanswered
+    record.points = 0;
+
+    const isLatest = i === lastIndex;
+
+    if (!isLatest) {
+      // unanswered in the past breaks streak
+      streak = 0;
     }
   }
-  return dailyRecords.length - 1;
-}
 
-HabitSchema.methods.calculateStreakAndPoints = async function (habit) {
-  const streak = habit.dailyRecords.reduce(
-    (streakSoFar, item, index, dailyRecords) => {
-      const isLatest =
-        dailyRecords[dailyRecords.length - 1]._id.toString() ===
-        item._id.toString();
-
-      if (isLatest && item.didIt === "unanswered") return streakSoFar;
-      return item.points;
-    },
-    0
-  );
-
-  const totalPoints = habit.dailyRecords.reduce((totalPointsSoFar, item) => {
-    return totalPointsSoFar + item.points;
-  }, 0);
-
-  return { streak, totalPoints };
+  this.streak = streak;
+  this.totalPoints = totalPoints;
 };
 
 // Achievement handler functions
@@ -171,7 +102,7 @@ async function handleAchievementLogic(habit) {
     await Achievement.findOneAndUpdate(
       { user: habit.user, habit: habit._id },
       { $setOnInsert: { user: habit.user, habit: habit._id } },
-      { upsert: true }
+      { upsert: true },
     );
   } catch (error) {
     return console.error("Error creating achievement:", error.message);
@@ -183,7 +114,7 @@ async function handleAchievementLogic(habit) {
 async function checkAndRemoveFromAchievements(habit) {
   if (!habit.user || !habit._id) {
     return console.error(
-      "User or habit information missing for achievement check"
+      "User or habit information missing for achievement check",
     );
   }
 
@@ -195,7 +126,7 @@ async function checkAndRemoveFromAchievements(habit) {
   } catch (error) {
     return console.error(
       "Error checking and removing from achievements:",
-      error.message
+      error.message,
     );
   }
 
