@@ -7,6 +7,7 @@ import {
   showMe,
   updateAvatar,
   updateUser,
+  deleteUser,
 } from "../controllers/userController.js";
 import {
   authenticateUser,
@@ -23,6 +24,9 @@ router.route("/showMe").get(authenticateUser, showMe);
 router.route("/updateUser").patch(authenticateUser, updateUser);
 router.route("/updateAvatar").patch(authenticateUser, updateAvatar);
 router.route("/removeAvatar").delete(authenticateUser, removeAvatar);
-router.route("/:id").get(authenticateUser, getSingleUser);
+router
+  .route("/:id")
+  .get(authenticateUser, getSingleUser)
+  .delete(authenticateUser, authorizePermissions("admin"), deleteUser);
 
 export default router;

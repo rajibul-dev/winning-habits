@@ -75,7 +75,7 @@ export async function updateAvatar(req, res) {
     {
       use_filename: true,
       folder: `winning-habits-app/pfps/${req.user.userID}`,
-    }
+    },
   );
   fs.unlinkSync(req.files.image.tempFilePath);
 
@@ -88,7 +88,7 @@ export async function updateAvatar(req, res) {
     const filename = `winning-habits-app/${parts[parts.length - 1]}`;
     const filenameWithoutExtension = filename.substring(
       0,
-      filename.lastIndexOf(".")
+      filename.lastIndexOf("."),
     );
     await cloudinary.uploader.destroy(filenameWithoutExtension);
   }
@@ -118,7 +118,7 @@ export async function removeAvatar(req, res) {
     const filename = `winning-habits-app/${parts[parts.length - 1]}`;
     const filenameWithoutExtension = filename.substring(
       0,
-      filename.lastIndexOf(".")
+      filename.lastIndexOf("."),
     );
     await cloudinary.uploader.destroy(filenameWithoutExtension);
   }
@@ -132,4 +132,41 @@ export async function removeAvatar(req, res) {
   res.status(StatusCodes.OK).json({
     msg: "Successfully removed the image",
   });
+}
+
+export async function deleteUser(req, res) {
+  const user = await User.findOne({ _id: req.params.id });
+  if (!user) {
+    throw new NotFoundError(`No user with id : ${req.params.id}`);
+  }
+
+  try {
+    // delete the user's avatar from cloudinary if it's not the default image and not google image
+    const existingImageURL = user.avatar || null;
+    const isThatDefaultImage = existingImageURL === defaultImageURL;
+    const isThatGoogleImage = existingImageURL
+      ? existingImageURL.includes("googleusercontent")
+      : false;
+
+    if (!isThatDefaultImage && !isThatGoogleImage && existingImageURL) {
+      const parts = existingImageURL.split("/winning-habits-app/");
+      const filename = `winning-habits-app/${parts[parts.length - 1]}`;
+      const filenameWithoutExtension = filename.substring(
+        0,
+        filename.lastIndexOf("."),
+      );
+      await cloudinary.uploader.destroy(filenameWithoutExtension);
+    }
+  } catch (error) {
+    console.error("Failed to delete the user's avatar from cloudinary:", error);
+  }
+
+  await user.remove();
+
+  // log the user out if the deleted user is the same as the logged in user
+  if (req.user.userID === req.params.id) {
+    attachCookiesToResponse({ res, user: null });
+  }
+
+  res.status(StatusCodes.OK).json({ msg: "User deleted successfully" });
 }
