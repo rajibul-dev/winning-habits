@@ -61,7 +61,7 @@ function UserAvatarHeader() {
       </Menus.Toggle>
       <Menus.List isTopOfHeader={true} id="account dropdown">
         <Menus.Button
-          onClick={() => navigate("/app/profile")}
+          onClick={() => navigate("/profile")}
           icon={<FaUser />}
         >
           Profile

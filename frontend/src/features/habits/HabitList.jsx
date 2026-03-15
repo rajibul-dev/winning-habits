@@ -61,7 +61,11 @@ export default function HabitList({ show = "non-archived" }) {
   return (
     <StyledList>
       {habitsToRender.map((habit) => (
-        <HabitListItem key={habit._id} habit={habit} />
+        <HabitListItem
+          key={habit._id}
+          habit={habit}
+          basePath={show === "archived" ? "/archive" : "/habits"}
+        />
       ))}
     </StyledList>
   );

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import GlobalStyles from "./styles/GlobalStyles.js";
@@ -97,22 +97,25 @@ export default function App() {
                   </ReversedProtectedRoute>
                 }
               />
+
+              {/* app routes */}
               <Route
-                path="/app"
                 element={
                   <ProtectedRoute>
                     <AppLayout />
                   </ProtectedRoute>
                 }
               >
-                <Route index element={<Navigate to="habits" />} />
-                <Route path="habits" element={<Habits />} />
-                <Route path="habits/:habitID" element={<SingleHabit />} />
-                <Route path="achievements" element={<Achievements />} />
-                <Route path="archive" element={<Archive />} />
-                <Route path="users" element={<Users />} />
-                <Route path="profile" element={<Profile />} />
+                <Route path="/habits" element={<Habits />} />
+                <Route path="/habits/:habitID" element={<SingleHabit />} />
+                <Route path="/achievements" element={<Achievements />} />
+                <Route path="/achievements/:habitID" element={<SingleHabit />} />
+                <Route path="/archive" element={<Archive />} />
+                <Route path="/archive/:habitID" element={<SingleHabit />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/profile" element={<Profile />} />
               </Route>
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

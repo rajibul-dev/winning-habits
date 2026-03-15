@@ -78,7 +78,7 @@ export default function Root() {
           <HeroHeading as="h1">
             Track your habits with Winning Habits
           </HeroHeading>
-          <HeroButton onClick={() => navigate("/app")} size="large">
+          <HeroButton onClick={() => navigate("/habits")} size="large">
             Open app
           </HeroButton>
         </Container>

@@ -80,7 +80,7 @@ export default function MyAchievements() {
         {myAchievements.map((item) => (
           <StyledItem
             key={item._id}
-            onClick={() => navigate(`/app/habits/${item.habit._id}`)}
+            onClick={() => navigate(`/achievements/${item.habit._id}`)}
           >
             <FaTrophy />
             <span>{item.habit.name}</span>

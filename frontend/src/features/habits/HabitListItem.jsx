@@ -204,7 +204,7 @@ function calculateTargetPoints(currentPoints, isAchieved) {
   return roundedHundred;
 }
 
-export default function HabitListItem({ habit }) {
+export default function HabitListItem({ habit, basePath = "/habits" }) {
   const {
     totalPoints,
     streak,
@@ -233,7 +233,7 @@ export default function HabitListItem({ habit }) {
       importantClasses = ["habit-menu", "menu", "modal"];
     }
     if (!importantClasses.some((cls) => e.target.closest(`.${cls}`))) {
-      navigate(`/app/habits/${habitID}`);
+      navigate(`${basePath}/${habitID}`);
     }
   }
 

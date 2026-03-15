@@ -18,7 +18,7 @@ export default function useLogin() {
     mutationFn: ({ email, password }) => apiLogin({ email, password }),
     onSuccess: (data) => {
       queryClient.setQueryData(["user"], data.user);
-      navigate("/app", { replace: true });
+      navigate("/habits", { replace: true });
       toast.success(`Logged in successfully! Welcome ${data.user.name}!`);
 
       if (!localStorage.getItem("firstLogin")) {

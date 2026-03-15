@@ -14,7 +14,7 @@ export default function useVerifyEmail() {
       apiVerifyEmail({ verificationToken, email }),
     onSuccess: (data) => {
       queryClient.setQueryData(["user"], data.user);
-      navigate("/app", { replace: true });
+      navigate("/habits", { replace: true });
       toast.success(`Email verified! Registration successful!`);
     },
     onError: (error) => {

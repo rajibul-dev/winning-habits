@@ -13,7 +13,7 @@ export default function ReversedProtectedRoute({ children }) {
   // 2. If there is NO authenticated user, allow them to visit the auth pages
   useEffect(
     function () {
-      if (isAuthenticated && !isLoading) navigate("/app", { replace: true });
+      if (isAuthenticated && !isLoading) navigate("/habits", { replace: true });
     },
     [isAuthenticated, isLoading, navigate, children],
   );
