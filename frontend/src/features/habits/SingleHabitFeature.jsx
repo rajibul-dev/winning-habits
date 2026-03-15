@@ -124,12 +124,6 @@ const ProgressBarWrapper = styled.div`
   ${({ $isAchieved }) =>
     $isAchieved &&
     css`
-      background-image: linear-gradient(
-          180deg,
-          rgba(255, 251, 233, 0.24),
-          rgba(255, 255, 255, 0.06)
-        ),
-        var(--achievement-gold-bar);
       border-color: rgba(255, 251, 233, 0.4);
 
       & div {

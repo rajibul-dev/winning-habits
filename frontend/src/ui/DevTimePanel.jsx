@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import apiClient from "../api/axiosConfig";
+import useUser from "../features/authentication/useUser";
 
 const Panel = styled.div`
   position: fixed;
@@ -43,6 +44,8 @@ const DateInput = styled.input`
 
 export default function DevTimePanel() {
   const [date, setDate] = useState("");
+  const { user } = useUser();
+  const userID = user?.userID;
 
   if (import.meta.env.MODE !== "development") return null;
 
@@ -55,6 +58,13 @@ export default function DevTimePanel() {
   const setTime = async () => {
     await apiClient.post(`/dev/time/set-time`, { date });
     // reload the page to reflect the new time
+    window.location.reload();
+  };
+
+  const createStreak = async () => {
+    await apiClient.post(`/dev/habits/create-streak`, {
+      userID,
+    });
     window.location.reload();
   };
 
@@ -79,6 +89,10 @@ export default function DevTimePanel() {
 
       <Row>
         <Button onClick={() => call("reset")}>Reset</Button>
+      </Row>
+
+      <Row>
+        <Button onClick={createStreak}>Create 50-day Streak Habit</Button>
       </Row>
 
       <Row>

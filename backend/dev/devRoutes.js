@@ -1,6 +1,7 @@
 import { addDays } from "date-fns";
 import { Router } from "express";
 import { getNow } from "../utils/getNow.js";
+import HabitModel from "../models/HabitModel.js";
 
 const router = Router();
 
@@ -45,6 +46,28 @@ router.post("/time/next-year", (req, res) => {
 router.post("/time/reset", (req, res) => {
   global.devTimeOverride = null;
   res.json({ msg: "Time reset" });
+});
+
+// habits: 50 day worth of streak answered with yes
+router.post("/habits/create-streak", (req, res) => {
+  const userID = req.body.userID;
+  const Habit = HabitModel;
+
+  const dailyRecords = [];
+  for (let i = 0; i < 50; i++) {
+    dailyRecords.push({
+      didIt: "yes",
+      date: addDays(getNow(), -i),
+    });
+  }
+
+  Habit.create({
+    name: "Streak Habit",
+    dailyRecords,
+    user: userID,
+  })
+    .then((habit) => res.json({ habit }))
+    .catch((error) => res.status(500).json({ error: error.message }));
 });
 
 export default router;
