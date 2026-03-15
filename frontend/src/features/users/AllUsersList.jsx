@@ -6,6 +6,7 @@ import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx"
 import Spinner from "../../ui/Spinner.jsx";
 import UserListItem from "../../ui/UserListItem.jsx";
 import useGetAllUsers from "./useGetAllUsers";
+import useGetUserHabitCount from "./useGetUserHabitCount.js";
 
 const StyledList = styled.ul`
   display: grid;
@@ -43,18 +44,44 @@ export default function AllUsersList() {
         const isCurrentUser = user._id === currentUser?.userID;
 
         return (
-          <UserListItem
-            key={user._id}
-            user={user}
-            badge={isCurrentUser ? "You" : null}
-            secondaryText={
-              isCurrentUser
-                ? "Nuanced supporting profile text perhaps."
-                : "Add a supporting profile text here."
-            }
-          />
+          <UserRow key={user._id} user={user} isCurrentUser={isCurrentUser} />
         );
       })}
     </StyledList>
+  );
+}
+
+function UserRow({ user, isCurrentUser }) {
+  const { data } = useGetUserHabitCount(user._id);
+  // {
+  //   count: habitCount,
+  //   seriousAboutCount,
+  //   achievedCount: masteredCount,
+  // }
+
+  console.log(data);
+
+  const habitCount = data?.count || 0;
+
+  const secondaryTextStatements = [
+    `Tracking ${habitCount} ${habitCount === 1 ? "habit" : "habits"}`,
+  ];
+  if (data?.seriousAboutCount) {
+    secondaryTextStatements.push(
+      `Serious about ${data.seriousAboutCount} ${data.seriousAboutCount === 1 ? "habit" : "habits"}`,
+    );
+  }
+  if (data?.achievedCount) {
+    secondaryTextStatements.push(
+      `Mastered ${data.achievedCount} ${data.achievedCount === 1 ? "habit" : "habits"}`,
+    );
+  }
+
+  return (
+    <UserListItem
+      user={user}
+      badge={isCurrentUser ? "You" : null}
+      secondaryText={secondaryTextStatements.join(" || ")}
+    />
   );
 }

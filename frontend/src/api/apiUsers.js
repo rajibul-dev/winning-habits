@@ -56,3 +56,13 @@ export async function deleteUserById(userID) {
   const res = await apiClient.delete(`${usersEndpoint}/${userID}`);
   return res.data;
 }
+
+export async function getUserHabits(userID) {
+  const res = await apiClient.get(`${usersEndpoint}/${userID}/habits`);
+  return res.data;
+}
+
+export async function getUserHabitCount(userID) {
+  const res = await apiClient.get(`${usersEndpoint}/${userID}/habits/count`);
+  return res.data;
+}

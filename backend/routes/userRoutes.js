@@ -9,6 +9,8 @@ import {
   deleteCurrentUserAvatar,
   deleteCurrentUser,
   deleteUserById,
+  getUserHabits,
+  getUserHabitCount,
 } from "../controllers/userController.js";
 import {
   authenticateUser,
@@ -32,5 +34,8 @@ router
   .route("/:id")
   .get(authenticateUser, getUserById)
   .delete(authenticateUser, authorizePermissions("admin"), deleteUserById);
+
+router.route("/:id/habits").get(authenticateUser, getUserHabits);
+router.route("/:id/habits/count").get(authenticateUser, getUserHabitCount);
 
 export default router;

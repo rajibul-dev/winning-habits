@@ -58,13 +58,13 @@ const Wrapper = styled(Row)`
         background-color: var(--color-green-100);
         background-image: none;
       `;
+    } else if ($didIt === "no") {
+      return css`
+        border-color: var(--color-red-700-mod);
+        background-color: var(--color-red-100);
+        background-image: none;
+      `;
     }
-
-    return css`
-      border-color: var(--color-red-700-mod);
-      background-color: var(--color-red-100);
-      background-image: none;
-    `;
   }}
 
   @media (max-width: ${pixelToEm(500)}) {

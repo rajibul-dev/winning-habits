@@ -183,3 +183,24 @@ export async function deleteUserById(req, res) {
 
   res.status(StatusCodes.OK).json({ msg: "User deleted successfully" });
 }
+
+export async function getUserHabits(req, res) {
+  const userID = req.params.id;
+  const habits = await Habit.find({ user: userID });
+  res.status(StatusCodes.OK).json({ habits, count: habits.length });
+}
+
+export async function getUserHabitCount(req, res) {
+  const userID = req.params.id;
+  const habitCount = await Habit.countDocuments({ user: userID });
+  const seriousAboutCount = await Habit.countDocuments({
+    user: userID,
+    totalPoints: { $gte: 10 },
+  });
+  const masteredCount = await Achievement.countDocuments({ user: userID });
+  res.status(StatusCodes.OK).json({
+    count: habitCount,
+    seriousAboutCount,
+    achievedCount: masteredCount,
+  });
+}
