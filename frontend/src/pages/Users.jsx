@@ -8,7 +8,7 @@ export default function Users() {
   return (
     <>
       <Heading>
-        All users {!error && !isLoading && (<>({data?.count})</> || "")}
+        All Users {!error && !isLoading && (<>({data?.count})</> || "")}
       </Heading>
       <AllUsersList />
     </>
