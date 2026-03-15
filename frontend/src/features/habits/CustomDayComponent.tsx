@@ -1,6 +1,6 @@
 import Popover, { usePopoverManager } from "../../ui/Popover.jsx";
 import styled, { css } from "styled-components";
-import { isSameDay, format, isToday } from "date-fns";
+import { isSameDay, format, isToday, isFuture } from "date-fns";
 import Heading from "../../ui/Heading.jsx";
 import useSingleHabit from "./useSingleHabit.js";
 import Tag from "../../ui/Tag.jsx";
@@ -289,7 +289,11 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
             </ActionRow>
           </UpdateAnswerContainerGrid>
         ) : (
-          <p>You can't access this date</p>
+          <p style={{ maxWidth: "20ch" }}>
+            {isFuture(date)
+              ? "This date is in the future."
+              : "The date is 60 days prior to this habit's creation. That's outside the time leaping threshold."}
+          </p>
         )}
       </Popover.Content>
     </Popover>
