@@ -26,7 +26,7 @@ const Wrapper = styled(Row)`
     transparent 42%
   );
   box-shadow: var(--shadow-sm);
-  padding: 1.4rem 1.6rem;
+  padding: 2.6rem 3rem;
   gap: 1.4rem;
 
   ${({ $variant }) =>
@@ -41,11 +41,20 @@ const Wrapper = styled(Row)`
       border-radius: 2.6rem;
     `}
 
-  @media (max-width: ${pixelToEm(1100)}) {
-    ${({ $variant }) =>
+  @media (max-width: ${pixelToEm(500)}) {
+    ${({ $variant, $didIt }) =>
       $variant !== "design-2" &&
+      $didIt !== "unanswered" &&
       css`
-        padding: 1rem 0.4rem;
+        padding: 2.4rem 2rem;
+      `}
+  }
+  @media (max-width: ${pixelToEm(375)}) {
+    ${({ $variant, $didIt }) =>
+      $variant !== "design-2" &&
+      $didIt !== "unanswered" &&
+      css`
+        padding: 1.4rem 2rem;
       `}
   }
 
