@@ -181,6 +181,10 @@ export async function deleteUserById(req, res) {
     clearCookiesFromResponse(res);
   }
 
+  await Habit.deleteMany({ user: req.params.id });
+  await Achievement.deleteMany({ user: req.params.id });
+  await Token.deleteMany({ user: req.params.id });
+
   res.status(StatusCodes.OK).json({ msg: "User deleted successfully" });
 }
 
