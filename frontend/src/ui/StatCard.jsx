@@ -3,11 +3,19 @@ import Row from "./Row.jsx";
 import { pixelToEm } from "../styles/GlobalStyles.js";
 
 const Card = styled(Row)`
-  border: 1px solid var(--color-grey-400);
   align-items: center;
   justify-content: center;
-  gap: 2rem;
-  padding: 1.4rem 3rem;
+  gap: 1.6rem;
+  padding: 1.8rem 2.4rem;
+  background-color: var(--color-grey-0);
+  background-image: radial-gradient(
+    circle at top left,
+    var(--habit-brand-tint),
+    transparent 42%
+  );
+  border: 1px solid var(--color-grey-200);
+  border-radius: 2rem;
+  box-shadow: var(--shadow-sm);
 
   ${({ $goldFlex }) =>
     $goldFlex &&
@@ -16,12 +24,16 @@ const Card = styled(Row)`
       background-image: var(--achievement-gold-bar);
     `}
 `;
-const IconCol = styled.div`
-  & svg {
-    width: 4rem;
-    height: 4rem;
 
-    ${({ $goldFlex }) => $goldFlex && css``}
+const IconCol = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+
+  & svg {
+    width: 3.8rem;
+    height: 3.8rem;
 
     @media (max-width: ${pixelToEm(430)}) {
       width: 3rem;
@@ -29,14 +41,17 @@ const IconCol = styled.div`
     }
   }
 `;
+
 const ValueCol = styled(Row)`
   align-items: start;
-  gap: 0.2rem;
+  gap: 0.3rem;
 `;
+
 const Value = styled.p`
   font-size: var(--font-size-5xl);
-  font-weight: 600;
-  line-height: 1;
+  font-weight: 700;
+  line-height: 0.95;
+  color: var(--color-grey-800);
 
   ${({ $goldFlex }) =>
     $goldFlex &&
@@ -44,9 +59,12 @@ const Value = styled.p`
       color: var(--achievement-gold-color--shine-2);
     `}
 `;
+
 const Label = styled.p`
-  font-size: var(--font-size-base);
-  font-weight: 600;
+  font-size: var(--font-size-xsm);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   color: var(--color-grey-500);
 
   ${({ $goldFlex }) =>
@@ -56,15 +74,14 @@ const Label = styled.p`
     `}
 
   @media (max-width: ${pixelToEm(430)}) {
-    font-size: 1.1rem;
-    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 `;
 
 export default function StatCard({ icon, value, label, goldFlex }) {
   return (
     <Card type="horizontal" $goldFlex={goldFlex}>
-      <IconCol $goldFlex={goldFlex}>{icon}</IconCol>
+      <IconCol>{icon}</IconCol>
       <ValueCol>
         <Value $goldFlex={goldFlex}>{value}</Value>
         <Label $goldFlex={goldFlex}>{label}</Label>

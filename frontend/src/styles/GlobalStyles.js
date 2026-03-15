@@ -41,6 +41,11 @@ const GlobalStyles = createGlobalStyle`
     --color-red-700-mod: #b91c1c;
     --color-red-800: #991b1b;
 
+    --habit-brand-tint: rgba(99, 102, 241, 0.06);
+    --habit-surface-soft: rgba(243, 244, 246, 0.92);
+    --habit-surface-soft-strong: rgba(255, 255, 255, 0.82);
+    --habit-surface-border-soft: rgba(229, 231, 235, 0.95);
+
     --backdrop-color: rgba(0, 0, 0, 0.1);
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -82,6 +87,10 @@ const GlobalStyles = createGlobalStyle`
     --color-red-700-mod: #f87171;
     --color-red-800: #fee2e2;
 
+    --habit-brand-tint: rgba(99, 102, 241, 0.12);
+    --habit-surface-soft: rgba(31, 41, 55, 0.9);
+    --habit-surface-soft-strong: rgba(24, 33, 47, 0.96);
+    --habit-surface-border-soft: rgba(75, 85, 99, 0.9);
 
     --backdrop-color: rgba(0, 0, 0, 0.3);
 
@@ -327,3 +336,4 @@ const GlobalStyles = createGlobalStyle`
  `;
 
 export default GlobalStyles;
+

@@ -14,19 +14,33 @@ const StyledItem = styled.li`
   grid-template-rows: repeat(3, auto);
   row-gap: 3rem;
   align-items: center;
+  position: relative;
+  overflow: hidden;
 
   background-color: var(--color-grey-0);
+
   padding: 3rem;
-  border: 1px solid var(--color-grey-300);
+  border: 1px solid var(--color-grey-200);
+  border-radius: 2.4rem;
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    border-color: var(--color-grey-300);
+  }
 
   ${({ $isAchieved }) =>
     $isAchieved &&
     css`
       background-image: var(--achievement-gold-bar);
       color: var(--achievement-text-color--dark);
-      border: 1px solid var(--color-grey-300);
+      border: 1px solid rgba(255, 251, 233, 0.42);
+
+      &::before {
+        background: var(--achievement-gold-color--shine-3);
+        opacity: 0.65;
+      }
     `}
 
   @media (max-width: ${pixelToEm(1100)}) {
@@ -42,6 +56,7 @@ const StyledItem = styled.li`
     @media (max-width: ${pixelToEm(430)}) {
       padding-inline: 2rem;
       row-gap: 3.2rem;
+      border-radius: 2rem;
     }
   }
 `;
@@ -51,10 +66,10 @@ const Name = styled.p`
   grid-column: 1 / -2;
 
   font-size: var(--font-size-2xl);
-  font-weight: 600;
-  line-height: 1.6;
-  /* padding-top: 3px; */
-  /* padding-bottom: 3px; */
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+  color: var(--color-grey-800);
 
   ${({ $isAchieved }) =>
     $isAchieved &&
@@ -79,6 +94,7 @@ const StyledMenu = styled.div`
   grid-column: -2 / -1;
   align-self: center;
   justify-self: end;
+  padding: 0.5rem;
 
   @media (max-width: ${pixelToEm(1100)}) {
     grid-column: 2/3;
@@ -142,19 +158,17 @@ const ActionWrapper = styled.div`
     grid-column: 2 / 3;
     justify-self: end;
   }
-
-  @media (max-width: ${pixelToEm(430)}) {
-    padding-right: 2rem;
-  }
 `;
 
 const CompletedTextWrapper = styled.div`
   grid-row: 3 / 4;
   grid-column: 3 / -1;
   justify-self: end;
-  background-color: var(--achievement-gold-color--shine);
-  padding: 0.5rem 2rem;
-  border-radius: 100px;
+  background-color: rgba(255, 251, 233, 0.9);
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 251, 233, 0.58);
+  box-shadow: var(--shadow-sm);
 
   @media (max-width: ${pixelToEm(1100)}) {
     grid-column: 2 / 3;
@@ -163,10 +177,11 @@ const CompletedTextWrapper = styled.div`
   }
 
   & p {
-    font-size: var(--font-size-2xl);
+    font-size: var(--font-size-lg);
     text-transform: uppercase;
     color: var(--achievement-gold-color--shade);
     font-weight: 800;
+    letter-spacing: 0.08em;
 
     @media (max-width: ${pixelToEm(1100)}) {
       font-size: var(--font-size-base);
@@ -179,15 +194,14 @@ const CompletedTextWrapper = styled.div`
 `;
 
 function calculateTargetPoints(currentPoints, isAchieved) {
-  // TODO: hardcoded target points
   if (isAchieved) return 1000;
 
   if (currentPoints < 100) {
     return 100;
-  } else {
-    const roundedHundred = Math.ceil(currentPoints / 100) * 100;
-    return roundedHundred;
   }
+
+  const roundedHundred = Math.ceil(currentPoints / 100) * 100;
+  return roundedHundred;
 }
 
 export default function HabitListItem({ habit }) {
@@ -281,7 +295,7 @@ export default function HabitListItem({ habit }) {
         </>
       ) : (
         <CompletedTextWrapper>
-          <p>🏆 Goal Completed</p>
+          <p>Goal completed</p>
         </CompletedTextWrapper>
       )}
     </StyledItem>

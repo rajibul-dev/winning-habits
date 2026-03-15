@@ -48,7 +48,13 @@ const StyledDayPicker = styled(DayPicker)`
   justify-content: center;
   padding: 2rem 0;
   border: var(--usual-layout-border);
+  border-radius: 2.4rem;
   transition: all 0.2s;
+
+  @media (max-width: ${pixelToEm(400)}) {
+    background-color: transparent;
+    border: none;
+  }
 
   & .rdp-day {
     overflow: visible;
@@ -161,7 +167,6 @@ const StyledDayPicker = styled(DayPicker)`
 
       box-shadow: -5px 0 0 ${({ $streakFireColor }) => $streakFireColor};
 
-      // new
       ${!IS_FULL_ROUND
         ? css``
         : css`
@@ -177,7 +182,6 @@ const StyledDayPicker = styled(DayPicker)`
       ${({ $streakFireColor }) =>
         sharedStylesYesCellAfterPseudo($streakFireColor)}
 
-      // new
       ${!IS_FULL_ROUND
         ? css`
             border-top-right-radius: 50%;
@@ -197,7 +201,6 @@ const StyledDayPicker = styled(DayPicker)`
 
       box-shadow: 5px 0 0 ${({ $streakFireColor }) => $streakFireColor};
 
-      // new
       ${!IS_FULL_ROUND
         ? css``
         : css`
@@ -255,8 +258,8 @@ export default function HabitCalender({
     const recordDate = new Date(record.date);
 
     let position = null;
-    const prevAnswer = records[index - 1]?.didIt === "yes" ?? null;
-    const nextAnswer = records[index + 1]?.didIt === "yes" ?? null;
+    const prevAnswer = records[index - 1]?.didIt === "yes";
+    const nextAnswer = records[index + 1]?.didIt === "yes";
     if (prevAnswer && nextAnswer) {
       position = "middle";
     } else if (!prevAnswer && nextAnswer) {
@@ -371,16 +374,3 @@ export default function HabitCalender({
     />
   );
 }
-
-// how many classes to generate for yeses?
-// left
-// middle
-// right
-// left--right-edge
-// middle--right-edge
-// right--left-edge
-// middle--left-edge
-// left--month-end
-// middle--month-end
-// right--month-start
-// middle--month-start

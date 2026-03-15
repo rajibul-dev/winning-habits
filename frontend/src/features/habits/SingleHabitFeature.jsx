@@ -8,7 +8,6 @@ import ProgressBar from "../../ui/ProgressBar.jsx";
 import Row from "../../ui/Row.jsx";
 import Spinner from "../../ui/Spinner.jsx";
 import useSingleHabit from "./useSingleHabit.js";
-
 import Menus from "../../ui/Menu.jsx";
 import HabitActionButtons from "./HabitActionButtons.jsx";
 import HabitMenuOptions from "./HabitMenuOptions.jsx";
@@ -25,10 +24,31 @@ const GridContainer = styled.div`
   grid-template-rows: repeat(3, max-content);
   row-gap: 3rem;
   column-gap: 3rem;
+  padding: 3rem;
+  border-radius: 2.8rem;
+  border: 1px solid var(--color-grey-200);
+  background-color: var(--color-grey-0);
+  /* background-image: radial-gradient(
+    circle at top left,
+    var(--habit-brand-tint),
+    transparent 28%
+  ); */
+  box-shadow: var(--shadow-sm);
 
   @media (max-width: ${pixelToEm(900)}) {
     grid-template-columns: repeat(2, auto);
     grid-template-rows: repeat(4, auto);
+    padding: 2.4rem;
+  }
+
+  @media (max-width: ${pixelToEm(500)}) {
+    padding: 1.8rem;
+    border-radius: 2.2rem;
+  }
+
+  @media (max-width: ${pixelToEm(400)}) {
+    padding-inline: 0;
+    padding-bottom: 2rem;
   }
 `;
 
@@ -37,26 +57,41 @@ const GoBackLink = styled(Link)``;
 const HeadingWithBackBtnWrapper = styled(Row)`
   grid-column: 1 / -1;
   grid-row: 1 / 2;
-
   display: flex;
   align-items: center;
   justify-content: start;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 1.2rem;
+  margin-bottom: 0.4rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--color-grey-200);
 
   & svg {
-    display: inline-block;
-    width: 3.4rem;
-    height: 3.4rem;
+    display: inline-grid;
+    place-items: center;
+    width: 4.2rem;
+    height: 4.2rem;
+    padding: 0.8rem;
+    border-radius: 50%;
     cursor: pointer;
+    background-color: var(--color-grey-100);
+    color: var(--color-grey-700);
+    transition: all 0.2s;
+
+    @media (max-width: ${pixelToEm(400)}) {
+      background-color: transparent;
+    }
+
     &.back-btn:hover {
       background-color: var(--color-grey-200);
+      transform: translateX(-2px);
     }
   }
 `;
 
 const StyledHeading = styled(Heading)`
   margin-right: auto;
+  color: var(--color-grey-800);
+  letter-spacing: -0.04em;
 `;
 
 const ActionButtonWrapper = styled.div`
@@ -71,8 +106,7 @@ const ActionButtonWrapper = styled.div`
     justify-self: center;
 
     & > div {
-      padding-top: 3rem;
-      padding-bottom: 3rem;
+      width: 100%;
     }
 
     ${({ $isAchieved }) =>
@@ -90,8 +124,16 @@ const ProgressBarWrapper = styled.div`
   ${({ $isAchieved }) =>
     $isAchieved &&
     css`
+      background-image: linear-gradient(
+          180deg,
+          rgba(255, 251, 233, 0.24),
+          rgba(255, 255, 255, 0.06)
+        ),
+        var(--achievement-gold-bar);
+      border-color: rgba(255, 251, 233, 0.4);
+
       & div {
-        background-color: none;
+        background-color: transparent;
         background-image: var(--achievement-gold-bar);
         box-shadow: 0 0 0 1px var(--achievement-gold-color--shine-2);
 

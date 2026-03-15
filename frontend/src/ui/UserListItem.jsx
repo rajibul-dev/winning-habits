@@ -14,8 +14,7 @@ const Card = styled.div`
   gap: 1.6rem;
   align-items: center;
   padding: 1.8rem 2rem;
-  background:
-    linear-gradient(180deg, rgba(99, 102, 241, 0.04), transparent 60%),
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.04), transparent 60%),
     var(--color-grey-0);
   border: 1px solid var(--color-grey-200);
   border-radius: 2rem;
@@ -145,7 +144,7 @@ function getInitials(name = "") {
 
 export default function UserListItem({
   user,
-  secondaryText = "Add a short rank, status, or note here.",
+  secondaryText = "",
   badge,
   to,
   onClick,
@@ -186,7 +185,7 @@ export default function UserListItem({
             <Name>{user?.name}</Name>
             {badge ? <Badge>{badge}</Badge> : null}
           </NameRow>
-          <SecondaryText>{secondaryText}</SecondaryText>
+          {secondaryText && <SecondaryText>{secondaryText}</SecondaryText>}{" "}
         </Content>
 
         <Trailing>
