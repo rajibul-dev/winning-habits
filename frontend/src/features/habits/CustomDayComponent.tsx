@@ -189,48 +189,52 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
             <ActionRow>
               <UpdateAnswerP>Update your answer:</UpdateAnswerP>
               <ButtonsWrapper>
-                <Button
-                  disabled={isUpdating || currentAnswer === "yes"}
-                  onClick={() => handleUpdateAnswer("yes")}
-                  // @ts-ignore
-                  size="medium"
-                >
-                  {updatingButton === "yes" && (
-                    <>
-                      <SpinnerMini />{" "}
-                    </>
-                  )}
-                  Yes
-                </Button>
-                <Button
-                  onClick={() => handleUpdateAnswer("unanswered")}
-                  // @ts-ignore
-                  size="medium"
-                  $variation="constGrey"
-                  disabled={isUpdating || currentAnswer === "unanswered"}
-                >
-                  {updatingButton === "unanswered" && (
-                    <>
-                      <SpinnerMini />{" "}
-                    </>
-                  )}
-                  Unanswered
-                </Button>
+                {currentAnswer !== "yes" && (
+                  <Button
+                    onClick={() => handleUpdateAnswer("yes")}
+                    // @ts-ignore
+                    size="medium"
+                  >
+                    {updatingButton === "yes" && (
+                      <>
+                        <SpinnerMini />{" "}
+                      </>
+                    )}
+                    Yes
+                  </Button>
+                )}
 
-                <Button
-                  onClick={() => handleUpdateAnswer("no")}
-                  // @ts-ignore
-                  size="medium"
-                  $variation="constRed"
-                  disabled={isUpdating || currentAnswer === "no"}
-                >
-                  {updatingButton === "no" && (
-                    <>
-                      <SpinnerMini />{" "}
-                    </>
-                  )}
-                  No
-                </Button>
+                {currentAnswer !== "unanswered" && (
+                  <Button
+                    onClick={() => handleUpdateAnswer("unanswered")}
+                    // @ts-ignore
+                    size="medium"
+                    $variation="constGrey"
+                  >
+                    {updatingButton === "unanswered" && (
+                      <>
+                        <SpinnerMini />{" "}
+                      </>
+                    )}
+                    Unanswered
+                  </Button>
+                )}
+
+                {currentAnswer !== "no" && (
+                  <Button
+                    onClick={() => handleUpdateAnswer("no")}
+                    // @ts-ignore
+                    size="medium"
+                    $variation="constRed"
+                  >
+                    {updatingButton === "no" && (
+                      <>
+                        <SpinnerMini />{" "}
+                      </>
+                    )}
+                    No
+                  </Button>
+                )}
               </ButtonsWrapper>
             </ActionRow>
           </UpdateAnswerContainerGrid>
