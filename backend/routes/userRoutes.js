@@ -17,9 +17,7 @@ import {
 
 const router = Router();
 
-router
-  .route("/")
-  .get(authenticateUser, authorizePermissions("admin"), getAllUsers);
+router.route("/").get(authenticateUser, getAllUsers);
 router.route("/count").get(authenticateUser, getUserCount);
 router
   .route("/me")

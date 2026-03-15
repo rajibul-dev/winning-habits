@@ -1,10 +1,10 @@
+import { getAllUsers } from "../../api/apiUsers";
 import { useQuery } from "@tanstack/react-query";
-import { getUserCount } from "../../api/apiUsers.js";
 
 export default function useGetAllUsers() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["userCount"],
-    queryFn: getUserCount,
+    queryKey: ["users"],
+    queryFn: getAllUsers,
   });
 
   return { data, isLoading, error };

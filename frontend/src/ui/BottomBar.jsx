@@ -103,7 +103,7 @@ const frontNavItems = [
 
 const restNavItems = [
   { label: "Archive", icon: <PiArchive />, path: "archive" },
-  { label: "Other users", icon: <HiOutlineUsers />, path: "users" },
+  { label: "All users", icon: <HiOutlineUsers />, path: "users" },
   { label: "Profile", icon: <BiUser />, path: "profile" },
 ];
 

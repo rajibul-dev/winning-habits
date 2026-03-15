@@ -8,6 +8,11 @@ export async function getUserCount() {
   return res.data;
 }
 
+export async function getAllUsers() {
+  const res = await apiClient.get(usersEndpoint);
+  return res.data;
+}
+
 export async function getCurrentUser() {
   const res = await apiClient.get(currentUserEndpoint);
   return res.data;
