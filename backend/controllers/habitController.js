@@ -4,6 +4,7 @@ import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
 import { addDays, isAfter, isSameDay, isToday, startOfDay } from "date-fns";
 import { getNow } from "../utils/getNow.js";
+import Achievement from "../models/AchievementModel.js";
 
 export async function createHabit(req, res) {
   req.body.user = req.user.userID;
@@ -60,6 +61,9 @@ export async function deleteHabit(req, res) {
   const habit = await getHabitById(habitID);
 
   checkPermissions(req.user, habit.user);
+
+  // check if achievement is associated with this habit and if so, delete it as well
+  await Achievement.deleteOne({ habit: habit._id });
 
   await habit.deleteOne();
   res.status(StatusCodes.OK).json({ msg: `Habit removed successfully!` });

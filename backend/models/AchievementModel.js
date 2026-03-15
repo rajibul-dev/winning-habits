@@ -12,6 +12,7 @@ const AchievementSchema = new Schema(
       type: mongoose.Types.ObjectId,
       ref: "Habit",
       required: [true, "Please provide the achieved habit"],
+      unique: true,
     },
   },
   { timestamps: true },
