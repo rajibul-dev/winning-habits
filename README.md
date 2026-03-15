@@ -8,7 +8,7 @@ The **Winning Habit App** is a productivity-focused full-stack web application d
 
 ## 🔗 Live Demo & Source Code
 
-- **🌐 Live App:** [https://winning-habits.onrender.com](https://winning-habits.onrender.com)
+- **🌐 Live App:** [https://winninghabits.app](https://winninghabits.app)
 - **💻 Source Code:** [https://github.com/rajibul-dev/winning-habits](https://github.com/rajibul-dev/winning-habits)
 
 ---
@@ -44,46 +44,8 @@ This app uses a **progressive streak-based system** to gamify habit tracking.
 
 ## 🧰 Tech Stack
 
-- **Frontend:** React, Tailwind CSS
+- **Frontend:** Vite + React, Styled Components
 - **Backend:** Node.js, Express.js
-- **Database:** MongoDB with Mongoose
+- **Database:** MongoDB with Mongoose ORM
 - **Authentication:** JWT, Google OAuth
-- **Scheduler:** Node-Cron for daily reset logic
-- **Deployment:** Render
-
----
-
-### 🧪 Future Plans
-
-This app was built as a portfolio-quality project and proof-of-concept. While not actively maintained as a commercial product, updates may come but no promises.
-
----
-
-### 📸 Screenshots
-
-- [Homepage](./screenshots/homepage.png)
-- [Calendar View](./screenshots/calendar.png)
-- [Profile Page](./screenshots/profile-page.png)
-- [Light mode showcase - 1](./screenshots/lightmode-showcase-1.png)
-- [Light mode showcase - 2](./screenshots/lightmode-showcase-2.png)
-- [Light mode showcase - 3](./screenshots/lightmode-showcase-3.png)
-- [Light mode showcase - 4](./screenshots/lightmode-showcase-4.png)
-
----
-
-### 🧑‍💻 About Me
-
-Hi, I’m **Rajibul Islam** – an aspiring software developer. This was my first-ever full-stack project—it's a solo project—and it taught me a lot about:
-
-- Writing clean backend logic
-- Structuring scalable frontend apps
-- UI and UX
-
-> Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/rajibul-dev/) or check out my other projects!
-
----
-
-### 📬 Feedback
-
-Got ideas or feedback? I’d love to hear them.  
-Open an issue or just drop me a message on [LinkedIn](https://www.linkedin.com/in/rajibul-dev/) or [Telegram](https://t.me/rajiraji201).
+- **Deployment:** Cloudflare Pages (frontend) + Railway (backend) + MongoDB Atlas
