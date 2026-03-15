@@ -45,7 +45,8 @@ This app uses a **progressive streak-based system** to gamify habit tracking.
 ## 🧰 Tech Stack
 
 - **Frontend:** Vite + React, Styled Components
-- **Backend:** Node.js, Express.js
+- **Backend Server:** Node.js, Express.js
 - **Database:** MongoDB with Mongoose ORM
+- **Cloud Storage:** Cloudinary
 - **Authentication:** JWT, Google OAuth
 - **Deployment:** Cloudflare Pages (frontend) + Railway (backend) + MongoDB Atlas
