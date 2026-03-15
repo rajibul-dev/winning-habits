@@ -45,7 +45,7 @@ export default function HabitStatistics({
             />
           }
           value={totalPoints}
-          label="Points"
+          label={`Point${totalPoints !== 1 ? "s" : ""}`}
           goldFlex={isAchieved}
         />
       </PointsWrapper>
