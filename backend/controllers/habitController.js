@@ -7,9 +7,23 @@ import { getNow } from "../utils/getNow.js";
 import Achievement from "../models/AchievementModel.js";
 
 export async function createHabit(req, res) {
+  // add 60 past dates with unanswered status for the new habit
+  const dailyRecords = [];
+  for (let i = 0; i < 60; i++) {
+    dailyRecords.push({
+      didIt: "unanswered",
+      date: addDays(getNow(), -i),
+    });
+  }
+
   req.body.user = req.user.userID;
+  req.body.dailyRecords = dailyRecords;
+
   const habit = await Habit.create(req.body);
-  res.status(StatusCodes.CREATED).json({ habit });
+
+  res
+    .status(StatusCodes.CREATED)
+    .json({ habit, msg: "Habit created successfully!" });
 }
 
 export async function getAllHabits(req, res) {

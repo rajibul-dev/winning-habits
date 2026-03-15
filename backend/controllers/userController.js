@@ -199,7 +199,7 @@ export async function getUserHabitCount(req, res) {
   const habitCount = await Habit.countDocuments({ user: userID });
   const seriousAboutCount = await Habit.countDocuments({
     user: userID,
-    totalPoints: { $gte: 10 },
+    totalPoints: { $gte: 30 },
   });
   const masteredCount = await Achievement.countDocuments({ user: userID });
   res.status(StatusCodes.OK).json({
