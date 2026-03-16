@@ -98,12 +98,12 @@ const RestListItem = styled.li``;
 
 const frontNavItems = [
   { label: "Habits", icon: <VscChecklist />, path: "habits" },
-  { label: "Achievements", icon: <PiTrophy />, path: "achievements" },
+  { label: "All Users", icon: <HiOutlineUsers />, path: "users" },
 ];
 
 const restNavItems = [
+  { label: "Achievements", icon: <PiTrophy />, path: "achievements" },
   { label: "Archive", icon: <PiArchive />, path: "archive" },
-  { label: "All Users", icon: <HiOutlineUsers />, path: "users" },
   { label: "Profile", icon: <BiUser />, path: "profile" },
 ];
 
