@@ -1,20 +1,17 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { FiEdit3 } from "react-icons/fi";
 import { HiOutlineChartBar } from "react-icons/hi";
 import { IoSparkles } from "react-icons/io5";
 import { PiTrophyFill } from "react-icons/pi";
-import ProfileEditForm from "../features/authentication/ProfileEditForm.jsx";
-import DeleteAccountSection from "../features/authentication/DeleteAccountSection.jsx";
+import apiErrorFormat from "../api/apiErrorFormat.js";
 import useUser from "../features/authentication/useUser.js";
+import UserProfileOverview from "../features/users/UserProfileOverview.jsx";
+import useGetUserById from "../features/users/useGetUserById.js";
 import useGetUserHabitCount from "../features/users/useGetUserHabitCount.js";
 import useGetUserHabits from "../features/users/useGetUserHabits.js";
-import UserProfileOverview from "../features/users/UserProfileOverview.jsx";
 import Button from "../ui/Button.jsx";
-import Spinner from "../ui/Spinner.jsx";
 import PageLevelNotificationToast from "../ui/PageLevelNotificationToast.jsx";
-import apiErrorFormat from "../api/apiErrorFormat.js";
+import Spinner from "../ui/Spinner.jsx";
 
 const PageStack = styled.div`
   display: grid;
@@ -40,10 +37,11 @@ function sortHabitsForSpotlight(habits = []) {
   });
 }
 
-export default function Profile() {
-  const [isEditing, setIsEditing] = useState(false);
-  const { user, isLoading: isUserLoading, error: userError } = useUser();
-  const userID = user?.userID;
+export default function UserProfile() {
+  const { userID } = useParams();
+  const { user, isLoading: isUserLoading, error: userError } = useGetUserById(userID);
+  const { user: currentUser } = useUser();
+  const isCurrentUser = user?._id === currentUser?.userID;
   const {
     data: habitCountData,
     isLoading: isHabitCountLoading,
@@ -61,22 +59,18 @@ export default function Profile() {
 
   if (userError) {
     return (
-      <PageLevelNotificationToast type="error">
-        {apiErrorFormat(userError)}
-      </PageLevelNotificationToast>
+      <PageStack>
+        <PageLevelNotificationToast type="error">
+          {apiErrorFormat(userError)}
+        </PageLevelNotificationToast>
+        <ActionButton as={Link} to="/users" $variation="secondary">
+          Back to users
+        </ActionButton>
+      </PageStack>
     );
   }
 
   if (!user) return null;
-
-  if (isEditing) {
-    return (
-      <PageStack>
-        <ProfileEditForm onCancel={() => setIsEditing(false)} />
-        <DeleteAccountSection />
-      </PageStack>
-    );
-  }
 
   const allHabits = userHabitsData?.userHabits || [];
   const visibleHabits = allHabits.filter((habit) => !habit.isArchived);
@@ -89,8 +83,8 @@ export default function Profile() {
       label: "Tracking",
       value: habitCountError ? "--" : habitCountData?.count || 0,
       caption: habitCountError
-        ? "Your total habit count could not be loaded just now."
-        : "The number of habits currently attached to your account.",
+        ? "This user's total habit count is unavailable right now."
+        : "The number of habits currently tied to this profile.",
       icon: <HiOutlineChartBar />,
       tone: "brand",
     },
@@ -98,8 +92,8 @@ export default function Profile() {
       label: "Serious About",
       value: habitCountError ? "--" : habitCountData?.seriousAboutCount || 0,
       caption: habitCountError
-        ? "Your momentum snapshot is temporarily unavailable."
-        : "Habits that have already built meaningful momentum.",
+        ? "Momentum stats are unavailable right now."
+        : "Habits where consistency is starting to look serious.",
       icon: <IoSparkles />,
       tone: "warning",
     },
@@ -107,12 +101,14 @@ export default function Profile() {
       label: "Mastered",
       value: habitCountError ? "--" : habitCountData?.achievedCount || 0,
       caption: habitCountError
-        ? "Completed-habit totals are temporarily unavailable."
-        : "Habits you have already pushed all the way to completion.",
+        ? "Completed-habit totals are unavailable right now."
+        : "Habits already pushed across the finish line.",
       icon: <PiTrophyFill />,
       tone: "success",
     },
   ];
+
+  const firstName = user.name?.trim().split(/\s+/)[0] || "This user";
 
   return (
     <PageStack>
@@ -130,31 +126,39 @@ export default function Profile() {
 
       <UserProfileOverview
         user={user}
-        headerLabel="Your profile"
-        metaItems={user.email ? [user.email] : []}
-        description="This is your home base for account details, habit momentum, and the public-facing profile other users can view."
+        headerLabel={isCurrentUser ? "Your public view" : "Community profile"}
+        metaItems={isCurrentUser ? ["This is how other users see you"] : ["Winning Habits member"]}
+        description={
+          isCurrentUser
+            ? "This is the public-facing version of your profile. As the backend grows, this page can highlight your best streaks and signature habits even more clearly."
+            : `${firstName} is building consistency one habit at a time. More streak-focused highlights can land here once the backend exposes them.`
+        }
         stats={stats}
         actions={
-          <>
-            <ActionButton type="button" onClick={() => setIsEditing(true)}>
-              <FiEdit3 />
-              <span>Edit profile</span>
-            </ActionButton>
-
-            {userID ? (
-              <ActionButton as={Link} to={`/users/${userID}`} $variation="secondary">
-                View public profile
+          isCurrentUser ? (
+            <>
+              <ActionButton as={Link} to="/profile">Edit your profile</ActionButton>
+              <ActionButton as={Link} to="/users" $variation="secondary">
+                Browse users
               </ActionButton>
-            ) : null}
-          </>
+            </>
+          ) : (
+            <ActionButton as={Link} to="/users" $variation="secondary">
+              Back to users
+            </ActionButton>
+          )
         }
-        habitsTitle="Habit spotlight"
-        habitsIntro="A quick look at the habits that best represent your current rhythm."
+        habitsTitle={isCurrentUser ? "What people can notice" : "Habit spotlight"}
+        habitsIntro={
+          isCurrentUser
+            ? "These are the habits currently making the strongest impression on your public profile."
+            : "A quick look at the habits shaping their momentum right now."
+        }
         habits={userHabitsError ? [] : spotlightHabits}
         emptyHabitsText={
           userHabitsError
-            ? "Your habit spotlight could not be loaded right now."
-            : "Once you start tracking habits, your strongest ones will show up here."
+            ? "This habit spotlight could not be loaded right now."
+            : `${firstName} has not shared habit activity here yet.`
         }
       />
     </PageStack>

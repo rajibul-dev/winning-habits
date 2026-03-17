@@ -25,6 +25,7 @@ import Achievements from "./pages/Achievements";
 import Archive from "./pages/Archive";
 import Users from "./pages/Users.jsx";
 import Profile from "./pages/Profile";
+import UserProfile from "./pages/UserProfile.jsx";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import { toastNotifierIndex } from "./styles/zIndexManager.js";
 // import DevTimePanel from "./ui/DevTimePanel.jsx";
@@ -113,6 +114,7 @@ export default function App() {
                 <Route path="/archive" element={<Archive />} />
                 <Route path="/archive/:habitID" element={<SingleHabit />} />
                 <Route path="/users" element={<Users />} />
+                <Route path="/users/:userID" element={<UserProfile />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>
 

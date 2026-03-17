@@ -53,13 +53,6 @@ export default function AllUsersList() {
 
 function UserRow({ user, isCurrentUser }) {
   const { data } = useGetUserHabitCount(user._id);
-  // {
-  //   count: habitCount,
-  //   seriousAboutCount,
-  //   achievedCount: masteredCount,
-  // }
-
-  console.log(data);
 
   const habitCount = data?.count || 0;
 
@@ -82,6 +75,7 @@ function UserRow({ user, isCurrentUser }) {
       user={user}
       badge={isCurrentUser ? "You" : null}
       secondaryText={secondaryTextStatements.join(" || ")}
+      to={`/users/${user._id}`}
     />
   );
 }
