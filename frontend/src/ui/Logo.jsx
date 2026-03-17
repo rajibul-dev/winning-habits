@@ -22,7 +22,7 @@ export default function Logo({ styles }) {
   const src = isDarkMode ? LogoSVGDark : LogoSVG;
 
   return (
-    <StyledLogo onClick={() => navigate("/")}>
+    <StyledLogo onClick={() => navigate("/?from=logo")}>
       <Img src={src} alt="winning habits logo" $styles={styles} />
     </StyledLogo>
   );

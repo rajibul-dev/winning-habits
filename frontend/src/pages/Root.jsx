@@ -5,6 +5,9 @@ import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
 import { pixelToEm } from "../styles/GlobalStyles";
 import NoAccountHeader from "../ui/NoAccountHeader";
+import useUser from "../features/authentication/useUser";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const Section = styled.div`
   padding: 6rem 0;
@@ -68,6 +71,18 @@ const HeroButton = styled(Button)`
 
 export default function Root() {
   const navigate = useNavigate();
+  const { isLoading, isAuthenticated } = useUser();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const fromLogo = params.get("from") === "logo";
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && !fromLogo) {
+      navigate("/habits", { replace: true });
+    }
+  }, [isLoading, isAuthenticated, fromLogo, navigate]);
+
+  if (isLoading) return null;
 
   return (
     <>
