@@ -105,7 +105,7 @@ const Eyebrow = styled.span`
 `;
 
 const Name = styled(Heading)`
-  margin-top: 1.4rem;
+  margin-top: 1.8rem;
   color: var(--color-grey-800);
   font-size: clamp(3.2rem, 4vw, 4.8rem);
   font-weight: 800;
@@ -117,7 +117,7 @@ const MetaRow = styled.div`
   display: flex;
   gap: 0.8rem;
   flex-wrap: wrap;
-  margin-top: 1.2rem;
+  margin-top: 1.6rem;
   color: var(--color-grey-500);
 
   @media (max-width: ${pixelToEm(800)}) {

@@ -86,7 +86,7 @@ const HeaderTitle = styled(Heading)`
 `;
 
 const HeaderText = styled.p`
-  max-width: 62ch;
+  max-width: 68ch;
   color: var(--color-grey-500);
   line-height: 1.55;
 `;
@@ -319,8 +319,15 @@ export default function ProfileEditForm({ onCancel }) {
           </AvatarFrame>
 
           <AvatarHint>
-            A clear photo helps your profile feel more personal across the app.
+            If you manually upload a photo and use Google to login, keep your
+            manual photo handy, because current implementation replaces it with
+            your google photo when you login again. Will solve it soon; lazy
+            right now.
           </AvatarHint>
+          {/* <AvatarHint>
+            A photo you like makes your profile feel more personal and
+            motivating.
+          </AvatarHint> */}
 
           <Modal>
             <AvatarActions>
