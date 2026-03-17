@@ -262,6 +262,7 @@ const CustomDayComponent = ({
   function handleOpenNoteModal() {
     if (!currentRecordInstence) return;
 
+    close();
     window.setTimeout(() => {
       onOpenNoteEditor?.(currentRecordInstence);
     }, 0);
