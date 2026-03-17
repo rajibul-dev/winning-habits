@@ -1,3 +1,4 @@
+import { useState, type ButtonHTMLAttributes, type PropsWithChildren } from "react";
 import Popover, { usePopoverManager } from "../../ui/Popover.jsx";
 import styled, { css } from "styled-components";
 import { isSameDay, format, isToday, isFuture } from "date-fns";
@@ -6,30 +7,78 @@ import useSingleHabit from "./useSingleHabit.js";
 import Tag from "../../ui/Tag.jsx";
 import Button from "../../ui/Button.jsx";
 import useUpdateAction from "./useUpdateAction.js";
-import { useState } from "react";
 import SpinnerMini from "../../ui/SpinnerMini.jsx";
 import useAddAction from "./useAddAction.js";
 import { pixelToEm } from "../../styles/GlobalStyles.js";
+import {
+  HiOutlineChatBubbleBottomCenterText,
+  HiOutlinePencilSquare,
+} from "react-icons/hi2";
 
 const SHOULD_GRAY_OUT_NON_EXISTENT_RECORD_DATE = false;
 
+type HabitAnswer = "yes" | "no" | "unanswered";
+type ButtonSize = "small" | "medium" | "large";
+type ButtonVariation =
+  | "primary"
+  | "secondary"
+  | "danger"
+  | "constGrey"
+  | "constRed";
+type TagTone = "green" | "red" | "silver";
+
+interface DailyRecord {
+  date: string;
+  didIt: HabitAnswer;
+  _id: string;
+  note?: string;
+}
+
 interface CustomDayComponentProps {
-  date: any;
-  dailyRecords: Array<{
-    date: string;
-    didIt: "yes" | "no" | "unanswered";
-    _id: string;
-  }>;
-  habitID: any;
+  date: Date;
+  dailyRecords: DailyRecord[];
+  habitID: string;
+  onOpenNoteEditor?: (record: DailyRecord) => void;
 }
 
 interface StyledDayProps {
   $hasRecord: boolean;
 }
 
-export interface TagProps {
-  type: "green" | "red" | "silver";
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  size?: ButtonSize;
+  $variation?: ButtonVariation;
 }
+
+interface TagProps {
+  type: TagTone;
+}
+
+interface UpdateActionVariables {
+  habitID: string;
+  targetRecordID?: string;
+  updatedAnswer: HabitAnswer;
+}
+
+interface AddActionVariables {
+  habitID: string;
+  answer: Extract<HabitAnswer, "yes" | "no">;
+}
+
+interface MutationOptions {
+  onSettled?: () => void;
+}
+
+const TypedButton = Button as unknown as React.ComponentType<
+  PropsWithChildren<ButtonProps>
+>;
+const TypedTag = Tag as unknown as React.ComponentType<PropsWithChildren<TagProps>>;
+
+const tagColorBasedOnAnswer: Record<HabitAnswer, TagTone> = {
+  yes: "green",
+  no: "red",
+  unanswered: "silver",
+};
 
 // @ts-ignore
 const StyledDay = styled.span<StyledDayProps>`
@@ -50,7 +99,7 @@ const StyledDay = styled.span<StyledDayProps>`
 
 const UpdateAnswerContainerGrid = styled.div`
   display: grid;
-  gap: 2rem;
+  gap: 1.8rem;
   max-width: 40rem;
 
   @media (max-width: ${pixelToEm(500)}) {
@@ -63,6 +112,7 @@ const HeadingRow = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 `;
 
 const ActionRow = styled.div`
@@ -73,6 +123,7 @@ const ActionRow = styled.div`
 
 const UpdateAnswerP = styled.p`
   margin-bottom: 0.6rem;
+
   @media (max-width: ${pixelToEm(500)}) {
     font-size: var(--font-size-base);
   }
@@ -97,38 +148,82 @@ const ButtonsWrapper = styled.div`
   }
 `;
 
-const tagColorBasedOnAnswer: Record<string, "green" | "red" | "silver"> = {
-  yes: "green",
-  no: "red",
-  unanswered: "silver",
-};
+const NoteActionRow = styled.div`
+  display: grid;
+  gap: 0.9rem;
+  padding-top: 0.2rem;
+`;
 
-const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
+const NoteButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  justify-self: start;
+  color: var(--color-grey-600);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+
+  &:hover {
+    color: var(--color-grey-800);
+  }
+
+  & svg {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+`;
+
+const NotePreview = styled.p`
+  padding: 1rem 1.2rem;
+  border-radius: 1.4rem;
+  background-color: var(--color-grey-100);
+  color: var(--color-grey-600);
+  font-size: var(--font-size-sm);
+  line-height: 1.55;
+  white-space: pre-wrap;
+`;
+
+const EmptyState = styled.p`
+  max-width: 20ch;
+`;
+
+const CustomDayComponent = ({
   date,
   dailyRecords,
   habitID,
-}) => {
-  const currentRecordInstence = dailyRecords.find((record: any) =>
+  onOpenNoteEditor,
+}: CustomDayComponentProps) => {
+  const currentRecordInstence = dailyRecords.find((record) =>
     isSameDay(new Date(record.date), date),
   );
   const { data } = useSingleHabit();
-  const { name } = data.habit;
+  const name = data?.habit?.name || "Habit";
 
   const hasRecordForDate = Boolean(currentRecordInstence);
   const isTodayInstenceBeforeAnyAnswer = isToday(date);
 
-  const { addDailyAction } = useAddAction();
-
-  const { updateAction, isUpdating } = useUpdateAction();
-  const [updatingButton, setUpdatingButton] = useState<string | null>(null);
+  const { addDailyAction, isAnswering } = useAddAction() as unknown as {
+    addDailyAction: (
+      variables: AddActionVariables,
+      options?: MutationOptions,
+    ) => void;
+    isAnswering: boolean;
+  };
+  const { updateAction, isUpdating } = useUpdateAction() as unknown as {
+    updateAction: (
+      variables: UpdateActionVariables,
+      options?: MutationOptions,
+    ) => void;
+    isUpdating: boolean;
+  };
+  const [updatingButton, setUpdatingButton] = useState<HabitAnswer | null>(null);
   const currentAnswer = currentRecordInstence?.didIt;
   const { close } = usePopoverManager();
+  const hasNote = Boolean(currentRecordInstence?.note?.trim());
 
-  function handleUpdateAnswer(updatedAnswer: string) {
+  function handleUpdateAnswer(updatedAnswer: HabitAnswer) {
     setUpdatingButton(updatedAnswer);
-    // @ts-ignore
     updateAction(
-      // @ts-ignore
       {
         habitID,
         targetRecordID: currentRecordInstence?._id,
@@ -142,10 +237,10 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
       },
     );
   }
-  function handleAddAnswer(answer: string) {
+
+  function handleAddAnswer(answer: Extract<HabitAnswer, "yes" | "no">) {
     setUpdatingButton(answer);
     addDailyAction(
-      // @ts-ignore
       { habitID, answer },
       {
         onSettled: () => {
@@ -156,144 +251,118 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
     );
   }
 
+  function handleOpenNoteModal() {
+    if (!currentRecordInstence) return;
+
+    close();
+    window.setTimeout(() => {
+      onOpenNoteEditor?.(currentRecordInstence);
+    }, 0);
+  }
+
   return (
-    <Popover
-      placementX={"center" as string}
-      placementY={"top" as string}
-      triggerType={"click" as string}
-    >
-      <Popover.Trigger id={date.getDate() as number}>
+    <Popover placementX="center" placementY="top" triggerType="click">
+      <Popover.Trigger id={date.getDate()}>
         <StyledDay $hasRecord={hasRecordForDate}>{date.getDate()}</StyledDay>
       </Popover.Trigger>
 
-      {/* @ts-ignore */}
-      <Popover.Content id={date.getDate() as number}>
+      <Popover.Content id={date.getDate()} isTopOfHeader={false}>
         {hasRecordForDate ? (
           <UpdateAnswerContainerGrid>
             <HeadingRow>
               <Heading as="h3">
                 {name} on {format(date, "MMM dd, yyyy")}
               </Heading>
-              <Tag
-                // @ts-ignore
-                type={
-                  // @ts-ignore
-                  tagColorBasedOnAnswer[
-                    currentRecordInstence?.didIt ?? "silver"
-                  ] as "green" | "red" | "silver"
-                }
-              >
+              <TypedTag type={tagColorBasedOnAnswer[currentRecordInstence?.didIt ?? "unanswered"]}>
                 {currentRecordInstence?.didIt ?? ""}
-              </Tag>
+              </TypedTag>
             </HeadingRow>
             <ActionRow>
               <UpdateAnswerP>Update your answer:</UpdateAnswerP>
               <ButtonsWrapper>
                 {currentAnswer !== "yes" && (
-                  <Button
-                    onClick={() => handleUpdateAnswer("yes")}
-                    // @ts-ignore
-                    size="medium"
-                  >
-                    {updatingButton === "yes" && (
-                      <>
-                        <SpinnerMini />{" "}
-                      </>
-                    )}
+                  <TypedButton onClick={() => handleUpdateAnswer("yes")} size="medium">
+                    {updatingButton === "yes" && <SpinnerMini />}
                     Yes
-                  </Button>
+                  </TypedButton>
                 )}
 
                 {currentAnswer !== "unanswered" && (
-                  <Button
+                  <TypedButton
                     onClick={() => handleUpdateAnswer("unanswered")}
-                    // @ts-ignore
                     size="medium"
                     $variation="constGrey"
                   >
-                    {updatingButton === "unanswered" && (
-                      <>
-                        <SpinnerMini />{" "}
-                      </>
-                    )}
+                    {updatingButton === "unanswered" && <SpinnerMini />}
                     Unanswered
-                  </Button>
+                  </TypedButton>
                 )}
 
                 {currentAnswer !== "no" && (
-                  <Button
+                  <TypedButton
                     onClick={() => handleUpdateAnswer("no")}
-                    // @ts-ignore
                     size="medium"
                     $variation="constRed"
                   >
-                    {updatingButton === "no" && (
-                      <>
-                        <SpinnerMini />{" "}
-                      </>
-                    )}
+                    {updatingButton === "no" && <SpinnerMini />}
                     No
-                  </Button>
+                  </TypedButton>
                 )}
               </ButtonsWrapper>
             </ActionRow>
+
+            <NoteActionRow>
+              <NoteButton type="button" onClick={handleOpenNoteModal}>
+                {hasNote ? (
+                  <HiOutlinePencilSquare />
+                ) : (
+                  <HiOutlineChatBubbleBottomCenterText />
+                )}
+                <span>{hasNote ? "Edit note" : "Add note"}</span>
+              </NoteButton>
+
+              {hasNote ? (
+                <NotePreview>{currentRecordInstence?.note}</NotePreview>
+              ) : null}
+            </NoteActionRow>
           </UpdateAnswerContainerGrid>
         ) : isTodayInstenceBeforeAnyAnswer ? (
           <UpdateAnswerContainerGrid>
             <HeadingRow>
               <Heading as="h3">{name} today?</Heading>
-              <Tag
-                // @ts-ignore
-                type={
-                  // @ts-ignore
-                  tagColorBasedOnAnswer[
-                    currentRecordInstence?.didIt ?? "silver"
-                  ] as "green" | "red" | "silver"
-                }
-              >
+              <TypedTag type={tagColorBasedOnAnswer[currentRecordInstence?.didIt ?? "unanswered"]}>
                 {currentRecordInstence?.didIt ?? ""}
-              </Tag>
+              </TypedTag>
             </HeadingRow>
             <ActionRow>
               <UpdateAnswerP>Add your answer:</UpdateAnswerP>
               <ButtonsWrapper>
-                <Button
-                  disabled={isUpdating || currentAnswer === "yes"}
-                  // @ts-ignore
+                <TypedButton
+                  disabled={isUpdating || isAnswering || currentAnswer === "yes"}
                   onClick={() => handleAddAnswer("yes")}
-                  // @ts-ignore
                   size="medium"
                 >
-                  {updatingButton === "yes" && (
-                    <>
-                      <SpinnerMini />{" "}
-                    </>
-                  )}
+                  {updatingButton === "yes" && <SpinnerMini />}
                   Yes
-                </Button>
-                <Button
+                </TypedButton>
+                <TypedButton
                   onClick={() => handleAddAnswer("no")}
-                  // @ts-ignore
                   size="medium"
                   $variation="constRed"
-                  disabled={isUpdating || currentAnswer === "no"}
+                  disabled={isUpdating || isAnswering || currentAnswer === "no"}
                 >
-                  {updatingButton === "no" && (
-                    <>
-                      <SpinnerMini />{" "}
-                    </>
-                  )}
+                  {updatingButton === "no" && <SpinnerMini />}
                   No
-                </Button>
+                </TypedButton>
               </ButtonsWrapper>
             </ActionRow>
           </UpdateAnswerContainerGrid>
         ) : (
-          <p style={{ maxWidth: "20ch" }}>
+          <EmptyState>
             {isFuture(date)
               ? "This date is in the future."
               : "The date is 60 days prior to this habit's creation. That's outside the time leaping threshold."}
-          </p>
+          </EmptyState>
         )}
       </Popover.Content>
     </Popover>
@@ -301,3 +370,4 @@ const CustomDayComponent: React.FC<CustomDayComponentProps> = ({
 };
 
 export default CustomDayComponent;
+

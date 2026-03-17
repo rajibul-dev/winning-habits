@@ -57,9 +57,6 @@ const Button = styled.button`
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    /* Sometimes we need both */
-    /* fill: var(--color-grey-500);
-    stroke: var(--color-grey-500); */
     color: var(--color-grey-500);
   }
 `;
@@ -79,10 +76,16 @@ function Modal({ children }) {
   );
 }
 
-function Open({ children, opens: opensWindowName }) {
+function Open({ children, opens: opensWindowName, callbackFunction }) {
   const { open } = useContext(ModalContext);
 
-  return cloneElement(children, { onClick: () => open(opensWindowName) });
+  function handleClick(e) {
+    children.props.onClick?.(e);
+    callbackFunction?.(e);
+    open(opensWindowName);
+  }
+
+  return cloneElement(children, { onClick: handleClick });
 }
 
 function Window({ children, name, noXButton = false }) {

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import styled, { css } from "styled-components";
@@ -9,6 +10,8 @@ import {
 } from "date-fns";
 import CustomDayComponent from "./CustomDayComponent";
 import { pixelToEm } from "../../styles/GlobalStyles";
+import DailyRecordNoteModal from "./DailyRecordNoteModal.jsx";
+import DailyRecordNoteForm from "./DailyRecordNoteForm.jsx";
 
 const IS_FULL_ROUND = true;
 
@@ -247,6 +250,8 @@ export default function HabitCalender({
   streak,
   isAchieved,
 }) {
+  const [activeNoteRecord, setActiveNoteRecord] = useState(null);
+
   let modifiedStreakFireColor =
     streak === 0 ? "var(--color-lime-500)" : streakFireColor;
 
@@ -294,83 +299,105 @@ export default function HabitCalender({
     return { ...record, date: new Date(record.date), position, edge };
   });
 
+  function handleOpenNoteEditor(record) {
+    setActiveNoteRecord(record);
+  }
+
+  function handleCloseNoteEditor() {
+    setActiveNoteRecord(null);
+  }
+
   return (
-    <StyledDayPicker
-      mode="single"
-      components={{
-        DayContent: ({ date }) => (
-          <CustomDayComponent
-            date={date}
-            dailyRecords={dailyRecords}
-            habitID={habitID}
-          />
-        ),
-      }}
-      modifiers={{
-        yes: dailyRecordsFormatted
-          .filter((record) => record.didIt === "yes")
-          .map((record) => record.date),
-        left: dailyRecordsFormatted
-          .filter((record) => record.didIt === "yes")
-          .filter((record) => record.position === "left" && !record.edge)
-          .map((record) => record.date),
-        middle: dailyRecordsFormatted
-          .filter((record) => record.didIt === "yes")
-          .filter((record) => record.position === "middle" && !record.edge)
-          .map((record) => record.date),
-        right: dailyRecordsFormatted
-          .filter((record) => record.didIt === "yes")
-          .filter((record) => record.position === "right" && !record.edge)
-          .map((record) => record.date),
-        leftOnRightEdge: dailyRecordsFormatted
-          .filter((record) => record.didIt === "yes")
-          .filter(
-            (record) =>
-              record.position === "left" && record.edge === "right-edge",
-          )
-          .map((record) => record.date),
-        middleOnRightEdge: dailyRecordsFormatted
-          .filter((record) => record.didIt === "yes")
-          .filter(
-            (record) =>
-              record.position === "middle" && record.edge === "right-edge",
-          )
-          .map((record) => record.date),
-        rightOnLeftEdge: dailyRecordsFormatted
-          .filter((record) => record.didIt === "yes")
-          .filter(
-            (record) =>
-              record.position === "right" && record.edge === "left-edge",
-          )
-          .map((record) => record.date),
-        middleOnLeftEdge: dailyRecordsFormatted
-          .filter((record) => record.didIt === "yes")
-          .filter(
-            (record) =>
-              record.position === "middle" && record.edge === "left-edge",
-          )
-          .map((record) => record.date),
-        single: dailyRecordsFormatted
-          .filter((record) => record.didIt === "yes")
-          .filter((record) => record.position === "single")
-          .map((record) => record.date),
-        no: dailyRecordsFormatted
-          .filter((record) => record.didIt === "no")
-          .map((record) => record.date),
-      }}
-      modifiersClassNames={{
-        yes: "yes",
-        left: "left",
-        middle: "middle",
-        right: "right",
-        leftOnRightEdge: "left--right-edge",
-        middleOnRightEdge: "middle--right-edge",
-        rightOnLeftEdge: "right--left-edge",
-        middleOnLeftEdge: "middle--left-edge",
-        single: "single",
-        no: "no",
-      }}
-      $streakFireColor={modifiedStreakFireColor}
-    />
+    <>
+      <StyledDayPicker
+        mode="single"
+        components={{
+          DayContent: ({ date }) => (
+            <CustomDayComponent
+              date={date}
+              dailyRecords={dailyRecords}
+              habitID={habitID}
+              onOpenNoteEditor={handleOpenNoteEditor}
+            />
+          ),
+        }}
+        modifiers={{
+          yes: dailyRecordsFormatted
+            .filter((record) => record.didIt === "yes")
+            .map((record) => record.date),
+          left: dailyRecordsFormatted
+            .filter((record) => record.didIt === "yes")
+            .filter((record) => record.position === "left" && !record.edge)
+            .map((record) => record.date),
+          middle: dailyRecordsFormatted
+            .filter((record) => record.didIt === "yes")
+            .filter((record) => record.position === "middle" && !record.edge)
+            .map((record) => record.date),
+          right: dailyRecordsFormatted
+            .filter((record) => record.didIt === "yes")
+            .filter((record) => record.position === "right" && !record.edge)
+            .map((record) => record.date),
+          leftOnRightEdge: dailyRecordsFormatted
+            .filter((record) => record.didIt === "yes")
+            .filter(
+              (record) =>
+                record.position === "left" && record.edge === "right-edge",
+            )
+            .map((record) => record.date),
+          middleOnRightEdge: dailyRecordsFormatted
+            .filter((record) => record.didIt === "yes")
+            .filter(
+              (record) =>
+                record.position === "middle" && record.edge === "right-edge",
+            )
+            .map((record) => record.date),
+          rightOnLeftEdge: dailyRecordsFormatted
+            .filter((record) => record.didIt === "yes")
+            .filter(
+              (record) =>
+                record.position === "right" && record.edge === "left-edge",
+            )
+            .map((record) => record.date),
+          middleOnLeftEdge: dailyRecordsFormatted
+            .filter((record) => record.didIt === "yes")
+            .filter(
+              (record) =>
+                record.position === "middle" && record.edge === "left-edge",
+            )
+            .map((record) => record.date),
+          single: dailyRecordsFormatted
+            .filter((record) => record.didIt === "yes")
+            .filter((record) => record.position === "single")
+            .map((record) => record.date),
+          no: dailyRecordsFormatted
+            .filter((record) => record.didIt === "no")
+            .map((record) => record.date),
+        }}
+        modifiersClassNames={{
+          yes: "yes",
+          left: "left",
+          middle: "middle",
+          right: "right",
+          leftOnRightEdge: "left--right-edge",
+          middleOnRightEdge: "middle--right-edge",
+          rightOnLeftEdge: "right--left-edge",
+          middleOnLeftEdge: "middle--left-edge",
+          single: "single",
+          no: "no",
+        }}
+        $streakFireColor={modifiedStreakFireColor}
+      />
+
+      <DailyRecordNoteModal
+        isOpen={Boolean(activeNoteRecord)}
+        onClose={handleCloseNoteEditor}
+      >
+        <DailyRecordNoteForm
+          habitID={habitID}
+          targetRecord={activeNoteRecord}
+          onCloseModal={handleCloseNoteEditor}
+        />
+      </DailyRecordNoteModal>
+    </>
   );
 }

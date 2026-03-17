@@ -1,6 +1,8 @@
 import mongoose, { Schema, model } from "mongoose";
 import Achievement from "./AchievementModel.js";
 
+const NOTE_MAX_LENGTH = 800;
+
 const HabitSchema = new Schema(
   {
     name: {
@@ -16,6 +18,15 @@ const HabitSchema = new Schema(
         },
         points: { type: Number, default: 0 },
         date: { type: Date, default: Date.now },
+        note: {
+          type: String,
+          trim: true,
+          default: "",
+          maxlength: [
+            NOTE_MAX_LENGTH,
+            `Note cannot be longer than ${NOTE_MAX_LENGTH} characters`,
+          ],
+        },
       },
     ],
     streak: { type: Number, default: 0 },

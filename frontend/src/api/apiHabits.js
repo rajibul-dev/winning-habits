@@ -51,6 +51,14 @@ export async function updateCustomDateAction({
   return res.data;
 }
 
+export async function upsertDailyRecordNote({ habitID, targetRecordID, note }) {
+  const res = await apiClient.patch(`${endpointV1}/habits/${habitID}/note`, {
+    targetRecordID,
+    note,
+  });
+  return res.data;
+}
+
 export async function resetHabitProgress(id) {
   const res = await apiClient.put(`${endpointV1}/habits/${id}/reset`);
   return res.data;
@@ -71,7 +79,7 @@ export async function runHabitSchemaManager() {
       headers: {
         "x-api-key": import.meta.env.VITE_SCHEMA_MANAGER_KEY,
       },
-    }
+    },
   );
 
   return res.data;

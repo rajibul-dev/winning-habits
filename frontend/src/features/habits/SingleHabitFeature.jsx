@@ -14,6 +14,7 @@ import HabitMenuOptions from "./HabitMenuOptions.jsx";
 import streakColor from "./streakColor.js";
 import HabitStatistics from "./HabitStatistics.jsx";
 import HabitCalender from "./HabitCalendar.jsx";
+import DailyRecordNotesPanel from "./DailyRecordNotesPanel.jsx";
 import { pixelToEm } from "../../styles/GlobalStyles.js";
 
 const FULL_POINTS = 1000;
@@ -28,16 +29,10 @@ const GridContainer = styled.div`
   border-radius: 2.8rem;
   border: 1px solid var(--color-grey-200);
   background-color: var(--color-grey-0);
-  /* background-image: radial-gradient(
-    circle at top left,
-    var(--habit-brand-tint),
-    transparent 28%
-  ); */
   box-shadow: var(--shadow-sm);
 
   @media (max-width: ${pixelToEm(900)}) {
     grid-template-columns: repeat(2, auto);
-    grid-template-rows: repeat(4, auto);
     padding: 2.4rem;
   }
 
@@ -103,22 +98,16 @@ const ActionButtonWrapper = styled.div`
   @media (max-width: ${pixelToEm(900)}) {
     grid-row: 4 / 5;
     grid-column: 1 / -1;
-    justify-self: center;
+    justify-self: stretch;
 
     & > div {
       width: 100%;
     }
-
-    ${({ $isAchieved }) =>
-      $isAchieved &&
-      css`
-        grid-row: 5 / 6;
-      `}
   }
 `;
 
 const ProgressBarWrapper = styled.div`
-  grid-row: 3 /4;
+  grid-row: 3 / 4;
   grid-column: 1 / span 4;
 
   ${({ $isAchieved }) =>
@@ -141,16 +130,19 @@ const ProgressBarWrapper = styled.div`
     `}
 
   @media (max-width: ${pixelToEm(900)}) {
+    grid-row: 3 / 4;
     grid-column: 1 / -1;
   }
 `;
 
 const CalendarWrapper = styled.div`
+  grid-row: 4 / 5;
   grid-column: 1 / span 4;
   justify-self: stretch;
 
   @media (max-width: ${pixelToEm(430)}) {
     justify-self: center;
+
     & > div {
       display: inline-block;
       padding-inline: 3rem;
@@ -188,6 +180,18 @@ const CalendarWrapper = styled.div`
   }
 
   @media (max-width: ${pixelToEm(900)}) {
+    grid-row: 5 / 6;
+    grid-column: 1 / -1;
+  }
+`;
+
+const NotesWrapper = styled.div`
+  grid-row: 4 / 5;
+  grid-column: 5 / -1;
+  min-height: 0;
+
+  @media (max-width: ${pixelToEm(900)}) {
+    grid-row: 6 / 7;
     grid-column: 1 / -1;
   }
 `;
@@ -272,6 +276,13 @@ export default function SingleHabitFeature() {
             isAchieved={isAchieved}
           />
         </CalendarWrapper>
+
+        <NotesWrapper>
+          <DailyRecordNotesPanel
+            habitID={habitID}
+            dailyRecords={dailyRecords}
+          />
+        </NotesWrapper>
       </GridContainer>
     </Menus>
   );

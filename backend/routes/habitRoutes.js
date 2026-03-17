@@ -15,6 +15,7 @@ import {
   addDailyAction,
   updateSingleHabit,
   updateCustomDateAction,
+  upsertDailyRecordNote,
   handleArchive,
   habitSchemaManager,
   habitSchemaManagerRemoveExtraDates,
@@ -46,6 +47,8 @@ router
   .route("/:id/action")
   .post(authenticateUser, addDailyAction)
   .patch(authenticateUser, updateCustomDateAction);
+
+router.route("/:id/note").patch(authenticateUser, upsertDailyRecordNote);
 
 router.route("/:id/reset").put(authenticateUser, resetHabitProgress);
 
