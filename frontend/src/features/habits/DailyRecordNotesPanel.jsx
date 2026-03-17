@@ -1,17 +1,25 @@
+import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import styled from "styled-components";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import Heading from "../../ui/Heading.jsx";
 import Modal from "../../ui/Modal.jsx";
 import Tag from "../../ui/Tag.jsx";
+import Button from "../../ui/Button.jsx";
 import DailyRecordNoteForm from "./DailyRecordNoteForm.jsx";
 import { pixelToEm } from "../../styles/GlobalStyles.js";
+import useViewportLessThan from "../../hooks/useViewportLessThan.js";
+
+const MOBILE_INITIAL_NOTES = 6;
+const MOBILE_LOAD_STEP = 6;
+const DESKTOP_INITIAL_NOTES = 16;
+const DESKTOP_LOAD_STEP = 12;
 
 const Panel = styled.section`
   display: grid;
   grid-template-rows: auto 1fr;
-  min-height: 0;
-  max-height: 37.7rem;
+  overflow-y: auto;
+  max-height: 37.75rem;
   padding: 2rem;
   border: 1px solid var(--color-grey-200);
   border-radius: 2.6rem;
@@ -24,7 +32,8 @@ const Panel = styled.section`
   box-shadow: var(--shadow-sm);
 
   @media (max-width: ${pixelToEm(900)}) {
-    max-height: none;
+    height: auto;
+    overflow: visible;
   }
 
   @media (max-width: ${pixelToEm(500)}) {
@@ -36,7 +45,6 @@ const Panel = styled.section`
     border-bottom: none;
     box-shadow: none;
     padding-bottom: 0;
-    /* background: transparent; */
   }
 `;
 
@@ -69,16 +77,29 @@ const EmptyState = styled.p`
   line-height: 1.6;
 `;
 
+const NotesBody = styled.div`
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+`;
+
 const NotesScroller = styled.div`
   min-height: 0;
   overflow-y: auto;
+  padding-top: 1.6rem;
   padding-right: 0.6rem;
   margin-right: -0.6rem;
+
+  @media (max-width: ${pixelToEm(900)}) {
+    overflow: visible;
+    padding-right: 0;
+    margin-right: 0;
+  }
 `;
+
 const NotesList = styled.ul`
   display: grid;
   gap: 1.2rem;
-  margin-top: 1.6rem;
 `;
 
 const NoteItem = styled.li`
@@ -140,6 +161,14 @@ const EditButton = styled.button`
   }
 `;
 
+const Footer = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 1.4rem;
+  margin-top: 1.4rem;
+  border-top: 1px solid var(--color-grey-200);
+`;
+
 const statusTagType = {
   yes: "green",
   no: "red",
@@ -147,11 +176,31 @@ const statusTagType = {
 };
 
 export default function DailyRecordNotesPanel({ habitID, dailyRecords }) {
-  const noteRecords = [...(dailyRecords || [])]
-    .filter((record) => record.note?.trim())
-    .sort(
-      (recordA, recordB) => new Date(recordB.date) - new Date(recordA.date),
-    );
+  const isCompactLayout = useViewportLessThan(900);
+
+  const noteRecords = useMemo(
+    () =>
+      [...(dailyRecords || [])]
+        .filter((record) => record.note?.trim())
+        .sort(
+          (recordA, recordB) => new Date(recordB.date) - new Date(recordA.date),
+        ),
+    [dailyRecords],
+  );
+
+  const initialVisibleCount = isCompactLayout
+    ? MOBILE_INITIAL_NOTES
+    : DESKTOP_INITIAL_NOTES;
+  const loadStep = isCompactLayout ? MOBILE_LOAD_STEP : DESKTOP_LOAD_STEP;
+
+  const [visibleCount, setVisibleCount] = useState(initialVisibleCount);
+
+  useEffect(() => {
+    setVisibleCount(initialVisibleCount);
+  }, [initialVisibleCount, noteRecords.length]);
+
+  const visibleNotes = noteRecords.slice(0, visibleCount);
+  const hasMoreNotes = visibleCount < noteRecords.length;
 
   return (
     <Panel>
@@ -161,44 +210,60 @@ export default function DailyRecordNotesPanel({ habitID, dailyRecords }) {
       </Header>
 
       {noteRecords.length ? (
-        <NotesScroller>
-          <NotesList>
-            {noteRecords.map((record) => {
-              const windowName = `edit-note-${record._id}`;
+        <NotesBody>
+          <NotesScroller>
+            <NotesList>
+              {visibleNotes.map((record) => {
+                const windowName = `edit-note-${record._id}`;
 
-              return (
-                <NoteItem key={record._id}>
-                  <NoteHeader>
-                    <Meta>
-                      <NoteDate>
-                        {format(new Date(record.date), "MMM dd, yyyy")}
-                      </NoteDate>
-                      <Tag type={statusTagType[record.didIt] || "silver"}>
-                        {record.didIt}
-                      </Tag>
-                    </Meta>
+                return (
+                  <NoteItem key={record._id}>
+                    <NoteHeader>
+                      <Meta>
+                        <NoteDate>
+                          {format(new Date(record.date), "MMM dd, yyyy")}
+                        </NoteDate>
+                        <Tag type={statusTagType[record.didIt] || "silver"}>
+                          {record.didIt}
+                        </Tag>
+                      </Meta>
 
-                    <Modal>
-                      <Modal.Open opens={windowName}>
-                        <EditButton type="button" aria-label="Edit note">
-                          <HiOutlinePencilSquare />
-                        </EditButton>
-                      </Modal.Open>
-                      <Modal.Window name={windowName}>
-                        <DailyRecordNoteForm
-                          habitID={habitID}
-                          targetRecord={record}
-                        />
-                      </Modal.Window>
-                    </Modal>
-                  </NoteHeader>
+                      <Modal>
+                        <Modal.Open opens={windowName}>
+                          <EditButton type="button" aria-label="Edit note">
+                            <HiOutlinePencilSquare />
+                          </EditButton>
+                        </Modal.Open>
+                        <Modal.Window name={windowName}>
+                          <DailyRecordNoteForm
+                            habitID={habitID}
+                            targetRecord={record}
+                          />
+                        </Modal.Window>
+                      </Modal>
+                    </NoteHeader>
 
-                  <NoteBody>{record.note}</NoteBody>
-                </NoteItem>
-              );
-            })}
-          </NotesList>
-        </NotesScroller>
+                    <NoteBody>{record.note}</NoteBody>
+                  </NoteItem>
+                );
+              })}
+            </NotesList>
+          </NotesScroller>
+
+          {hasMoreNotes ? (
+            <Footer>
+              <Button
+                type="button"
+                size="medium"
+                $variation="secondary"
+                onClick={() => setVisibleCount((count) => count + loadStep)}
+              >
+                Show {Math.min(loadStep, noteRecords.length - visibleCount)}{" "}
+                more
+              </Button>
+            </Footer>
+          ) : null}
+        </NotesBody>
       ) : (
         <EmptyState>
           Notes you add from the calendar will show up here. On desktop this

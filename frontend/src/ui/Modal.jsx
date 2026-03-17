@@ -79,11 +79,10 @@ function Modal({ children }) {
 function Open({ children, opens: opensWindowName, callbackFunction }) {
   const { open } = useContext(ModalContext);
 
-  function handleClick(e) {
-    children.props.onClick?.(e);
-    callbackFunction?.(e);
+  const handleClick = () => {
+    if (callbackFunction) callbackFunction();
     open(opensWindowName);
-  }
+  };
 
   return cloneElement(children, { onClick: handleClick });
 }

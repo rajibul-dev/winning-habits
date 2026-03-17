@@ -1,4 +1,8 @@
-import { useState, type ButtonHTMLAttributes, type PropsWithChildren } from "react";
+import {
+  useState,
+  type ButtonHTMLAttributes,
+  type PropsWithChildren,
+} from "react";
 import Popover, { usePopoverManager } from "../../ui/Popover.jsx";
 import styled, { css } from "styled-components";
 import { isSameDay, format, isToday, isFuture } from "date-fns";
@@ -72,7 +76,9 @@ interface MutationOptions {
 const TypedButton = Button as unknown as React.ComponentType<
   PropsWithChildren<ButtonProps>
 >;
-const TypedTag = Tag as unknown as React.ComponentType<PropsWithChildren<TagProps>>;
+const TypedTag = Tag as unknown as React.ComponentType<
+  PropsWithChildren<TagProps>
+>;
 
 const tagColorBasedOnAnswer: Record<HabitAnswer, TagTone> = {
   yes: "green",
@@ -216,7 +222,9 @@ const CustomDayComponent = ({
     ) => void;
     isUpdating: boolean;
   };
-  const [updatingButton, setUpdatingButton] = useState<HabitAnswer | null>(null);
+  const [updatingButton, setUpdatingButton] = useState<HabitAnswer | null>(
+    null,
+  );
   const currentAnswer = currentRecordInstence?.didIt;
   const { close } = usePopoverManager();
   const hasNote = Boolean(currentRecordInstence?.note?.trim());
@@ -254,7 +262,6 @@ const CustomDayComponent = ({
   function handleOpenNoteModal() {
     if (!currentRecordInstence) return;
 
-    close();
     window.setTimeout(() => {
       onOpenNoteEditor?.(currentRecordInstence);
     }, 0);
@@ -273,7 +280,13 @@ const CustomDayComponent = ({
               <Heading as="h3">
                 {name} on {format(date, "MMM dd, yyyy")}
               </Heading>
-              <TypedTag type={tagColorBasedOnAnswer[currentRecordInstence?.didIt ?? "unanswered"]}>
+              <TypedTag
+                type={
+                  tagColorBasedOnAnswer[
+                    currentRecordInstence?.didIt ?? "unanswered"
+                  ]
+                }
+              >
                 {currentRecordInstence?.didIt ?? ""}
               </TypedTag>
             </HeadingRow>
@@ -281,7 +294,10 @@ const CustomDayComponent = ({
               <UpdateAnswerP>Update your answer:</UpdateAnswerP>
               <ButtonsWrapper>
                 {currentAnswer !== "yes" && (
-                  <TypedButton onClick={() => handleUpdateAnswer("yes")} size="medium">
+                  <TypedButton
+                    onClick={() => handleUpdateAnswer("yes")}
+                    size="medium"
+                  >
                     {updatingButton === "yes" && <SpinnerMini />}
                     Yes
                   </TypedButton>
@@ -330,7 +346,13 @@ const CustomDayComponent = ({
           <UpdateAnswerContainerGrid>
             <HeadingRow>
               <Heading as="h3">{name} today?</Heading>
-              <TypedTag type={tagColorBasedOnAnswer[currentRecordInstence?.didIt ?? "unanswered"]}>
+              <TypedTag
+                type={
+                  tagColorBasedOnAnswer[
+                    currentRecordInstence?.didIt ?? "unanswered"
+                  ]
+                }
+              >
                 {currentRecordInstence?.didIt ?? ""}
               </TypedTag>
             </HeadingRow>
@@ -338,7 +360,9 @@ const CustomDayComponent = ({
               <UpdateAnswerP>Add your answer:</UpdateAnswerP>
               <ButtonsWrapper>
                 <TypedButton
-                  disabled={isUpdating || isAnswering || currentAnswer === "yes"}
+                  disabled={
+                    isUpdating || isAnswering || currentAnswer === "yes"
+                  }
                   onClick={() => handleAddAnswer("yes")}
                   size="medium"
                 >
@@ -370,4 +394,3 @@ const CustomDayComponent = ({
 };
 
 export default CustomDayComponent;
-

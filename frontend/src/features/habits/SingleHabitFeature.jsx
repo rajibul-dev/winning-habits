@@ -23,6 +23,7 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(3, max-content);
+  align-items: start;
   row-gap: 3rem;
   column-gap: 3rem;
   padding: 3rem;
@@ -189,10 +190,19 @@ const NotesWrapper = styled.div`
   grid-row: 4 / 5;
   grid-column: 5 / -1;
   min-height: 0;
+  height: 100%;
+  align-self: stretch;
+  display: flex;
+
+  & > section {
+    width: 100%;
+  }
 
   @media (max-width: ${pixelToEm(900)}) {
     grid-row: 6 / 7;
     grid-column: 1 / -1;
+    height: auto;
+    display: block;
   }
 `;
 
