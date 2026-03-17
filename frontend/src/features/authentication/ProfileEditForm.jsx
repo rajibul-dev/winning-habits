@@ -65,7 +65,9 @@ const BackButton = styled.button`
   border-radius: 50%;
   background-color: var(--color-grey-100);
   color: var(--color-grey-700);
-  transition: transform 0.2s, background-color 0.2s;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
 
   &:hover {
     background-color: var(--color-grey-200);
@@ -210,7 +212,11 @@ export default function ProfileEditForm({ onCancel }) {
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <FormHeader>
         {onCancel ? (
-          <BackButton type="button" onClick={onCancel} aria-label="Back to profile overview">
+          <BackButton
+            type="button"
+            onClick={onCancel}
+            aria-label="Back to profile overview"
+          >
             <FiArrowLeft />
           </BackButton>
         ) : null}
@@ -218,7 +224,8 @@ export default function ProfileEditForm({ onCancel }) {
         <HeaderCopy>
           <HeaderTitle as="h2">Edit profile</HeaderTitle>
           <HeaderText>
-            Update the parts of your profile other people will notice first.
+            For now it's only avatar and name. As the app grows, more profile
+            settings may be added here.
           </HeaderText>
         </HeaderCopy>
       </FormHeader>
@@ -281,7 +288,10 @@ export default function ProfileEditForm({ onCancel }) {
       </FormRowVerticalModified>
 
       <ActionsRow>
-        <SubmitButton size={isMobile ? "large" : "medium"} disabled={isUpdating}>
+        <SubmitButton
+          size={isMobile ? "large" : "medium"}
+          disabled={isUpdating}
+        >
           {!isUpdating ? "Save changes" : <SpinnerMini />}
         </SubmitButton>
 

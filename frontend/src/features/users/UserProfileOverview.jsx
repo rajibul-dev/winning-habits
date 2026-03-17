@@ -16,8 +16,11 @@ const HeroCard = styled.section`
   padding: 3rem;
   border: 1px solid var(--color-grey-200);
   border-radius: 3.2rem;
-  background:
-    radial-gradient(circle at top left, var(--habit-brand-tint), transparent 34%),
+  background: radial-gradient(
+      circle at top left,
+      var(--habit-brand-tint),
+      transparent 34%
+    ),
     linear-gradient(
       180deg,
       var(--habit-surface-soft-strong),
@@ -170,8 +173,11 @@ const StatsGrid = styled.section`
 
 const toneStyles = {
   brand: css`
-    background:
-      radial-gradient(circle at top right, var(--habit-brand-tint), transparent 48%),
+    background: radial-gradient(
+        circle at top right,
+        var(--habit-brand-tint),
+        transparent 48%
+      ),
       var(--color-grey-0);
 
     & .icon-shell {
@@ -180,8 +186,11 @@ const toneStyles = {
     }
   `,
   success: css`
-    background:
-      radial-gradient(circle at top right, rgba(21, 128, 61, 0.1), transparent 45%),
+    background: radial-gradient(
+        circle at top right,
+        rgba(21, 128, 61, 0.1),
+        transparent 45%
+      ),
       var(--color-grey-0);
 
     & .icon-shell {
@@ -190,8 +199,11 @@ const toneStyles = {
     }
   `,
   warning: css`
-    background:
-      radial-gradient(circle at top right, rgba(245, 158, 11, 0.14), transparent 45%),
+    background: radial-gradient(
+        circle at top right,
+        rgba(245, 158, 11, 0.14),
+        transparent 45%
+      ),
       var(--color-grey-0);
 
     & .icon-shell {
@@ -265,8 +277,11 @@ const SpotlightCard = styled.section`
   padding: 2.2rem;
   border: 1px solid var(--color-grey-200);
   border-radius: 2.6rem;
-  background:
-    radial-gradient(circle at top right, var(--habit-brand-tint), transparent 28%),
+  background: radial-gradient(
+      circle at top right,
+      var(--habit-brand-tint),
+      transparent 28%
+    ),
     var(--color-grey-0);
   box-shadow: var(--shadow-sm);
 
@@ -458,6 +473,9 @@ export default function UserProfileOverview({
           <HabitList>
             {habits.map((habit) => {
               const status = getHabitStatus(habit);
+              const checkInsCount = (habit.dailyRecords || []).filter(
+                (record) => record.didIt === "yes" || record.didIt === "no",
+              ).length;
 
               return (
                 <HabitItem key={habit._id}>
@@ -473,8 +491,8 @@ export default function UserProfileOverview({
                     </MetricPill>
                     <MetricPill>{habit.streak || 0} day streak</MetricPill>
                     <MetricPill>
-                      {(habit.dailyRecords || []).length} check-in
-                      {(habit.dailyRecords || []).length === 1 ? "" : "s"}
+                      {checkInsCount} check-in
+                      {checkInsCount === 1 ? "" : "s"}
                     </MetricPill>
                   </HabitMetrics>
                 </HabitItem>
@@ -488,4 +506,3 @@ export default function UserProfileOverview({
     </PageStack>
   );
 }
-
