@@ -72,7 +72,11 @@ export default function UserProfile() {
 
   if (!user) return null;
 
-  const allHabits = userHabitsData?.userHabits || [];
+  const profileStrongThreshold =
+    userHabitsData?.profileStrongThreshold ||
+    habitCountData?.profileStrongThreshold ||
+    30;
+  const allHabits = userHabitsData?.habits || userHabitsData?.userHabits || [];
   const visibleHabits = allHabits.filter((habit) => !habit.isArchived);
   const spotlightHabits = sortHabitsForSpotlight(
     visibleHabits.length ? visibleHabits : allHabits,
@@ -93,7 +97,7 @@ export default function UserProfile() {
       value: habitCountError ? "--" : habitCountData?.seriousAboutCount || 0,
       caption: habitCountError
         ? "Momentum stats are unavailable right now."
-        : "Habits where consistency is starting to look serious.",
+        : `Habits with at least ${profileStrongThreshold} points of momentum.`,
       icon: <IoSparkles />,
       tone: "warning",
     },
@@ -164,3 +168,4 @@ export default function UserProfile() {
     </PageStack>
   );
 }
+

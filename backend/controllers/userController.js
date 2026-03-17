@@ -14,6 +14,8 @@ import {
   clearCookiesFromResponse,
 } from "../utils/jwt/jwt.js";
 
+const PROFILE_HABIT_MOMENTUM_THRESHOLD = 30;
+
 function getManagedAvatarPublicId(imageURL) {
   if (!imageURL || imageURL === defaultImageURL) return null;
   if (imageURL.includes("googleusercontent")) return null;
@@ -189,7 +191,17 @@ export async function deleteUserById(req, res) {
 export async function getUserHabits(req, res) {
   const userID = req.params.id;
   const habits = await Habit.find({ user: userID });
-  res.status(StatusCodes.OK).json({ habits, count: habits.length });
+  const profileHabits = habits.map((habit) => ({
+    ...habit.toObject(),
+    isProfileStrong: habit.totalPoints >= PROFILE_HABIT_MOMENTUM_THRESHOLD,
+  }));
+
+  res.status(StatusCodes.OK).json({
+    habits: profileHabits,
+    userHabits: profileHabits,
+    count: profileHabits.length,
+    profileStrongThreshold: PROFILE_HABIT_MOMENTUM_THRESHOLD,
+  });
 }
 
 export async function getUserHabitCount(req, res) {
@@ -197,12 +209,19 @@ export async function getUserHabitCount(req, res) {
   const habitCount = await Habit.countDocuments({ user: userID });
   const seriousAboutCount = await Habit.countDocuments({
     user: userID,
-    totalPoints: { $gte: 30 },
+    totalPoints: { $gte: PROFILE_HABIT_MOMENTUM_THRESHOLD },
   });
   const masteredCount = await Achievement.countDocuments({ user: userID });
+
   res.status(StatusCodes.OK).json({
     count: habitCount,
     seriousAboutCount,
     achievedCount: masteredCount,
+    profileStrongThreshold: PROFILE_HABIT_MOMENTUM_THRESHOLD,
   });
 }
+
+
+
+
+

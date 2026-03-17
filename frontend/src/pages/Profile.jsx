@@ -78,7 +78,11 @@ export default function Profile() {
     );
   }
 
-  const allHabits = userHabitsData?.userHabits || [];
+  const profileStrongThreshold =
+    userHabitsData?.profileStrongThreshold ||
+    habitCountData?.profileStrongThreshold ||
+    30;
+  const allHabits = userHabitsData?.habits || userHabitsData?.userHabits || [];
   const visibleHabits = allHabits.filter((habit) => !habit.isArchived);
   const spotlightHabits = sortHabitsForSpotlight(
     visibleHabits.length ? visibleHabits : allHabits,
@@ -99,7 +103,7 @@ export default function Profile() {
       value: habitCountError ? "--" : habitCountData?.seriousAboutCount || 0,
       caption: habitCountError
         ? "Your momentum snapshot is temporarily unavailable."
-        : "Habits that have already built meaningful momentum.",
+        : `Habits with at least ${profileStrongThreshold} points of momentum.`,
       icon: <IoSparkles />,
       tone: "warning",
     },
@@ -160,3 +164,4 @@ export default function Profile() {
     </PageStack>
   );
 }
+

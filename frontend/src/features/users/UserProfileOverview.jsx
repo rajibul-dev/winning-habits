@@ -325,15 +325,19 @@ const HabitStatus = styled.span`
   background-color: ${({ $status }) =>
     $status === "Completed"
       ? "var(--color-green-100)"
-      : $status === "Archived"
-        ? "var(--color-grey-100)"
-        : "var(--color-brand-100)"};
+      : $status === "Strong"
+        ? "var(--color-yellow-100)"
+        : $status === "Archived"
+          ? "var(--color-grey-100)"
+          : "var(--color-brand-100)"};
   color: ${({ $status }) =>
     $status === "Completed"
       ? "var(--color-green-700)"
-      : $status === "Archived"
-        ? "var(--color-grey-600)"
-        : "var(--color-brand-700)"};
+      : $status === "Strong"
+        ? "var(--color-yellow-700)"
+        : $status === "Archived"
+          ? "var(--color-grey-600)"
+          : "var(--color-brand-700)"};
 `;
 
 const HabitMetrics = styled.div`
@@ -374,6 +378,7 @@ function getInitials(name = "") {
 
 function getHabitStatus(habit) {
   if (habit?.habitStatus === "strong") return "Completed";
+  if (habit?.isProfileStrong) return "Strong";
   if (habit?.isArchived) return "Archived";
   return "Active";
 }
@@ -483,3 +488,4 @@ export default function UserProfileOverview({
     </PageStack>
   );
 }
+
