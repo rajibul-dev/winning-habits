@@ -78,8 +78,6 @@ export async function getUserById(req, res) {
     throw new NotFoundError(`No user with id : ${req.params.id}`);
   }
 
-  checkPermissions(req.user, user._id);
-
   res.status(StatusCodes.OK).json({ user });
 }
 
