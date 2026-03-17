@@ -59,7 +59,32 @@ async function deleteUserAccount(userId) {
 }
 
 export async function getAllUsers(req, res) {
-  const users = await User.find().select("-password");
+  // const users = await User.find().select("-password");
+  const users = await User.aggregate([
+    {
+      $lookup: {
+        from: "habits",
+        localField: "_id",
+        foreignField: "user",
+        as: "habits",
+      },
+    },
+    {
+      $addFields: {
+        lastActivity: {
+          $max: "$habits.updatedAt",
+        },
+      },
+    },
+    {
+      $sort: { lastActivity: -1 },
+    },
+    {
+      $project: {
+        password: 0,
+      },
+    },
+  ]);
   res.status(StatusCodes.OK).json({ users, count: users.length });
 }
 
@@ -220,8 +245,3 @@ export async function getUserHabitCount(req, res) {
     profileStrongThreshold: PROFILE_HABIT_MOMENTUM_THRESHOLD,
   });
 }
-
-
-
-
-
