@@ -10,21 +10,46 @@ import { pixelToEm } from "../../styles/GlobalStyles.js";
 
 const Section = styled.section`
   display: grid;
-  gap: 1.6rem;
-  padding: 2.4rem 4rem;
-  background-color: var(--color-grey-0);
+  gap: 1.4rem;
+  padding: 2.6rem 3rem;
+  background:
+    linear-gradient(180deg, rgba(248, 113, 113, 0.05), transparent 60%),
+    var(--color-grey-0);
   border: 1px solid var(--color-red-400);
-  border-radius: var(--border-radius-md);
+  border-radius: 2.4rem;
   box-shadow: var(--shadow-sm);
 
-  @media (max-width: ${pixelToEm(432)}) {
-    padding: 2.4rem 2rem;
+  @media (max-width: ${pixelToEm(560)}) {
+    padding: 2rem;
+    border-radius: 2rem;
+  }
+`;
+
+const HeadingRow = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+`;
+
+const IconWrap = styled.div`
+  display: inline-grid;
+  place-items: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 1.4rem;
+  background-color: var(--color-red-100);
+  color: var(--color-red-700-mod);
+
+  & svg {
+    width: 2.3rem;
+    height: 2.3rem;
   }
 `;
 
 const Copy = styled.p`
   color: var(--color-grey-500);
-  max-width: 60ch;
+  max-width: 62ch;
+  line-height: 1.6;
 `;
 
 const DeleteButton = styled(Button)`
@@ -32,6 +57,7 @@ const DeleteButton = styled(Button)`
   display: inline-flex;
   align-items: center;
   gap: 0.8rem;
+  margin-top: 0.4rem;
 `;
 
 export default function DeleteAccountSection() {
@@ -40,10 +66,17 @@ export default function DeleteAccountSection() {
 
   return (
     <Section>
-      <Heading as="h2">Delete account</Heading>
+      <HeadingRow>
+        <IconWrap>
+          <MdDeleteForever />
+        </IconWrap>
+        <Heading as="h2">Delete account</Heading>
+      </HeadingRow>
+
       <Copy>
-        Permanently delete your account and all related data, including your
-        habits, achievements, avatar, and active sessions.
+        Permanently delete your account and everything tied to it, including
+        habits, achievements, your avatar, and active sessions. This action
+        cannot be undone.
       </Copy>
 
       <Modal>

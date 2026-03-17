@@ -37,9 +37,46 @@ function sortHabitsForSpotlight(habits = []) {
   });
 }
 
+function habitLabel(count) {
+  return `${count} habit${count === 1 ? "" : "s"}`;
+}
+
+function getCommunityProfileDescription({
+  firstName,
+  habitCount,
+  seriousAboutCount,
+  achievedCount,
+}) {
+  if (!habitCount) {
+    return `${firstName} has not started tracking habits here yet.`;
+  }
+
+  if (achievedCount > 0) {
+    return `${firstName} is tracking ${habitLabel(habitCount)}, has strong momentum in ${seriousAboutCount}, and has already completed ${achievedCount}.`;
+  }
+
+  if (seriousAboutCount === habitCount) {
+    if (habitCount === 1) {
+      return `${firstName} is tracking 1 habit and has already built strong momentum with it.`;
+    }
+
+    return `${firstName} is tracking ${habitLabel(habitCount)} and has built strong momentum across all of them.`;
+  }
+
+  if (seriousAboutCount > 0) {
+    return `${firstName} is tracking ${habitLabel(habitCount)} and has already built strong momentum in ${seriousAboutCount}.`;
+  }
+
+  return `${firstName} is tracking ${habitLabel(habitCount)} and is still in the early momentum-building stage.`;
+}
+
 export default function UserProfile() {
   const { userID } = useParams();
-  const { user, isLoading: isUserLoading, error: userError } = useGetUserById(userID);
+  const {
+    user,
+    isLoading: isUserLoading,
+    error: userError,
+  } = useGetUserById(userID);
   const { user: currentUser } = useUser();
   const isCurrentUser = user?._id === currentUser?.userID;
   const {
@@ -53,7 +90,10 @@ export default function UserProfile() {
     error: userHabitsError,
   } = useGetUserHabits(userID);
 
-  if (isUserLoading || (userID && (isHabitCountLoading || areUserHabitsLoading))) {
+  if (
+    isUserLoading ||
+    (userID && (isHabitCountLoading || areUserHabitsLoading))
+  ) {
     return <Spinner />;
   }
 
@@ -112,7 +152,10 @@ export default function UserProfile() {
     },
   ];
 
-  const firstName = user.name?.trim().split(/\s+/)[0] || "This user";
+  const fullName = user.name?.trim() || "This User";
+  const habitCount = habitCountData?.count || 0;
+  const seriousAboutCount = habitCountData?.seriousAboutCount || 0;
+  const achievedCount = habitCountData?.achievedCount || 0;
 
   return (
     <PageStack>
@@ -131,17 +174,28 @@ export default function UserProfile() {
       <UserProfileOverview
         user={user}
         headerLabel={isCurrentUser ? "Your public view" : "Community profile"}
-        metaItems={isCurrentUser ? ["This is how other users see you"] : ["Winning Habits member"]}
+        metaItems={
+          isCurrentUser
+            ? ["This is how other users see you"]
+            : ["Winning Habits member"]
+        }
         description={
           isCurrentUser
             ? "This is the public-facing version of your profile. As the backend grows, this page can highlight your best streaks and signature habits even more clearly."
-            : `${firstName} is building consistency one habit at a time. More streak-focused highlights can land here once the backend exposes them.`
+            : getCommunityProfileDescription({
+                firstName: fullName,
+                habitCount,
+                seriousAboutCount,
+                achievedCount,
+              })
         }
         stats={stats}
         actions={
           isCurrentUser ? (
             <>
-              <ActionButton as={Link} to="/profile">Edit your profile</ActionButton>
+              <ActionButton as={Link} to="/profile">
+                Edit your profile
+              </ActionButton>
               <ActionButton as={Link} to="/users" $variation="secondary">
                 Browse users
               </ActionButton>
@@ -152,7 +206,9 @@ export default function UserProfile() {
             </ActionButton>
           )
         }
-        habitsTitle={isCurrentUser ? "What people can notice" : "Habit spotlight"}
+        habitsTitle={
+          isCurrentUser ? "What people can notice" : "Habit spotlight"
+        }
         habitsIntro={
           isCurrentUser
             ? "These are the habits currently making the strongest impression on your public profile."
@@ -162,10 +218,9 @@ export default function UserProfile() {
         emptyHabitsText={
           userHabitsError
             ? "This habit spotlight could not be loaded right now."
-            : `${firstName} has not shared habit activity here yet.`
+            : `${fullName} has not shared habit activity here yet.`
         }
       />
     </PageStack>
   );
 }
-

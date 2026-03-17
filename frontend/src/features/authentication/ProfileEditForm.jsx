@@ -26,33 +26,29 @@ export const defaultImageURL =
 
 const StyledForm = styled.form`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(12, auto);
-  column-gap: 2rem;
-  align-items: center;
-  padding: 2.4rem 4rem;
-  background-color: var(--color-grey-0);
-  border: 1px solid var(--color-grey-100);
-  border-radius: var(--border-radius-md);
+  gap: 2.4rem;
+  padding: 3rem;
+  background: radial-gradient(
+      circle at top left,
+      var(--habit-brand-tint),
+      transparent 30%
+    ),
+    var(--color-grey-0);
+  border: 1px solid var(--color-grey-200);
+  border-radius: 2.8rem;
   box-shadow: var(--shadow-sm);
 
-  @media (max-width: 27em) {
-    padding: 2.4rem 2rem;
-  }
-
-  @media (max-width: ${pixelToEm(525)}) {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, auto);
+  @media (max-width: ${pixelToEm(560)}) {
+    padding: 2rem;
+    border-radius: 2.2rem;
   }
 `;
 
 const FormHeader = styled.div`
-  grid-column: 1 / -1;
   display: flex;
-  gap: 1.2rem;
+  gap: 1.4rem;
   align-items: flex-start;
   padding-bottom: 2rem;
-  margin-bottom: 0.4rem;
   border-bottom: 1px solid var(--color-grey-200);
 `;
 
@@ -82,7 +78,7 @@ const BackButton = styled.button`
 
 const HeaderCopy = styled.div`
   display: grid;
-  gap: 0.4rem;
+  gap: 0.5rem;
 `;
 
 const HeaderTitle = styled(Heading)`
@@ -90,53 +86,132 @@ const HeaderTitle = styled(Heading)`
 `;
 
 const HeaderText = styled.p`
+  max-width: 62ch;
   color: var(--color-grey-500);
+  line-height: 1.55;
+`;
+
+const FormBody = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(28rem, 0.9fr);
+  gap: 2rem;
+  align-items: start;
+
+  @media (max-width: ${pixelToEm(860)}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const DetailsColumn = styled.div`
+  display: grid;
+  gap: 1.6rem;
+`;
+
+const DetailsCard = styled.div`
+  display: grid;
+  gap: 0.4rem;
+  padding: 2rem;
+  border: 1px solid var(--habit-surface-border-soft);
+  border-radius: 2.2rem;
+  background-color: var(--habit-surface-soft);
+
+  @media (max-width: ${pixelToEm(560)}) {
+    padding: 1.6rem;
+    border-radius: 1.8rem;
+  }
+`;
+
+const FieldGroup = styled(FormRowVertical)`
+  & input {
+    width: 100%;
+    min-height: 4.8rem;
+  }
+`;
+
+const FieldHint = styled.p`
+  margin-top: 0.6rem;
+  color: var(--color-grey-500);
+  font-size: var(--font-size-sm);
   line-height: 1.5;
 `;
 
-const FormRowVerticalModified = styled(FormRowVertical)`
-  grid-row: span 1;
+const AvatarCard = styled.div`
+  display: grid;
+  gap: 1.6rem;
+  padding: 2rem;
+  border: 1px solid var(--color-grey-200);
+  border-radius: 2.2rem;
+  background: linear-gradient(
+    180deg,
+    var(--habit-surface-soft-strong),
+    var(--color-grey-0)
+  );
+  box-shadow: var(--shadow-sm);
+  justify-items: center;
+
+  @media (max-width: ${pixelToEm(560)}) {
+    padding: 1.6rem;
+    border-radius: 1.8rem;
+  }
 `;
 
-const AvatarPortion = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.6rem;
-  justify-self: center;
-  align-self: center;
-  grid-row: 2 / 5;
-  grid-column: 2;
+const AvatarLabel = styled.p`
+  color: var(--color-grey-800);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  justify-self: start;
+`;
 
-  @media (max-width: ${pixelToEm(525)}) {
-    grid-row: 2 / 3;
-    grid-column: 1 / -1;
-    margin-bottom: 4rem;
+const AvatarFrame = styled.div`
+  width: 20rem;
+  aspect-ratio: 1;
+  padding: 0.4rem;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-500),
+    var(--color-blue-700)
+  );
+  box-shadow: 0 1.4rem 3rem rgba(79, 70, 229, 0.15);
+
+  @media (max-width: ${pixelToEm(860)}) {
+    width: 17rem;
   }
 `;
 
 const Avatar = styled.img`
   display: block;
-  width: 20rem;
-  aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
   border-radius: 50%;
-  outline: 2px solid var(--color-grey-100);
+  background-color: var(--color-grey-100);
+`;
 
-  @media (max-width: ${pixelToEm(525)}) {
-    grid-row: 1 / 2;
-  }
+const AvatarHint = styled.p`
+  color: var(--color-grey-500);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  text-align: center;
+`;
+
+const AvatarActions = styled.div`
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  justify-items: center;
 `;
 
 const paddingBlock = 0.9;
 
 const UploadImageButton = styled(Button)`
   ${buttonWithIconStyles}
-  gap: 0.5rem;
+  gap: 0.6rem;
+  width: min(100%, 22rem);
+  justify-content: center;
   padding-top: ${paddingBlock}rem;
   padding-bottom: ${paddingBlock}rem;
-  padding-inline: 4rem;
   text-transform: none;
 
   & svg {
@@ -152,7 +227,7 @@ const UploadImageButton = styled(Button)`
 
 const RemoveButton = styled(InlineLink)`
   ${buttonWithIconStyles}
-  font-size: var(--font-size-xsm);
+  font-size: var(--font-size-sm);
   color: var(--color-red-700-mod);
 
   &:hover {
@@ -162,19 +237,19 @@ const RemoveButton = styled(InlineLink)`
 `;
 
 const ActionsRow = styled.div`
-  grid-column: 1 / -1;
   display: flex;
   gap: 1.2rem;
   flex-wrap: wrap;
-  margin-top: 2.4rem;
+  justify-content: center;
+  padding-top: 0.2rem;
 `;
 
 const SubmitButton = styled(Button)`
-  flex: 1 1 20rem;
+  min-width: 18rem;
 `;
 
 const CancelButton = styled(Button)`
-  flex: 1 1 20rem;
+  min-width: 14rem;
 `;
 
 export default function ProfileEditForm({ onCancel }) {
@@ -224,49 +299,59 @@ export default function ProfileEditForm({ onCancel }) {
         <HeaderCopy>
           <HeaderTitle as="h2">Edit profile</HeaderTitle>
           <HeaderText>
-            For now it's only avatar and name. As the app grows, more profile
-            settings may be added here.
+            Update the details people see first. Right now that means your
+            display name and avatar.
           </HeaderText>
         </HeaderCopy>
       </FormHeader>
 
-      <FormRowVerticalModified label="Your name">
-        <Input minLength={2} maxLength={40} id="name" {...register("name")} />
-      </FormRowVerticalModified>
+      <FormBody>
+        <AvatarCard>
+          <AvatarLabel>Profile photo</AvatarLabel>
 
-      <AvatarPortion>
-        <Avatar
-          src={avatar || "default-user.jpg"}
-          alt={`Avatar of ${name}`}
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
+          <AvatarFrame>
+            <Avatar
+              src={avatar || "default-user.jpg"}
+              alt={`Avatar of ${name}`}
+              crossOrigin="anonymous"
+              referrerPolicy="no-referrer"
+            />
+          </AvatarFrame>
 
-        <Modal>
-          <Modal.Open opens="image-upload">
-            <UploadImageButton type="button" size="small">
-              {!isDefaultAvatar ? (
-                <>
-                  <MdEdit /> <span>Change avatar</span>
-                </>
-              ) : (
-                <>
-                  <MdAddAPhoto /> <span>Add avatar</span>
-                </>
-              )}
-            </UploadImageButton>
-          </Modal.Open>
-          <Modal.Window name="image-upload" noXButton>
-            <ImageSelector />
-          </Modal.Window>
+          <AvatarHint>
+            A clear photo helps your profile feel more personal across the app.
+          </AvatarHint>
 
-          {!isDefaultAvatar && (
-            <>
-              <Modal.Open opens="remove-avatar">
-                <RemoveButton as="button" type="button" $usage="pale-color">
-                  <MdDelete /> <span>Remove avatar</span>
-                </RemoveButton>
+          <Modal>
+            <AvatarActions>
+              <Modal.Open opens="image-upload">
+                <UploadImageButton type="button" size="small">
+                  {!isDefaultAvatar ? (
+                    <>
+                      <MdEdit /> <span>Change avatar</span>
+                    </>
+                  ) : (
+                    <>
+                      <MdAddAPhoto /> <span>Add avatar</span>
+                    </>
+                  )}
+                </UploadImageButton>
               </Modal.Open>
+
+              {!isDefaultAvatar && (
+                <Modal.Open opens="remove-avatar">
+                  <RemoveButton as="button" type="button" $usage="pale-color">
+                    <MdDelete /> <span>Remove avatar</span>
+                  </RemoveButton>
+                </Modal.Open>
+              )}
+            </AvatarActions>
+
+            <Modal.Window name="image-upload" noXButton>
+              <ImageSelector />
+            </Modal.Window>
+
+            {!isDefaultAvatar && (
               <Modal.Window name="remove-avatar">
                 <ConfirmDelete
                   onConfirm={removeAvatar}
@@ -274,27 +359,40 @@ export default function ProfileEditForm({ onCancel }) {
                   resourceName={"avatar"}
                 />
               </Modal.Window>
-            </>
-          )}
-        </Modal>
-      </AvatarPortion>
+            )}
+          </Modal>
+        </AvatarCard>
 
-      <FormRowVerticalModified label="Your email address">
-        <Input
-          {...register("email", {
-            disabled: true,
-          })}
-        />
-      </FormRowVerticalModified>
+        <DetailsColumn>
+          <DetailsCard>
+            <FieldGroup label="Your name">
+              <Input
+                minLength={2}
+                maxLength={40}
+                id="name"
+                {...register("name")}
+              />
+            </FieldGroup>
+            <FieldHint>
+              Keep it short and recognizable. This is the name shown around the
+              app.
+            </FieldHint>
+          </DetailsCard>
+
+          <DetailsCard>
+            <FieldGroup label="Your email address">
+              <Input
+                {...register("email", {
+                  disabled: true,
+                })}
+              />
+            </FieldGroup>
+            <FieldHint>Your email is read-only here for now.</FieldHint>
+          </DetailsCard>
+        </DetailsColumn>
+      </FormBody>
 
       <ActionsRow>
-        <SubmitButton
-          size={isMobile ? "large" : "medium"}
-          disabled={isUpdating}
-        >
-          {!isUpdating ? "Save changes" : <SpinnerMini />}
-        </SubmitButton>
-
         {onCancel ? (
           <CancelButton
             type="button"
@@ -305,6 +403,13 @@ export default function ProfileEditForm({ onCancel }) {
             Cancel
           </CancelButton>
         ) : null}
+
+        <SubmitButton
+          size={isMobile ? "large" : "medium"}
+          disabled={isUpdating}
+        >
+          {!isUpdating ? "Save changes" : <SpinnerMini />}
+        </SubmitButton>
       </ActionsRow>
     </StyledForm>
   );
