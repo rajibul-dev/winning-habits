@@ -117,10 +117,7 @@ export default function UserProfile() {
     habitCountData?.profileStrongThreshold ||
     30;
   const allHabits = userHabitsData?.habits || userHabitsData?.userHabits || [];
-  const visibleHabits = allHabits.filter((habit) => !habit.isArchived);
-  const spotlightHabits = sortHabitsForSpotlight(
-    visibleHabits.length ? visibleHabits : allHabits,
-  ).slice(0, 3);
+  const spotlightHabits = sortHabitsForSpotlight(allHabits);
 
   const stats = [
     {
