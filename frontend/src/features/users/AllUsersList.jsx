@@ -52,7 +52,7 @@ export default function AllUsersList() {
 }
 
 function UserRow({ user, isCurrentUser }) {
-  const { data } = useGetUserHabitCount(user._id);
+  const { data, isLoading } = useGetUserHabitCount(user._id);
 
   const habitCount = data?.count || 0;
 
@@ -74,7 +74,9 @@ function UserRow({ user, isCurrentUser }) {
     <UserListItem
       user={user}
       badge={isCurrentUser ? "You" : null}
-      secondaryText={secondaryTextStatements.join(" || ")}
+      secondaryText={
+        isLoading ? "Loading..." : secondaryTextStatements.join(" || ")
+      }
       to={`/users/${user._id}`}
     />
   );
