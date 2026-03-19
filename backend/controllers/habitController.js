@@ -310,6 +310,8 @@ export async function habitSchemaManager(req, res) {
   const checkPromises = habits.map(async (habit) => {
     const records = habit.dailyRecords;
 
+    records.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     // helper: check if record already exists for a date
     const recordExistsForDate = (targetDate) =>
       records.some((record) => isSameDay(new Date(record.date), targetDate));
