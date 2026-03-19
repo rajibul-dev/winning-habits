@@ -110,7 +110,10 @@ export default function App() {
                 <Route path="/habits" element={<Habits />} />
                 <Route path="/habits/:habitID" element={<SingleHabit />} />
                 <Route path="/achievements" element={<Achievements />} />
-                <Route path="/achievements/:habitID" element={<SingleHabit />} />
+                <Route
+                  path="/achievements/:habitID"
+                  element={<SingleHabit />}
+                />
                 <Route path="/archive" element={<Archive />} />
                 <Route path="/archive/:habitID" element={<SingleHabit />} />
                 <Route path="/users" element={<Users />} />
