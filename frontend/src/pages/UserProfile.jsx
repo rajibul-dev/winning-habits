@@ -12,6 +12,7 @@ import useGetUserHabits from "../features/users/useGetUserHabits.js";
 import Button from "../ui/Button.jsx";
 import PageLevelNotificationToast from "../ui/PageLevelNotificationToast.jsx";
 import Spinner from "../ui/Spinner.jsx";
+import { formatDate } from "date-fns";
 
 const PageStack = styled.div`
   display: grid;
@@ -171,11 +172,9 @@ export default function UserProfile() {
       <UserProfileOverview
         user={user}
         headerLabel={isCurrentUser ? "Your public view" : "Community profile"}
-        metaItems={
-          isCurrentUser
-            ? ["This is how other users see you"]
-            : ["Winning Habits member"]
-        }
+        metaItems={[
+          `Member Since ${formatDate(user.createdAt, "MMMM dd, yyyy")}`,
+        ]}
         description={
           isCurrentUser
             ? "This is the public-facing version of your profile. As the backend grows, this page can highlight your best streaks and signature habits even more clearly."
