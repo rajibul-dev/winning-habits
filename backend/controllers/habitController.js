@@ -89,11 +89,15 @@ export async function deleteHabit(req, res) {
 
 // ------ HELPERS ------
 async function habitRecordLogicSortAndCalculateAndSave(habit) {
-  habit.dailyRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
+  sortRecords(habit.dailyRecords);
 
   habit.recalculateHabit();
 
   await habit.save();
+}
+
+function sortRecords(records) {
+  records.sort((a, b) => new Date(a.date) - new Date(b.date));
 }
 
 function getTargetRecordFromHabit(habit, targetRecordID) {
@@ -164,7 +168,7 @@ export async function addDailyAction(req, res) {
   }
 
   await habitRecordLogicSortAndCalculateAndSave(habit);
-  latestRecord = getLatestRecord(habit.dailyRecords);
+  const latestRecord = getLatestRecord(habit.dailyRecords);
 
   res.status(StatusCodes.OK).json({
     name: habit.name,
@@ -319,7 +323,7 @@ export async function habitSchemaManager(req, res) {
   const checkPromises = habits.map(async (habit) => {
     const records = habit.dailyRecords;
 
-    records.sort((a, b) => new Date(a.date) - new Date(b.date));
+    sortRecords(records);
 
     // helper: check if record already exists for a date
     const recordExistsForDate = (targetDate) =>
@@ -401,8 +405,9 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
     const lastRecord = getLatestRecord(habit.dailyRecords);
 
     // Check if today's record already exists
-    const todayRecordExists = habit.dailyRecords.some((record) =>
-      isSameDay(new Date(record.date), getNow()),
+    const todayRecordExists = hasRecordForDate(
+      habit.dailyRecords,
+      startOfDay(getNow()),
     );
 
     // If there's no last record or last record isn't today, add a new one
