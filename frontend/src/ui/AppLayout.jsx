@@ -88,7 +88,7 @@ export default function AppLayout() {
   if (isSchemaManagerPending)
     return (
       <FullPage>
-        <Spinner />;
+        <Spinner />
       </FullPage>
     );
 
