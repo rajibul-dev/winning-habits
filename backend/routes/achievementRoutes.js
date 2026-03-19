@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authenticateUser } from "../middlewares/authentiation.js";
+import { authenticateUser } from "../middlewares/authentication.js";
 import {
   getMyAchievements,
   getUserAchievements,

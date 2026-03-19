@@ -10,7 +10,7 @@ import {
   resetPassword,
   verifyEmail,
 } from "../controllers/authController.js";
-import { authenticateUser } from "../middlewares/authentiation.js";
+import { authenticateUser } from "../middlewares/authentication.js";
 
 const router = Router();
 

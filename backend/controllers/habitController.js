@@ -6,16 +6,19 @@ import { addDays, isAfter, isSameDay, startOfDay } from "date-fns";
 import { getNow } from "../utils/getNow.js";
 import Achievement from "../models/AchievementModel.js";
 import User from "../models/UserModel.js";
+import { getTodayForUser } from "../utils/getToday.js";
 
 const NOTE_MAX_LENGTH = 280;
 
 export async function createHabit(req, res) {
+  const today = getTodayForUser(req.user.timezone || "UTC");
+
   // add 60 past dates with unanswered status for the new habit
   const dailyRecords = [];
   for (let i = 0; i < 60; i++) {
     dailyRecords.push({
       didIt: "unanswered",
-      date: addDays(getNow(), -i),
+      date: addDays(today, -i).getTime(),
       note: "",
     });
   }
@@ -151,7 +154,7 @@ export async function addDailyAction(req, res) {
 
   validateAnswer(answer);
 
-  const today = startOfDay(getNow());
+  const today = getTodayForUser(req.user.timezone || "UTC");
 
   const todayExists = hasRecordForDate(habit.dailyRecords, today);
 
@@ -298,7 +301,7 @@ export async function habitSchemaManager(req, res) {
 
   const user = await User.findById(userID);
 
-  const today = startOfDay(getNow());
+  const today = getTodayForUser(user.timezone || "UTC");
 
   if (
     user.lastHabitSchemaManagerRan &&
@@ -384,7 +387,7 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
 
   console.log("Running Habit Schema manager for removing extra date function!");
   // Fetch all habits from the database
-  const habits = await Habit.find();
+  const habits = await Habit.find().populate("user", "timezone");
 
   if (!habits || habits.length === 0) {
     console.log("Closing Habit Schema scheduler");
@@ -405,17 +408,15 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
     const lastRecord = getLatestRecord(habit.dailyRecords);
 
     // Check if today's record already exists
-    const todayRecordExists = hasRecordForDate(
-      habit.dailyRecords,
-      startOfDay(getNow()),
-    );
+    const today = getTodayForUser(habit.user?.timezone || "UTC");
+    const todayRecordExists = hasRecordForDate(habit.dailyRecords, today);
 
     // If there's no last record or last record isn't today, add a new one
     if (!lastRecord || !todayRecordExists) {
       habit.dailyRecords.push({
         didIt: "unanswered",
         points: 0,
-        date: getNow().getTime(),
+        date: today.getTime(),
         note: "",
       });
     }

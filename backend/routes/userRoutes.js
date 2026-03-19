@@ -15,7 +15,7 @@ import {
 import {
   authenticateUser,
   authorizePermissions,
-} from "../middlewares/authentiation.js";
+} from "../middlewares/authentication.js";
 
 const router = Router();
 

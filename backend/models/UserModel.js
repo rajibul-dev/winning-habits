@@ -54,6 +54,10 @@ const UserSchema = new Schema(
     lastHabitSchemaManagerRan: {
       type: Date,
     },
+    timezone: {
+      type: String,
+      default: "UTC",
+    },
   },
   { timestamps: true },
 );

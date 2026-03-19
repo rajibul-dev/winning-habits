@@ -5,5 +5,6 @@ export default function (user) {
     role: user.role,
     avatar: user.avatar,
     email: user.email,
+    timezone: user.timezone,
   };
 }

@@ -7,7 +7,6 @@ import Token from "../models/TokenModel.js";
 import Habit from "../models/HabitModel.js";
 import Achievement from "../models/AchievementModel.js";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
-import checkPermissions from "../utils/checkPermissions.js";
 import createTokenUser from "../utils/jwt/createTokenUser.js";
 import {
   attachCookiesToResponse,

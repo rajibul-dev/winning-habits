@@ -3,7 +3,7 @@ import { Router } from "express";
 import {
   authenticateUser,
   authorizePermissions,
-} from "../middlewares/authentiation.js";
+} from "../middlewares/authentication.js";
 
 import {
   createHabit,

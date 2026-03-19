@@ -1,6 +1,20 @@
 import { UnauthenticatedError, UnauthorizedError } from "../errors/index.js";
 import Token from "../models/TokenModel.js";
+import User from "../models/UserModel.js";
 import { attachCookiesToResponse, isTokenValid } from "../utils/jwt/jwt.js";
+
+export async function attatchTimezoneFromHeadersAndUpdateToDB(req) {
+  const timezone = req.headers["x-timezone"];
+
+  if (timezone && req.user && req.user.timezone !== timezone) {
+    await User.updateOne(
+      { _id: req.user.userID, timezone: { $ne: timezone } },
+      { $set: { timezone } },
+    );
+
+    req.user.timezone = timezone;
+  }
+}
 
 export async function authenticateUser(req, res, next) {
   // the refresh token is not exactly the refretoken, it's an object that contains user and a jwt token that needs decoding
@@ -11,6 +25,7 @@ export async function authenticateUser(req, res, next) {
       // decode access token and attatch user to the req.user, we can then do things with it in the midlewares that lies next
       const payload = isTokenValid(accessToken);
       req.user = payload.user;
+      await attatchTimezoneFromHeadersAndUpdateToDB(req);
       return next();
     }
 
@@ -36,6 +51,7 @@ export async function authenticateUser(req, res, next) {
 
     // yup, we like to see it, the user is in the req object, we can do things with it in the midlewares that lies next
     req.user = payload.user;
+    await attatchTimezoneFromHeadersAndUpdateToDB(req);
     next();
   } catch (error) {
     throw new UnauthenticatedError("Authentication Invalid");
