@@ -87,6 +87,7 @@ export async function deleteHabit(req, res) {
   res.status(StatusCodes.OK).json({ msg: `Habit removed successfully!` });
 }
 
+// ------ HELPERS ------
 async function habitRecordLogicSortAndCalculateAndSave(habit) {
   habit.dailyRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
 
@@ -123,6 +124,19 @@ function validateAnswer(answer) {
   }
 }
 
+function getLatestRecord(records) {
+  if (!records.length) return null;
+
+  return records.reduce((latest, current) => {
+    return new Date(current.date) > new Date(latest.date) ? current : latest;
+  });
+}
+
+function hasRecordForDate(records, targetDate) {
+  return records.some((record) => isSameDay(new Date(record.date), targetDate));
+}
+// ---------------------
+
 export async function addDailyAction(req, res) {
   const { id: habitID } = req.params;
   const { answer } = req.body;
@@ -135,27 +149,22 @@ export async function addDailyAction(req, res) {
 
   const today = startOfDay(getNow());
 
-  let latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
-  if (!latestRecord || !isSameDay(new Date(latestRecord.date), today)) {
+  const todayExists = hasRecordForDate(habit.dailyRecords, today);
+
+  if (!todayExists) {
     const newRecord = {
       didIt: answer,
       date: today.getTime(),
       note: "",
     };
-
-    const todayExists = habit.dailyRecords.some((record) =>
-      isSameDay(new Date(record.date), today),
-    );
-
-    if (!todayExists) {
-      habit.dailyRecords.push(newRecord);
-    }
+    habit.dailyRecords.push(newRecord);
   } else {
+    const latestRecord = getLatestRecord(habit.dailyRecords);
     latestRecord.didIt = answer;
   }
 
   await habitRecordLogicSortAndCalculateAndSave(habit);
-  latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
+  latestRecord = getLatestRecord(habit.dailyRecords);
 
   res.status(StatusCodes.OK).json({
     name: habit.name,
@@ -314,9 +323,9 @@ export async function habitSchemaManager(req, res) {
 
     // helper: check if record already exists for a date
     const recordExistsForDate = (targetDate) =>
-      records.some((record) => isSameDay(new Date(record.date), targetDate));
+      hasRecordForDate(records, targetDate);
 
-    const lastRecord = records[records.length - 1];
+    const lastRecord = getLatestRecord(records);
 
     // insert today's record if missing
     if (!recordExistsForDate(today)) {
@@ -335,7 +344,7 @@ export async function habitSchemaManager(req, res) {
       while (true) {
         const nextDay = addDays(lastDate, 1);
 
-        if (nextDay >= today) break;
+        if (isSameDay(nextDay, today) || nextDay > today) break;
 
         if (!recordExistsForDate(nextDay)) {
           records.push({
@@ -389,7 +398,7 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
       habit.dailyRecords.pop();
     }
 
-    const lastRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
+    const lastRecord = getLatestRecord(habit.dailyRecords);
 
     // Check if today's record already exists
     const todayRecordExists = habit.dailyRecords.some((record) =>
