@@ -51,6 +51,9 @@ const UserSchema = new Schema(
       type: String,
       default: defaultImageURL,
     },
+    lastHabitSchemaManagerRan: {
+      type: Date,
+    },
   },
   { timestamps: true },
 );

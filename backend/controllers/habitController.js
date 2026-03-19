@@ -5,6 +5,7 @@ import checkPermissions from "../utils/checkPermissions.js";
 import { addDays, isAfter, isSameDay, startOfDay } from "date-fns";
 import { getNow } from "../utils/getNow.js";
 import Achievement from "../models/AchievementModel.js";
+import User from "../models/UserModel.js";
 
 const NOTE_MAX_LENGTH = 280;
 
@@ -281,6 +282,20 @@ export async function habitSchemaManager(req, res) {
   }
 
   const userID = req.user.userID;
+
+  const user = await User.findById(userID);
+
+  const today = startOfDay(getNow());
+
+  if (
+    user.lastHabitSchemaManagerRan &&
+    isSameDay(user.lastHabitSchemaManagerRan, today)
+  ) {
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Skipped schema manager for it ran today already" });
+  }
+
   const habits = await Habit.find({ user: userID });
 
   if (!habits?.length) {
@@ -288,7 +303,9 @@ export async function habitSchemaManager(req, res) {
     return res.status(StatusCodes.OK).json({ msg: "No habits to update" });
   }
 
-  const today = startOfDay(getNow());
+  // update when it last ran, so that we can reliably skip this when unnecessary
+  user.lastHabitSchemaManagerRan = today;
+  await user.save();
 
   const checkPromises = habits.map(async (habit) => {
     const records = habit.dailyRecords;
