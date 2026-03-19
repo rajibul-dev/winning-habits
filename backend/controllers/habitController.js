@@ -304,9 +304,9 @@ export async function habitSchemaManager(req, res) {
     user.lastHabitSchemaManagerRan &&
     isSameDay(user.lastHabitSchemaManagerRan, today)
   ) {
-    return res
-      .status(StatusCodes.OK)
-      .json({ msg: "Skipped schema manager for it ran today already" });
+    return res.status(StatusCodes.OK).json({
+      msg: `Skipped schema manager for it ran today already. Today: ${today}\nSchema manager running date: ${user.lastHabitSchemaManagerRan}\nrealNonStartOfTheDayDate: ${new Date()}`,
+    });
   }
 
   const habits = await Habit.find({ user: userID });
