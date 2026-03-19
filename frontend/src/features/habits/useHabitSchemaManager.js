@@ -4,7 +4,7 @@ import { runHabitSchemaManager } from "../../api/apiHabits";
 export default function useHabitSchemaManager() {
   const queryClient = useQueryClient();
 
-  const { mutate: runSchemaManager } = useMutation({
+  const { mutate: runSchemaManager, isPending } = useMutation({
     mutationFn: runHabitSchemaManager,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["my-habits"] });
@@ -12,5 +12,5 @@ export default function useHabitSchemaManager() {
     },
   });
 
-  return { runSchemaManager };
+  return { runSchemaManager, isPending };
 }

@@ -17,7 +17,14 @@ const HabitSchema = new Schema(
           enum: ["yes", "no", "unanswered"],
         },
         points: { type: Number, default: 0 },
-        date: { type: Date, default: Date.now },
+        date: {
+          type: Date,
+          default: Date.now,
+          required: [
+            true,
+            "Interval server error, could not provide date for the dailly action.",
+          ],
+        },
         note: {
           type: String,
           trim: true,

@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Habit from "../models/HabitModel.js";
 import { BadRequestError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
-import { addDays, isAfter, isSameDay, isToday, startOfDay } from "date-fns";
+import { addDays, isAfter, isSameDay, startOfDay } from "date-fns";
 import { getNow } from "../utils/getNow.js";
 import Achievement from "../models/AchievementModel.js";
 
@@ -116,6 +116,12 @@ function getTargetRecordFromHabit(habit, targetRecordID) {
   return { targetRecord, targetRecordIndex };
 }
 
+function validateAnswer(answer) {
+  if (!["yes", "no", "unanswered"].includes(answer)) {
+    throw new BadRequestError("Invalid answer");
+  }
+}
+
 export async function addDailyAction(req, res) {
   const { id: habitID } = req.params;
   const { answer } = req.body;
@@ -124,28 +130,31 @@ export async function addDailyAction(req, res) {
 
   checkPermissions(req.user, habit.user);
 
-  let latestRecord;
-  if (habit.dailyRecords.length === 0) {
+  validateAnswer(answer);
+
+  const today = startOfDay(getNow());
+
+  let latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
+  if (!latestRecord || !isSameDay(new Date(latestRecord.date), today)) {
     const newRecord = {
       didIt: answer,
-      date: getNow().getTime(),
+      date: today.getTime(),
       note: "",
     };
 
-    habit.dailyRecords.push(newRecord);
-    await habit.save();
+    const todayExists = habit.dailyRecords.some((record) =>
+      isSameDay(new Date(record.date), today),
+    );
 
-    latestRecord = habit.dailyRecords[0];
-  } else {
-    latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
-    if (latestRecord.didIt !== "unanswered") {
-      throw new BadRequestError(`You already answered ${latestRecord.didIt}`);
+    if (!todayExists) {
+      habit.dailyRecords.push(newRecord);
     }
+  } else {
     latestRecord.didIt = answer;
-    await habit.save();
   }
 
   await habitRecordLogicSortAndCalculateAndSave(habit);
+  latestRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
 
   res.status(StatusCodes.OK).json({
     name: habit.name,
@@ -164,30 +173,12 @@ export async function updateCustomDateAction(req, res) {
 
   checkPermissions(req.user, habit.user);
 
-  const { targetRecord, targetRecordIndex } = getTargetRecordFromHabit(
-    habit,
-    targetRecordID,
-  );
-  const prequelToTargetRecord = habit.dailyRecords[targetRecordIndex - 1];
+  validateAnswer(updatedAnswer);
+
+  const { targetRecord } = getTargetRecordFromHabit(habit, targetRecordID);
 
   habit.isCustomRecordUpdate = true;
   targetRecord.didIt = updatedAnswer;
-  switch (targetRecord.didIt) {
-    case "yes":
-      targetRecord.points = (prequelToTargetRecord?.points ?? 0) + 1;
-      break;
-    case "no":
-      targetRecord.points = 0;
-      break;
-    case "unanswered":
-      targetRecord.points = 0;
-      break;
-
-    default:
-      throw new BadRequestError(
-        `"${targetRecord.didIt}" is an unsupported answer`,
-      );
-  }
 
   await habitRecordLogicSortAndCalculateAndSave(habit);
 
@@ -224,7 +215,9 @@ export async function upsertDailyRecordNote(req, res) {
   res.status(StatusCodes.OK).json({
     habitID: habit._id,
     targetRecord,
-    msg: normalizedNote ? "Note saved successfully" : "Note removed successfully",
+    msg: normalizedNote
+      ? "Note saved successfully"
+      : "Note removed successfully",
   });
 }
 
@@ -375,11 +368,6 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
       )
     ) {
       habit.dailyRecords.pop();
-      try {
-        await habit.save();
-      } catch (error) {
-        console.error("Error saving habit after popping:", error);
-      }
     }
 
     const lastRecord = habit.dailyRecords[habit.dailyRecords.length - 1];
@@ -397,11 +385,6 @@ export async function habitSchemaManagerRemoveExtraDates(req, res) {
         date: getNow().getTime(),
         note: "",
       });
-      try {
-        await habit.save();
-      } catch (error) {
-        console.error("Error saving habit after popping:", error);
-      }
     }
 
     await habitRecordLogicSortAndCalculateAndSave(habit);

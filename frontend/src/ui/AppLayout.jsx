@@ -11,6 +11,8 @@ import PresentationModal from "./PresentationModal.jsx";
 import MainAppGuide from "../features/app-guide/MainAppGuide.jsx";
 import { useEffect } from "react";
 import useHabitSchemaManager from "../features/habits/useHabitSchemaManager.js";
+import Spinner from "./Spinner.jsx";
+import FullPage from "./FullPage.jsx";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -62,7 +64,8 @@ export default function AppLayout() {
 
   const isShowingMainAppGuide = useSelector(getIsShowingMainAppGuide);
 
-  const { runSchemaManager } = useHabitSchemaManager();
+  const { runSchemaManager, isPending: isSchemaManagerPending } =
+    useHabitSchemaManager();
 
   useEffect(() => {
     runSchemaManager();
@@ -81,6 +84,13 @@ export default function AppLayout() {
       body.classList.remove("no-scroll");
     };
   }, []);
+
+  if (isSchemaManagerPending)
+    return (
+      <FullPage>
+        <Spinner />;
+      </FullPage>
+    );
 
   return (
     <>

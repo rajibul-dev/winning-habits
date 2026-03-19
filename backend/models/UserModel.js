@@ -52,7 +52,7 @@ const UserSchema = new Schema(
       default: defaultImageURL,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 UserSchema.pre("save", async function () {
