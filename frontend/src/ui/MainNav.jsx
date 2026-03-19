@@ -81,6 +81,12 @@ function MainNav() {
             </StyledNavLink>
           </li>
           <li>
+            <StyledNavLink to="users">
+              <HiOutlineUsers />
+              <span>All Users</span>
+            </StyledNavLink>
+          </li>
+          <li>
             <StyledNavLink to="achievements">
               <PiTrophy />
               <span>Achievements</span>
@@ -90,12 +96,6 @@ function MainNav() {
             <StyledNavLink to="archive">
               <PiArchive />
               <span>Archive</span>
-            </StyledNavLink>
-          </li>
-          <li>
-            <StyledNavLink to="users">
-              <HiOutlineUsers />
-              <span>All Users</span>
             </StyledNavLink>
           </li>
           <li>
