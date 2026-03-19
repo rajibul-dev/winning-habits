@@ -25,22 +25,20 @@ export default function AllUsersList() {
       </PageLevelNotificationToast>
     );
 
-  const users = [...(data?.users || [])].sort((userA, userB) => {
-    const isCurrentUserA = userA._id === currentUser?.userID;
-    const isCurrentUserB = userB._id === currentUser?.userID;
+  const users = data?.users || [];
 
-    if (isCurrentUserA !== isCurrentUserB) {
-      return isCurrentUserA ? -1 : 1;
-    }
+  const sortedUsers = currentUser
+    ? [
+        ...users.filter((u) => u._id === currentUser.userID),
+        ...users.filter((u) => u._id !== currentUser.userID),
+      ]
+    : users;
 
-    return userA.name.localeCompare(userB.name);
-  });
-
-  if (!users.length) return <Empty resourceName="users" />;
+  if (!sortedUsers.length) return <Empty resourceName="users" />;
 
   return (
     <StyledList>
-      {users.map((user) => {
+      {sortedUsers.map((user) => {
         const isCurrentUser = user._id === currentUser?.userID;
 
         return (
