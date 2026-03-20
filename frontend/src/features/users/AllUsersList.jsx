@@ -6,7 +6,6 @@ import PageLevelNotificationToast from "../../ui/PageLevelNotificationToast.jsx"
 import Spinner from "../../ui/Spinner.jsx";
 import UserListItem from "../../ui/UserListItem.jsx";
 import useGetAllUsers from "./useGetAllUsers";
-import useGetUserHabitCount from "./useGetUserHabitCount.js";
 
 const StyledList = styled.ul`
   display: grid;
@@ -50,21 +49,19 @@ export default function AllUsersList() {
 }
 
 function UserRow({ user, isCurrentUser }) {
-  const { data, isLoading } = useGetUserHabitCount(user._id);
-
-  const habitCount = data?.count || 0;
+  const habitCount = user.habitCount || 0;
 
   const secondaryTextStatements = [
     `Tracking ${habitCount} ${habitCount === 1 ? "habit" : "habits"}`,
   ];
-  if (data?.seriousAboutCount) {
+  if (user?.seriousAboutCount) {
     secondaryTextStatements.push(
-      `Serious about ${data.seriousAboutCount} ${data.seriousAboutCount === 1 ? "habit" : "habits"}`,
+      `Serious about ${user.seriousAboutCount} ${user.seriousAboutCount === 1 ? "habit" : "habits"}`,
     );
   }
-  if (data?.achievedCount) {
+  if (user?.achievedCount) {
     secondaryTextStatements.push(
-      `Mastered ${data.achievedCount} ${data.achievedCount === 1 ? "habit" : "habits"}`,
+      `Mastered ${user.achievedCount} ${user.achievedCount === 1 ? "habit" : "habits"}`,
     );
   }
 
@@ -72,9 +69,7 @@ function UserRow({ user, isCurrentUser }) {
     <UserListItem
       user={user}
       badge={isCurrentUser ? "You" : null}
-      secondaryText={
-        isLoading ? "Loading..." : secondaryTextStatements.join(" || ")
-      }
+      secondaryText={secondaryTextStatements.join(" || ")}
       to={`/users/${user._id}`}
     />
   );

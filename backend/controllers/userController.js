@@ -58,8 +58,14 @@ async function deleteUserAccount(userId) {
 }
 
 export async function getAllUsers(req, res) {
-  // const users = await User.find().select("-password");
   const users = await User.aggregate([
+    {
+      $match: {
+        isVerified: true,
+      },
+    },
+
+    // bring in habits
     {
       $lookup: {
         from: "habits",
@@ -68,27 +74,69 @@ export async function getAllUsers(req, res) {
         as: "habits",
       },
     },
+
+    // compute everything we need
     {
       $addFields: {
         lastActivity: {
           $max: "$habits.updatedAt",
         },
+
+        habitCount: {
+          $size: "$habits",
+        },
+
+        seriousAboutCount: {
+          $size: {
+            $filter: {
+              input: "$habits",
+              as: "h",
+              cond: { $gte: ["$$h.totalPoints", 30] }, // same threshold
+            },
+          },
+        },
+      },
+    },
+
+    // achievedCount from achievements collection
+    {
+      $lookup: {
+        from: "achievements",
+        localField: "_id",
+        foreignField: "user",
+        as: "achievements",
       },
     },
     {
-      $sort: { lastActivity: -1 },
+      $addFields: {
+        achievedCount: {
+          $size: "$achievements",
+        },
+      },
     },
+
+    // sort by activity
+    {
+      $sort: {
+        lastActivity: -1,
+      },
+    },
+
+    // cleanup response
     {
       $project: {
         password: 0,
+        habits: 0,
+        achievements: 0,
       },
     },
   ]);
+
   res.status(StatusCodes.OK).json({ users, count: users.length });
 }
 
 export async function getUserCount(req, res) {
-  const userCount = await User.countDocuments();
+  const userCount = await User.countDocuments({ isVerified: true });
   res.status(StatusCodes.OK).json({ count: userCount });
 }
 
