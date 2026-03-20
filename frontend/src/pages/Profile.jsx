@@ -55,7 +55,10 @@ export default function Profile() {
     error: userHabitsError,
   } = useGetUserHabits(userID);
 
-  if (isUserLoading || (userID && (isHabitCountLoading || areUserHabitsLoading))) {
+  if (
+    isUserLoading ||
+    (userID && (isHabitCountLoading || areUserHabitsLoading))
+  ) {
     return <Spinner />;
   }
 
@@ -142,11 +145,15 @@ export default function Profile() {
           <>
             <ActionButton type="button" onClick={() => setIsEditing(true)}>
               <FiEdit3 />
-              <span>Edit profile</span>
+              <span>Manage profile</span>
             </ActionButton>
 
             {userID ? (
-              <ActionButton as={Link} to={`/users/${userID}`} $variation="secondary">
+              <ActionButton
+                as={Link}
+                to={`/users/${userID}`}
+                $variation="secondary"
+              >
                 View public profile
               </ActionButton>
             ) : null}
@@ -164,4 +171,3 @@ export default function Profile() {
     </PageStack>
   );
 }
-
