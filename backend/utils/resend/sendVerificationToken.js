@@ -15,5 +15,6 @@ export default async function sendVerificationToken({
     subject: `Email Verification`,
     html: `<h1>Account Confirmation</h1>
     ${message}`,
+    from: `"Winning Habits" <auth@winninghabits.app>`,
   });
 }

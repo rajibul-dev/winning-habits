@@ -13,5 +13,6 @@ export default async function sendPasswordResetLink({
     to: email,
     subject: `Reset Password`,
     html: `<h2>Hello ${name}</h2>\n${message}`,
+    from: `"Winning Habits" <auth@winninghabits.app>`,
   });
 }

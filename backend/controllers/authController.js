@@ -2,13 +2,13 @@ import crypto from "crypto";
 import { StatusCodes } from "http-status-codes";
 
 import { BadRequestError, UnauthenticatedError } from "../errors/index.js";
-import sendVerificationToken from "../utils/nodeMailer/sendVerificationToken.js";
+import sendVerificationToken from "../utils/resend/sendVerificationToken.js";
 import createTokenUser from "../utils/jwt/createTokenUser.js";
 
 import User from "../models/UserModel.js";
 import Token from "../models/TokenModel.js";
-import { attachCookiesToResponse, clearCookiesFromResponse } from "../utils/jwt/jwt.js";
-import sendPasswordResetLink from "../utils/nodeMailer/sendPasswordResetLink.js";
+import { attachCookiesToResponse } from "../utils/jwt/jwt.js";
+import sendPasswordResetLink from "../utils/resend/sendPasswordResetLink.js";
 import createHash from "../utils/createHash.js";
 
 const origin = process.env.FRONTEND_ORIGIN;
